@@ -34,7 +34,8 @@ Todos:
 3. Make the generation multithreaded via jobs
 4. Support water
 5. remove all the options that can be removed but maintian functionality
-6. rework interface to be explcit and friendly
+6. rework interface to be explicit and friendly
+7. Make a whitebox prefab demo example
 
 ### License ###
 
