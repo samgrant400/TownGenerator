@@ -37,7 +37,9 @@ public class LerpToGround : MonoBehaviour
         //Send the raycast.
         // Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 501f);
 
-        LayerMask mask = LayerMask.GetMask("World");
+
+        // TODO : MASK SELECTION
+        LayerMask mask = LayerMask.GetMask("Default");
 
         Ray ray = new Ray(origin, Vector3.down);
 

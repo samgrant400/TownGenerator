@@ -50,7 +50,9 @@ public class AlignOnEnable : MonoBehaviour
         //Create origin for raycast that is above the terrain. I chose 500.
         Vector3 origin = new Vector3(x, 500f, y);
       
-        LayerMask mask = LayerMask.GetMask("World");
+
+        // TODO : OPTIONAL MASK SELECTION
+        LayerMask mask = LayerMask.GetMask("Default");
 
         Ray ray = new Ray(origin, Vector3.down);
 

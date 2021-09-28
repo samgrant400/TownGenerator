@@ -254,7 +254,7 @@ namespace Town
 
                     poly.Transform.localPosition = Vector3.zero;
 
-                    poly.GameObject.layer = LayerMask.NameToLayer("MapCamera");
+                  //  poly.GameObject.layer = LayerMask.NameToLayer("MapCamera");
 
                     vertices.Clear();
                 }
@@ -437,7 +437,9 @@ namespace Town
             //Send the raycast.
            // Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 501f);
 
-            LayerMask mask = LayerMask.GetMask("World");
+
+            // TODO DO THE MASK SELECTION THING
+            LayerMask mask = LayerMask.GetMask("Default");
 
             Ray ray = new Ray(origin, Vector3.down);
 

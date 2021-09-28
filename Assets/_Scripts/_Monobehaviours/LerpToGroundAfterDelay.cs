@@ -31,7 +31,8 @@ public class LerpToGroundAfterDelay : MonoBehaviour
         Vector3 origin = new Vector3(x, 500f, y);
 
        
-        LayerMask mask = LayerMask.GetMask("World");
+        //TODO : GLOBAL MASK SELECTION
+        LayerMask mask = LayerMask.GetMask("Default");
 
         Ray ray = new Ray(origin, Vector3.down);
 

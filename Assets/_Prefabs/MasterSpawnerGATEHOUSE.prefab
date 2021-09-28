@@ -88,14 +88,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67bc80d4c1c799346b57921fb3aaeeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1265330096720408923, guid: 521962ca27f2e8b46876ded4dc2992da, type: 3}
+  prefab: {fileID: 1931018082507708, guid: 65290c8a0968be743bf5b4c95114c272, type: 3}
   scale: 1
   scaleRange: 0
   spacing: 1
   spacingRange: 0
   offset: 0
   offsetRange: 0
-  startingOffset: 0.02
   isRandomYaw: 0
   randomSeed: 0
-  OffsetModel90Degree: 0

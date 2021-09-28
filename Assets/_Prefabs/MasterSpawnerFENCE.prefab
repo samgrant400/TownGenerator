@@ -52,7 +52,6 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -61,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ede9d35d37e165649ad928d519b4a91c, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -144,7 +143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4632930669255364472
 Transform:
   m_ObjectHideFlags: 0
@@ -216,13 +215,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67bc80d4c1c799346b57921fb3aaeeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 100000, guid: 60632b040551069419e2002a35487752, type: 3}
+  prefab: {fileID: 100010, guid: 75a08385e127b9944b8a9e21320e8b88, type: 3}
   scale: 1
   scaleRange: 0
   spacing: 1
   spacingRange: 0
   offset: 0
   offsetRange: 0
-  startingOffset: 0.01
   isRandomYaw: 0
   randomSeed: 0
