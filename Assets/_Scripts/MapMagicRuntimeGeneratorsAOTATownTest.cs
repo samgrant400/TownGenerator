@@ -150,28 +150,33 @@ namespace MapMagic.Nodes.MatrixGenerators
         #region declarations
 
        
-
+        //[HideInInspector]
         [Val("Seed")]
         public int seed = 12345;
        
 
         public TownOptions townOptions = new TownOptions();
 
-      //  public enum LevelType { Relative, Absolute }
-      //  [Val("Level Type")]
-      //  public LevelType levelType = LevelType.Relative;
+        //  public enum LevelType { Relative, Absolute }
+        //  [Val("Level Type")]
+        //  public LevelType levelType = LevelType.Relative;
 
-      
+
         // ******************* BUNDLE *************
 
-        [Val("Intensity")]
+        [HideInInspector]
+      //  [Val("Intensity")]
         public float footprintIntensity = 1;
-        [Val("Position")]
+        [HideInInspector]
+      //  [Val("Position")]
         public Vector2D footprintPosition;
-        [Val("Radius")]
+        [HideInInspector]
+       // [Val("Radius")]
         public float footprintRadius = 30;
-        [Val("Hardness")]
+        [HideInInspector]
+       // [Val("Hardness")]
         public float footprintHardness = 0.5f;
+
         [Val("JustSplines")]
         public bool RoadOnly = false;
 

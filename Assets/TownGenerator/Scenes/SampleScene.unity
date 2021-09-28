@@ -243,12 +243,12 @@ MonoBehaviour:
   guiTerrainSettings: 1
   guiDraftSettings: 0
   guiTreesGrassSettings: 0
-  instantGenerate: 1
+  instantGenerate: 0
   saveIntermediate: 1
   heightWeldMargins: 5
   splatsWeldMargins: 2
   guiHideWireframe: 0
-  guiThreads: 0
+  guiThreads: 1
   applyColliders: 1
   setDirty: 0
   shift: 0
