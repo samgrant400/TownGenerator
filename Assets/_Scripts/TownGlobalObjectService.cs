@@ -119,9 +119,9 @@ public class TownGlobalObjectService : MonoBehaviour
 
     public GameObject MapIconPrefab;
 
-    public GameObject HUDPrefab;
+   // public GameObject HUDPrefab;
 
-    public GameObject FenceSplineFormer;
+   // public GameObject FenceSplineFormer;
 
     public GameObject SplineMeshFenceMasterSpawner;
 
