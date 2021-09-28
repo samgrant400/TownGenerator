@@ -33,7 +33,7 @@ Todos:
 2. Reduce GC allocation for generation (Now its around 100MB)
 3. Make the generation multithreaded via jobs
 4. Support water
-5. remove all the options that can be removed but maintian functionality
+5. remove all the options that can be removed but maintain functionality
 6. rework interface to be explicit and friendly
 7. Make a whitebox prefab demo example
 
