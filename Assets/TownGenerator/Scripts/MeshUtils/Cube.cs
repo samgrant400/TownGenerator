@@ -23,7 +23,8 @@ namespace MeshUtils
             float height,
             Material material,
             Transform parent,
-            bool addCollider = true
+            bool addCollider = true,
+            bool addRenderer = true
         )
         {
 
@@ -231,14 +232,24 @@ namespace MeshUtils
 
             mesh.RecalculateBounds ();
 
-            var go = new GameObject (name, typeof (MeshFilter), typeof (MeshRenderer));
+            GameObject go;
+
+            if (addRenderer)
+            {
+                go = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer));
+                MeshRenderer = go.GetComponent<MeshRenderer>();
+                MeshRenderer.sharedMaterial = material;
+            }
+            else
+            {
+                go = new GameObject(name, typeof(MeshFilter));
+            }
+
             go.transform.parent = parent;
-            MeshRenderer = go.GetComponent<MeshRenderer> ();
-            MeshRenderer.sharedMaterial = material;
-            MeshFilter = go.GetComponent<MeshFilter> ();
+            MeshFilter = go.GetComponent<MeshFilter>();
             MeshFilter.sharedMesh = mesh;
             if (addCollider)
-                MeshCollider = go.AddComponent<MeshCollider> ();
+                MeshCollider = go.AddComponent<MeshCollider>();
 
             // go.isStatic = true;
 

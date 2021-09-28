@@ -4,11 +4,17 @@ using System.IO;
 using System.Linq;
 using Town.Geom;
 using Random = Utils.Random;
+using Twobob;
+
 
 namespace Town
 {
     public class Town
     {
+
+        public Vector2 mapOffset = Vector2.Zero;
+        public Vector2 townOffset = Vector2.Zero;
+        public Den.Tools.Coord coord;
         public readonly TownOptions Options;
         public int Width = 0;
         public int Height = 0;
@@ -19,24 +25,52 @@ namespace Town
         public Castle Castle { get; private set; }
         public Wall CityWall { get; private set; }
         public Patch Market { get; set; }
-
+        public string name { get; set; }
         public List<List<Vector2>> Roads { get; }
         public List<List<Vector2>> Streets { get; }
         public List<Vector2> Gates { get; }
 
         public List<Vector2> WaterBorder { get; }
+
+        // have mercy
+        public List<Dictionary<Den.Tools.Coord, List< UnityEngine.Vector3>>> SplinesToRender { get; set; }
+        public UnityEngine.GameObject TownGameObject { get; set; }
+        public List<List<Vector2>> Terminus { get; set; }
+
         public Random Random;
+
+        
 
         public Town (TownOptions options)
         {
             Options = options;
-            Random = new Random (options.Seed);
+            //  Random = new Random (options.Seed);
+
+            SplinesToRender = new List<Dictionary<Den.Tools.Coord, List<UnityEngine.Vector3>>>();
+
+            Random = new Random( options.Seed+RandomGen.Next ());
+
+            mapOffset = options.mapOffset;
+            townOffset = options.townOffset;
 
             var ok = false;
-            while (!ok)
+            while ( !ok )
             {
-
+                
                 NumPatches = options.Patches;
+
+                name = TownGlobalObjectService.NamesQueue.Dequeue ();
+
+                //var addendum =
+                //    ((Options.coord.z > 0) ? "N" : "S")
+                //    +
+                //    ((Options.coord.x > 0) ? "E" : "W");
+                
+                //name += "_" + addendum;
+
+                //name = TownGlobalObjectService.namegenref.GeneratePlace();
+                //  name = "cityWith"+ NumPatches+"Patches"; // TownGlobalObjectService.namegenref.GeneratePlace();
+
                 Roads = new List<List<Vector2>> ();
                 Streets = new List<List<Vector2>> ();
                 Gates = new List<Vector2> ();
@@ -61,7 +95,7 @@ namespace Town
             }
         }
 
-        public Rectangle GetBounds ()
+        public  Rectangle GetBounds ()
         {
             var vertices = Patches.SelectMany (p => p.Shape.Vertices);
             var minX = vertices.Min (v => v.x);
@@ -230,7 +264,11 @@ namespace Town
             var allowedTowerPositions = circumference.ToList ();
             var castleVertices = Castle.Patch.Shape.Vertices.ToList ();
 
-            foreach (var position in allowedTowerPositions.Intersect (WaterBorder).ToList ())
+            // Make sure the wall starts and ends at the sea
+            if (Options.Water)
+            {
+
+                foreach (var position in allowedTowerPositions.Intersect (WaterBorder).ToList ())
             {
                 var neighbours = Patches.Where (p => p.Shape.Vertices.Contains (position));
                 if (!neighbours.Any (n => !n.WithinCity && !n.Water))
@@ -239,9 +277,7 @@ namespace Town
                 }
             }
 
-            // Make sure the wall starts and ends at the sea
-            if (Options.Water)
-            {
+            
                 var seaPoints = allowedTowerPositions.Where (t => Patches.Any (p => p.Water && p.Shape.Vertices.Contains (t))).ToList ();
 
                 var lastSeaPoint = seaPoints[1];
@@ -264,7 +300,7 @@ namespace Town
                 }
             }
 
-            CityWall = new Wall (allowedTowerPositions, this, 2, 10, castleVertices);
+            CityWall = new Wall (allowedTowerPositions, this, 4, 14, castleVertices);
 
             var allowedCastleWallPositions = castleVertices.Except (allowedTowerPositions).ToList ();
             var firstIndex = castleVertices.IndexOf (allowedCastleWallPositions.First ()) - 1;
@@ -302,7 +338,7 @@ namespace Town
 
                     if (CityWall.Gates.Contains (gate))
                     {
-                        var direction = Vector2.Scale (gate - Center, 100000);
+                        var direction = Vector2.Scale (gate - Center, 300000);
 
                         var start = topology.Node2V.Values.OrderBy (v => (v - direction).Length).First ();
 
@@ -318,6 +354,30 @@ namespace Town
                             roads.Add (road);
                         }
                     }
+
+                    // Mangle in more roads
+
+                    //foreach (var tower in CityWall.Towers)
+                    //{
+
+                    //    var direction = Vector2.Scale(tower - Center, 200000);
+
+                    //    var start = topology.Node2V.Values.OrderBy(v => (v - direction).Length).First();
+
+                    //    var road = topology.BuildPath(start, tower, topology.Outer);
+                    //    if (road != null)
+                    //    {
+                    //        roads.Add(road);
+                    //    }
+
+                    //}
+
+
+
+
+
+
+
                 }
             }
 
@@ -455,13 +515,21 @@ namespace Town
                     }
                     else
                     {
-                        if (patch.Shape.Vertices.Intersect (CityWall.Circumference).Any ())
+                        if (patch.Shape.Vertices.Intersect(CityWall.Circumference).Any())
                         {
-                            patch.Area = new OutsideWallArea (patch);
+                            patch.Area = new OutsideWallArea(patch);
                         }
                         else
                         {
-                            patch.Area = new FarmArea (patch);
+
+                            if (Options.Farm)
+                            {
+                                patch.Area = new FarmArea(patch);
+                            }
+                            else
+                            {
+                                patch.Area = new EmptyArea(patch);
+                            }
                         }
                     }
                 }
@@ -487,7 +555,7 @@ namespace Town
             return FindCircumference (new List<Patch> { patch });
         }
 
-        public Polygon FindCircumference (IEnumerable<Patch> patches)
+        public static Polygon FindCircumference (IEnumerable<Patch> patches)
         {
             var allEdges = patches.SelectMany (p => p.Edges);
             var edgeCounts = allEdges.Select (e => new { Edge = e, Count = allEdges.Count (e.Equals) }).ToList ();
