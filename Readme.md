@@ -1,6 +1,6 @@
 ## Medieval Town Generator ##
 
-Developed unity 2021.1 (MeshSpline support)
+Developed unity 2021.1 (2021 for https://github.com/benoit-dumas/SplineMesh support)
 https://github.com/zulfajuniadi/TownGenerator/ Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
 Then Twobob modified it to generate MapMagic2 objects, splines and other things like a floating mini-map area overlay from the Area Patches.
 
