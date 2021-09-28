@@ -12,10 +12,18 @@ using System;
 public class RunOnTileActionEvent : MonoBehaviour
 {
 
+    public Transform thingToTrack;
+    private static Transform thingToTrackReference;
+
+
     static Queue<GameObject> activationList;//= new Queue<Transform>();
     static Queue<GameObject> deactivationList;//= new Queue<Transform>();
 
     public Transform RenderingMessage;
+    public Transform DistrictMessage;
+
+    private static GameObject DistrictMessageRefGameObject;
+
 
     public static TownGlobalObjectService tgos;
 
@@ -30,6 +38,8 @@ public class RunOnTileActionEvent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        thingToTrackReference = thingToTrack;
+
         RunOnAnyTilePrepActivityRef = this;
 
         //Queue<GameObject> 
@@ -39,6 +49,8 @@ public class RunOnTileActionEvent : MonoBehaviour
 
         RenderingMessageRef = RenderingMessage;
         RenderingMessageRefGameObject = RenderingMessageRef.gameObject;
+
+        DistrictMessageRefGameObject = DistrictMessage.gameObject;
 
         TerrainTile.OnBeforeTileGenerate -= OnBeforeTileGenerated;
         TerrainTile.OnBeforeTileGenerate += OnBeforeTileGenerated;
@@ -126,7 +138,7 @@ public class RunOnTileActionEvent : MonoBehaviour
     //    }
     //}
 
-private void OnTileMoved(TerrainTile tile)
+    private void OnTileMoved(TerrainTile tile)
     {
 
         //for (int i = tile.transform.childCount-1; i > 0 ; i--)
@@ -148,8 +160,8 @@ private void OnTileMoved(TerrainTile tile)
         if (TownGlobalObject.splinesNodesDataForTile.ContainsKey(tile.coord))
         {
 
-            if(!TownGlobalObject.splinesNodesDataForTile.TryRemove(tile.coord, out var ret))
-                  { Debug.LogError("remove spline failed"); };
+            if (!TownGlobalObject.splinesNodesDataForTile.TryRemove(tile.coord, out var ret))
+            { Debug.LogError("remove spline failed"); };
 
         }
 
@@ -178,7 +190,7 @@ private void OnTileMoved(TerrainTile tile)
 
                 // here we should set the timeout.
 
-               Invoke("deactivateTimeout", 60f);
+                Invoke("deactivateTimeout", 60f);
 
             }
         }
@@ -186,10 +198,10 @@ private void OnTileMoved(TerrainTile tile)
 
     private void deactivateTimeout() {
 
-       
-            doDeactivate = false;
-            RenderingMessage.gameObject.SetActive(false);
-       
+
+        doDeactivate = false;
+        RenderingMessage.gameObject.SetActive(false);
+
     }
 
     public static bool doActivate = false;
@@ -199,6 +211,13 @@ private void OnTileMoved(TerrainTile tile)
     public static void OnAllTilesGenerated(MapMagicObject mapMagic)
     {
         doDeactivate = true;
+
+
+        Coord newPositionAsCoord = new Coord((int)(thingToTrackReference.position.x * 0.001), (int)(thingToTrackReference.position.z * 0.001));
+   
+         SetPlaceName(newPositionAsCoord);
+
+
         if (TownGlobalObject.TownWaitingToRender)
         {
             TownGlobalObject.TownWaitingToRender = (TownGlobalObject.TownsWaitingToRender.Count == 0) ? false : true;
@@ -238,6 +257,8 @@ private void OnTileMoved(TerrainTile tile)
             //  Debug.Log("Generate");
         }
 
+
+
     }
 
     public static void OnBeforeTileGenerated(TerrainTile tile, TileData data, StopToken stop)
@@ -252,6 +273,22 @@ private void OnTileMoved(TerrainTile tile)
 
         //}
 
+    }
+
+
+    public static void SetPlaceName(Coord coord) {
+
+      
+        DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = ReturnTownName(coord);
+       
+ 
+     }
+
+    public static string ReturnTownName(Coord coord) {
+
+        Coord locality = TownGlobalObject.GetIndexAtCoord(coord);
+
+      return  TownGlobalObject.townsData[locality].name;
     }
 
     public static void OnTileAppliedRenderMeshSplines(TerrainTile tile, TileData data, StopToken stop)
@@ -309,7 +346,12 @@ private void OnTileMoved(TerrainTile tile)
 
         List<GameObject> thingsToActivate = new List<GameObject>();
 
+      
+
         Coord locality = TownGlobalObject.GetIndexAtCoord(data.area.Coord);
+
+     
+
         // Coord offset = locality - data.area.Coord;
 
         Coord offset = data.area.Coord;

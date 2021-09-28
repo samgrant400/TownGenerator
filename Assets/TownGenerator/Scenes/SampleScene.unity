@@ -340,8 +340,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 3000
-  field of view: 30
+  far clip plane: 6000
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -888,7 +888,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac2146010c3970847a0d8ccdc2c2142d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thingToTrack: {fileID: 282840814}
   RenderingMessage: {fileID: 724191436}
+  DistrictMessage: {fileID: 923275849}
   SkimpFactor: 3
 --- !u!1 &1011187235
 GameObject:
@@ -1526,9 +1528,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 5724960126803231354, guid: 8ff012723c2148d4a8954eb9ae20d2d0, type: 3}
-  scale: 1
+  scale: 10
   scaleRange: 0
-  spacing: 6
+  spacing: 10
   spacingRange: 0
   offset: 0
   offsetRange: 0
@@ -1662,9 +1664,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1931018082507708, guid: 65290c8a0968be743bf5b4c95114c272, type: 3}
-  scale: 1
+  scale: 20
   scaleRange: 0
-  spacing: 1
+  spacing: 20
   spacingRange: 0
   offset: 0
   offsetRange: 0

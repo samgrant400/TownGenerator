@@ -591,7 +591,7 @@ public class TownTileRenderer
 
                  
 
-                    var rectangle = item.Shape.GetBoundingBox();
+                    var rectangle = item.Shape.GetBoundingBox()  ;
                     var placeascoord = building.Shape.Center.ToCoord();
                     CoordRect testrect = new CoordRect(new Rect(new Vector2(rectangle.Left, rectangle.Bottom), new Vector2(rectangle.Width, rectangle.Height)));
 
