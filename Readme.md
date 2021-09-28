@@ -10,7 +10,7 @@ Generated Town: (This is using not-included prefabs)  Whitebox demo is on the TO
 
 Generator Options:
 
-![Generator Options](https://user-images.githubusercontent.com/915232/135077936-1e61dcf8-f6f9-4748-bd0b-53fa739e2d2b.png  "Generator Options")
+![Generator Options](https://user-images.githubusercontent.com/915232/135118670-902bc2f7-40b7-4181-89d3-1c7628983bc4.png  "Generator Options")
 
 Town Options:
 
