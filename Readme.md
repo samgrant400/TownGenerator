@@ -4,7 +4,7 @@ Developed unity 2021.1 (2021 for [benoit-dumas/SplineMesh](https://github.com/be
 [zulfajuniadi/TownGenerator](https://github.com/zulfajuniadi/TownGenerator/) Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
 Then Twobob modified it to generate [MapMagic2](https://assetstore.unity.com/packages/tools/terrain/mapmagic-2-165180) objects, splines and other things like a floating mini-map area overlay from the Area Patches.
 
-Generated Town:
+Generated Town: (This is using not-included prefabs)  Whitebox demo is on the TODO
 
 ![Generated](https://user-images.githubusercontent.com/915232/135077644-ad10915b-ae30-492b-8c15-72760cceb319.png "Generated")
 
