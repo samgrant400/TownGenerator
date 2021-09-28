@@ -10,7 +10,7 @@ Generated Town: (This is using not-included prefabs)  Whitebox demo is on the TO
 
 Generator Options:
 
-![Generator Options](https://user-images.githubusercontent.com/915232/135118670-902bc2f7-40b7-4181-89d3-1c7628983bc4.png  "Generator Options")
+![Generator Options](https://user-images.githubusercontent.com/915232/135138373-058cc28c-75b2-461d-a48e-971fc0a27b9b.png  "Generator Options")
 
 Town Options:
 
@@ -22,6 +22,7 @@ Renderer Options:
 
 - Root: The parent of the generated town.
 - Materials: Various materials for different parts of the map
+- Various other supporting objects
 
 Usage:
 
@@ -33,9 +34,7 @@ Todos:
 2. Reduce GC allocation for generation (Now its around 100MB)
 3. Make the generation multithreaded via jobs
 4. Support water
-5. remove all the options that can be removed but maintain functionality
-6. rework interface to be explicit and friendly
-7. Make a whitebox prefab demo example
+7. Finish a complete a whitebox prefab demo example
 
 ### License ###
 
