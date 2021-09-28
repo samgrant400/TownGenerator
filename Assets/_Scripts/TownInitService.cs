@@ -26,14 +26,19 @@ public class TownInitService : MonoBehaviour
     public static int __totalCities = 10;
 
     public int totalCities = 10;
+
     [HideInInspector]
     public bool AllowTileMerging = false;
 
     private int ExpandXZsAfterTries = 300;
 
+    [HideInInspector]
     public bool InitTradeScripts = false;
-    
-    public float MinimumDistance = 4f;
+
+    // THIS IS MEASURED IN TILES
+    [Range(2, 20)]
+    public int MinimumDistance = 4;
+
     private float compressionExpansion = 3.0f;
 
     public const int MaxTileRender = 4;

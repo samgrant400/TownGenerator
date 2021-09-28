@@ -93,7 +93,11 @@ helpLink = "https://gitlab.com/denispahunov/mapmagic/wikis/map_generators/consta
 
         public override void Generate(TileData data, StopToken stop)
         {
-         
+            if (divisions < 1)
+            {
+                divisions = 1;
+            }
+
 
 
             SplineSys src = data.ReadInletProduct(this);

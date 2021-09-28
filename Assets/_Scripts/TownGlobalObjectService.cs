@@ -68,7 +68,24 @@ public class TownGlobalObjectService : MonoBehaviour
         return ((RandomGen.FlipACoin()) ? -Give1to2() : Give1to2());
     }
 
+
+    [Range(9, 100)]
+    public int MaxCitySpreadreq = 30;
+
+    [Range(8, 100)]
+    public int MinCitySpreadreq = 15;
+
+    [Range(1, 30)]
+    public float worldMultiplier = 6f;
+
+
     public Town.TownOptions options;
+
+    // [Range(500, 500)]
+    public static int WorldHeight = 500;
+
+
+
     public static Town.TownMeshRendererOptions rendererOptions;
     public Town.TownMeshRendererOptions LiveRendererOptions;
 
@@ -98,20 +115,9 @@ public class TownGlobalObjectService : MonoBehaviour
 
     public TextMeshProUGUI districtNameText;
 
-    [Range(3, 200)]
-    public int MaxCitySpreadreq = 50;
-
-    [Range(500, 500)]
-    public static int WorldHeight = 500;
-
-    [Range(2, 100)]
-    public int MinCitySpreadreq = 15;
-
+   
     //[Range(2, 30)]
     //public int CityTileInterstitialSpread = 6;
-
-    [Range(1, 30)]
-    public float worldMultiplier = 1f;
 
     public static bool ProduceOverlay = false;
 

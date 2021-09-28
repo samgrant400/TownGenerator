@@ -12,6 +12,7 @@ namespace Town
         public bool Towers = true;
         [HideInInspector]
         public bool Farm = false;
+        [HideInInspector]
         public bool Water = false;
         [HideInInspector]
         public bool Roads = false;
@@ -21,6 +22,7 @@ namespace Town
         public int Patches = 50;
         public int Seed = 4074;
 
+        [HideInInspector]
         public Den.Tools.Coord coord;
 
         public Geom.Vector2 mapOffset;
@@ -29,6 +31,7 @@ namespace Town
 
         public static TownOptions Default => new TownOptions { Patches = 50 };
 
+        [HideInInspector]
         public bool CityDetail = true;
 
         [HideInInspector]

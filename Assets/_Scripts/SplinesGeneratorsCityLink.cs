@@ -34,8 +34,6 @@ namespace MapMagic.Nodes.SplinesGenerators
         static void EnlistInMenu() => MapMagic.Nodes.GUI.CreateRightClick.generatorTypes.Add(typeof(CityLink));
 #endif
 
-        private List<Vector3> markers = new List<Vector3>();
-     
 
         public override void Generate(TileData data, StopToken stop)
         {
@@ -43,7 +41,7 @@ namespace MapMagic.Nodes.SplinesGenerators
             // if (data.isDraft) return;
 
             // nodes for spline
-            markers = new List<Vector3>();// TownGlobalObjectService.TownRequests.Count + TownInitService.__totalCities + 1);
+            List<Vector3> markers = new List<Vector3>(); //TownGlobalObjectService.TownRequests.Count + TownInitService.__totalCities + 1);
             //data - whatever data
             foreach (var subtown in TownGlobalObject.townsData)
             {
@@ -53,22 +51,8 @@ namespace MapMagic.Nodes.SplinesGenerators
 
                 if (!markers.Contains(offsettedstore))
 
-                    try
-                    {
                         markers.Add(offsettedstore);
-                    }
-                    catch (Exception e)
-                    {
-
-                        markers = new List<Vector3>
-                        {
-                            offsettedstore
-                        };
-
-                        Debug.LogErrorFormat(" Edge case {0} with location {1},{2},{3} and a list of Length {4}", e.Message, offsettedstore.x, offsettedstore.y, offsettedstore.z, markers.Count);
-                        // ignore this weird edge case.
-                       
-                    }
+                   
 
             }
            
@@ -89,47 +73,19 @@ namespace MapMagic.Nodes.SplinesGenerators
 
                     var store = new Vector3(offsettedroad.x, 499f, offsettedroad.y);
 
-                    //case when the UI gets pulled with "realtime" updates..
-                    if (markers == null)
-                        markers = new List<Vector3>();
-
                     if (!markers.Contains(store))
 
-                        try
-                        {
-                            markers.Add(store);
-                        }
-                        catch 
-                        {
-                            return;
-                            // Silently ignore. This happens all the time because of the UI sliders.
-                        }
-                    
+                    markers.Add(store);
 
                 }
             }
 
-            // case when the UI gets pulled with "realtime" updates..
-            if (markers == null)
-                return;
-
-            if (markers.Count == 0)
-                return;
-         
+           
 
             // make some holders
             SplineSys spline = new SplineSys();
             Line line = new Line();
-
-            try
-            {
-                line.SetNodes(markers.ToArray());
-            }
-            catch
-            {
-                return;
-                // Silently ignore. This happens all the time because of the UI sliders.
-            }
+            line.SetNodes(markers.ToArray());
             spline.AddLine(line);
 
             // setup the clamp mask
