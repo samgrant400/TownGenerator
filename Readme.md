@@ -1,23 +1,22 @@
 ## Medieval Town Generator ##
 
-Developed unity 2018.1. Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
+Developed unity 2021.1 (MeshSpline support)
+https://github.com/zulfajuniadi/TownGenerator/ Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
+Then Twobob modified it to generate MapMagic2 objects, splines and other things like a floating mini-map area overlay from the Area Patches.
 
 Generated Town:
 
-![Generated](https://i.imgur.com/o3iCyqt.png "Generated")
+![Generated](https://user-images.githubusercontent.com/915232/135077644-ad10915b-ae30-492b-8c15-72760cceb319.png "Generated")
 
 Generator Options:
 
-![Generator Options](https://i.imgur.com/9Pz3AUi.png "Generator Options")
-
+![Generator Options](https://user-images.githubusercontent.com/915232/135077936-1e61dcf8-f6f9-4748-bd0b-53fa739e2d2b.png  "Generator Options")
 
 Town Options:
 
-- Overlay: Generates ground meshes
 - Walls: Does the generated town have walls
-- Water: Is the town situated next to a body of water
-- Patches: How large of a map do you want to generate
-- Seed: The random seed of the generator
+- Towers: Does the generated town have towers
+- Water: CURRENTLY NOT SUPPORTED
 
 Renderer Options:
 
@@ -26,17 +25,20 @@ Renderer Options:
 
 Usage:
 
-View the `TownBuilder.cs` file to see how the generation is initiated.
+View the `TownTileBuilder.cs` and `TownMeshBuilder.cs` file to see how the generation is initiated.
 
 Todos:
 
 1. Migrate the scripts to use UnityEngine.Vector2.
 2. Reduce GC allocation for generation (Now its around 100MB)
 3. Make the generation multithreaded via jobs
+4. Support water
+5. remove all the options that can be removed but maintian functionality
+6. rework interface to be explcit and friendly
 
 ### License ###
 
-Copyright 2018 Zulfa Juniadi
+Copyright 2018 Zulfa Juniadi  & 2021 Twobob
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
