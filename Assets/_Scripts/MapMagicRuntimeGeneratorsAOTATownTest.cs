@@ -96,6 +96,9 @@ namespace MapMagic.Nodes.MatrixGenerators
         [Val("CityCenter", "Positions")]
         public readonly Outlet<TransitionsList> centerOut = new Outlet<TransitionsList>();
 
+        [Val("SingleCenter", "Positions")]
+        public readonly Outlet<TransitionsList> singlecenterOut = new Outlet<TransitionsList>();
+
         [Val("PatchCenters", "Positions")]
         public readonly Outlet<TransitionsList> patchOut = new Outlet<TransitionsList>();
 
@@ -132,6 +135,7 @@ namespace MapMagic.Nodes.MatrixGenerators
             yield return buildingOut;
             yield return richBuildingOut;
             yield return castleOut; yield return centerOut;
+            yield return singlecenterOut;
             yield return patchOut;
 
 
@@ -220,6 +224,7 @@ namespace MapMagic.Nodes.MatrixGenerators
                 { nameof(otherobjsOut), otherobjsOut.Id },
                 { nameof(castleOut), castleOut.Id },
                 { nameof(centerOut), centerOut.Id },
+                { nameof(singlecenterOut), singlecenterOut.Id },
                 { nameof(patchOut), patchOut.Id },
                 { nameof(roadEndOut), roadEndOut.Id },
                 { nameof(terminusOut), terminusOut.Id }
@@ -435,6 +440,8 @@ namespace MapMagic.Nodes.MatrixGenerators
             //}
 
 
+            
+
             foreach (var objectList in bundle.TransitionsListBundle)
             {
                 if (RoadOnly) continue;
@@ -458,20 +465,38 @@ namespace MapMagic.Nodes.MatrixGenerators
                     {
                         if (outlet.Id == matchingId)
                         {
-                            // Bodge the city size into the object
+                            // Bodge the city size into the object  // 0,0 is shared between the corner of 4 tiles. so expect at least 4
                             if (objectList.outletName ==  "centerOut")
 
                             {
-                                var hinum = (double) Mathf.Max((TownGlobalObjectService.PatchCap + 30), (TownGlobalObject.bundles[data.area.Coord].town.Options.Patches));
+                                var hinum = (double) Mathf.Max((TownGlobalObjectService.PatchCap + 10), (TownGlobalObject.bundles[data.area.Coord].town.Options.Patches));
                                 var magic = (float) (1/ (hinum / (double)TownGlobalObject.bundles[data.area.Coord].town.Options.Patches));
                               
                                 objectList.transitionsList.arr[0].scale = new Vector3(magic, magic, magic);
+
+                                        
+                                // Store the single case. for the absolute town center
+                                    if (data.area.Coord == TownGlobalObject.GetIndexAtCoord(data.area.Coord))
+                                {
+
+                                    var location = Outlets().Where(x => x.Id == singlecenterOut.Id).First();
+
+                                    objectList.transitionsList.arr = objectList.transitionsList.arr.Truncated(objectList.transitionsList.count);
+
+                                    data.StoreProduct(
+                                   location,
+                                    objectList.transitionsList);
+                                }
+
+
                             }
 
-                          //  foreach (var item in objectList.transitionsList.arr)
-                          //  {
-                          //      if (!data.area.active.Contains(item.pos)) continue;
-                         //   }
+                            objectList.transitionsList.arr.Truncated(objectList.transitionsList.count);
+
+                            //  foreach (var item in objectList.transitionsList.arr)
+                            //  {
+                            //      if (!data.area.active.Contains(item.pos)) continue;
+                            //   }
 
                             TransitionsList cleaner = new TransitionsList();
 
@@ -489,9 +514,12 @@ namespace MapMagic.Nodes.MatrixGenerators
                             //        }                            
                             //    }
 
-                            //skipping out-of-active area
 
-                            data.StoreProduct(outlet, objectList.transitionsList);
+                            
+
+                                data.StoreProduct(outlet, objectList.transitionsList);
+
+
 
                            // data.StoreProduct(outlet, cleaner);
 
