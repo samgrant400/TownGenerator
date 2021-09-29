@@ -10,7 +10,9 @@ Generated Town: (This is using not-included prefabs in a feature complete projec
 
 Sample Scene Demo: Included
 
-![WhiteBox](https://user-images.githubusercontent.com/915232/135153481-514c6c72-d6c4-435e-993e-ebd49b406133.png "Whitebox")
+![WhiteBox](https://user-images.githubusercontent.com/915232/135153481-514c6c72-d6c4-435e-993e-ebd49b406133.png "WhiteBox")
+
+![CloseUp](https://user-images.githubusercontent.com/915232/135194891-b0e9310b-6e7a-4f63-944c-b247a5faf57e.png "closeUp")
 
 Generator Options:
 
