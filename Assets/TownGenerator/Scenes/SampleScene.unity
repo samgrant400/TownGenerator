@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c503e08679b9d8d408f0a3e55874ae93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graph: {fileID: 11400000, guid: d16bf635ce90db74c94ae1fb28bad5d7, type: 2}
+  graph: {fileID: 11400000, guid: 4ec419d8aa269cf43a1dac6fab190fd3, type: 2}
   guiOpenObjectSelector: 0
   guiTiles: 1
   tiles:
@@ -198,7 +198,7 @@ MonoBehaviour:
     reflectionProbeUsage: 1
     editorRenderFlags: 7
     heightmapMaximumLOD: 0
-    material: {fileID: 1551779103}
+    material: {fileID: 962712878}
     detailDraw: 1
     detailDistance: 80
     detailDensity: 1
@@ -217,7 +217,7 @@ MonoBehaviour:
     copyLayersTags: 1
     copyComponents: 0
   globals:
-    height: 250
+    height: 300
     heightInterpolation: 0
     heightSplit: 129
     heightMainApply: 1
@@ -996,6 +996,37 @@ MonoBehaviour:
   RenderingMessage: {fileID: 724191436}
   DistrictMessage: {fileID: 923275849}
   SkimpFactor: 3
+--- !u!21 &962712878
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Nature/Terrain/Standard
+  m_Shader: {fileID: 10623, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TerrainHolesTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1011187235
 GameObject:
   m_ObjectHideFlags: 0
@@ -1099,37 +1130,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1551779103
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Nature/Terrain/Standard
-  m_Shader: {fileID: 10623, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _TerrainHolesTexture:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1622769422
 GameObject:
   m_ObjectHideFlags: 0
