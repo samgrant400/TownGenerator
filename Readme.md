@@ -1,6 +1,10 @@
 ## Medieval Town Generator ##
 
-Developed unity 2021.1 (2021 for [benoit-dumas/SplineMesh](https://github.com/benoit-dumas/SplineMesh) support)
+Requires Unity 2021.1 (2021 for [benoit-dumas/SplineMesh](https://github.com/benoit-dumas/SplineMesh) support)
+This version requires the free Assets Mapmagic2, SplinMesh to operate and the 'Objects' and the 'Splines' extensions for MapMagic2 which are not free.
+
+The Town Init service now creates multiple cities, spreads them based on a minimum distance and the CityLink tool provides automatic splines that link the locations.
+
 [zulfajuniadi/TownGenerator](https://github.com/zulfajuniadi/TownGenerator/) Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
 Then Twobob modified it to generate [MapMagic2](https://assetstore.unity.com/packages/tools/terrain/mapmagic-2-165180) objects, splines and other things like a floating mini-map area overlay from the Area Patches.   This also contains a version of [twobob/MapMagic2Scripts](https://github.com/twobob/MapMagic2Scripts/commit/e93d9ed3122215709945521cb473cc59809e7067)
 
