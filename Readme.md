@@ -1,4 +1,5 @@
-## Medieval Town Generator ##
+## Medieval Town(s) Generator ## 
+### (With MapMagic2, and Spline mesh implementation) ###
 
 Requires Unity 2021.1 (2021 for [benoit-dumas/SplineMesh](https://github.com/benoit-dumas/SplineMesh) support)
 This version requires the free Assets Mapmagic2, SplinMesh to operate and the 'Objects' and the 'Splines' extensions for MapMagic2 which are not free.
