@@ -20,6 +20,11 @@ public class TownTileRenderer
 {
     enum State {yes, noted, no};
 
+    private const string CamMapLayer = "Map";
+    private const string CamPlayerLayer = "NotMap";
+    private const string CamWorldLayer = "Default";
+
+
     // ******************* BUNDLE *************
     private AOTABundle bundle;
     private AOTABundle localitybundle;

@@ -23,9 +23,9 @@ public class TownInitService : MonoBehaviour
 
     [HideInInspector]
     public int MapSpread = 30;
-    public static int __totalCities = 10;
+    public static int __extraCities = 10;
 
-    public int totalCities = 10;
+    public int ExtraCities = 10;
 
     [HideInInspector]
     public bool AllowTileMerging = false;
@@ -46,7 +46,7 @@ public class TownInitService : MonoBehaviour
 
     void CreateCities
         (   int XzSpread, 
-            int totalCities,
+            int extraCities,
             string HomeTownName = "Hometon")
         {
 
@@ -54,10 +54,10 @@ public class TownInitService : MonoBehaviour
 
         int layerMask = 1 << LayerMask.NameToLayer("MAPGEN");
 
-        __totalCities = totalCities;
+        __extraCities = extraCities;
 
         // We service the town requests first
-        for (int i = 0; i < (totalCities + TownGlobalObjectService.TownRequests.Count); i++)
+        for (int i = 0; i < (extraCities + TownGlobalObjectService.TownRequests.Count); i++)
         {
             // The new Town
             Coord newlocality = new Coord();
@@ -620,9 +620,9 @@ public class TownInitService : MonoBehaviour
 
        // Debug.Log(TownGlobalObjectService.NamesQueue.Count);
 
-        ExpandXZsAfterTries = Mathf.Max(10, totalCities * 2);
-        TownInitValues.totalCities = totalCities;
-        MapSpread = (int)(totalCities * 0.5f);
+        ExpandXZsAfterTries = Mathf.Max(10, ExtraCities * 2);
+        TownInitValues.totalCities = ExtraCities;
+        MapSpread = (int)(ExtraCities * 0.5f);
         TownInitValues.XzSpread = MapSpread;
 
         TownGlobalObject.bundles = new Dictionary<Coord, AOTABundle>();

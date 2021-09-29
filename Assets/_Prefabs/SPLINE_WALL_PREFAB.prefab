@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8151465874668906555}
   - component: {fileID: 3646412870843729271}
   - component: {fileID: 8559493443769051348}
-  m_Layer: 2
+  m_Layer: 19
   m_Name: SPLINE_WALL_PREFAB
   m_TagString: Untagged
   m_Icon: {fileID: 0}

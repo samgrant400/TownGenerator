@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7794245848945119635}
   - component: {fileID: 7794245848945119628}
   - component: {fileID: 7794245848945119629}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 7794245849195041883}
   - component: {fileID: 357593986992604344}
   - component: {fileID: 5391749701247943073}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: POI
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4673968267716122706}
   - component: {fileID: 4673968267716122707}
   - component: {fileID: 4673968267716122704}
-  m_Layer: 2
+  m_Layer: 19
   m_Name: Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 4673968268939049193}
   - component: {fileID: 4673968268939049198}
   - component: {fileID: 4673968268939049199}
-  m_Layer: 2
+  m_Layer: 19
   m_Name: Door (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

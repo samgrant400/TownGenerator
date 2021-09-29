@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6082912207631053259}
   - component: {fileID: -4411655979989840230}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: SignpostWriter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

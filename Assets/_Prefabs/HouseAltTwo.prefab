@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7106103729496582286}
   - component: {fileID: 6351932302787376622}
   - component: {fileID: 8004430676142569140}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: KindaRoof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7398325140208184607}
   - component: {fileID: 5998775750479036172}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: HouseAltTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 3100088247423654412}
   - component: {fileID: 4378160295253683403}
   - component: {fileID: 8429913247823676748}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: KindaHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}

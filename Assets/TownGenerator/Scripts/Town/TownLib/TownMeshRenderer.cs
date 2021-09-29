@@ -25,6 +25,11 @@ namespace Town
         public GameObject Roads;
         public string name;
 
+        private const string CamMapLayer = "Map";
+        private const string CamPlayerLayer = "NotMap";
+        private const string CamWorldLayer = "Default";
+
+
         public TownMeshRenderer(Town town, TownOptions options, TownMeshRendererOptions rendererOptions)
         {
             this.town = town;
@@ -254,7 +259,7 @@ namespace Town
 
                     poly.Transform.localPosition = Vector3.zero;
 
-                  //  poly.GameObject.layer = LayerMask.NameToLayer("MapCamera");
+                    poly.GameObject.layer = LayerMask.NameToLayer(CamMapLayer);
 
                     vertices.Clear();
                 }
@@ -292,7 +297,7 @@ namespace Town
             List<Vector3> vertices = new List<Vector3>();
             var overlays = new GameObject("Overlays");
 
-          //  overlays.gameObject.layer = LayerMask.NameToLayer("MapCamera");
+            overlays.gameObject.layer = LayerMask.NameToLayer(CamMapLayer);
 
             overlays.transform.parent = child;
             overlays.transform.localPosition = new Vector3(0, 0, 0); // Vector3.zero;
@@ -386,7 +391,7 @@ namespace Town
 
                 }
                 poly = new MeshUtils.Polygon(patch.Area.GetType().ToString(), vertices, offset, mat, overlays.transform, false);
-               // poly.GameObject.layer = LayerMask.NameToLayer("MapCamera");
+                poly.GameObject.layer = LayerMask.NameToLayer(CamMapLayer);
                 poly.Transform.localPosition = Vector3.zero;
 
                 if (patch.IsCityCenter)

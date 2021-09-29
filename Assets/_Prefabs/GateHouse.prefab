@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9065355045877628979}
   - component: {fileID: 2375704046331712450}
   - component: {fileID: 3759368303576940131}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Door (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 1752929130300422272}
   - component: {fileID: 1752929130300422279}
   - component: {fileID: 1752929130300422278}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 1752929130843382657}
   - component: {fileID: 3850453920273661888}
   - component: {fileID: -711863728906080603}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: GateHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}

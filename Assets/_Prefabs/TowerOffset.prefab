@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1303877314494004131}
   - component: {fileID: -3465771051141201777}
-  m_Layer: 2
+  m_Layer: 19
   m_Name: TowerOffset
   m_TagString: Untagged
   m_Icon: {fileID: 0}

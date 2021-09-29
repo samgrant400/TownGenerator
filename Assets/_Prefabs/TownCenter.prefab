@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 122306681254268576}
   - component: {fileID: 122306681254268577}
   - component: {fileID: 122306681254268578}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: TownCenter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

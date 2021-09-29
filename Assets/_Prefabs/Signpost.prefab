@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2789526703854745831}
   - component: {fileID: 3840559187679493865}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: Signpost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 143277789006536971}
   - component: {fileID: 3425665223567715380}
   - component: {fileID: 3775168064575934448}
-  m_Layer: 0
+  m_Layer: 19
   m_Name: TMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
