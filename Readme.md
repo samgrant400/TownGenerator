@@ -15,7 +15,7 @@ Generated Town: (This is using not-included prefabs in a feature complete projec
 
 Sample Scene Demo: Included
 
-![WhiteBox](https://user-images.githubusercontent.com/915232/135153481-514c6c72-d6c4-435e-993e-ebd49b406133.png "WhiteBox")
+![WhiteBox](https://user-images.githubusercontent.com/915232/135237993-95d6f3f8-a562-44f2-875d-6952f13d373c.png "WhiteBox")
 
 ![CloseUp](https://user-images.githubusercontent.com/915232/135194891-b0e9310b-6e7a-4f63-944c-b247a5faf57e.png "closeUp")
 
