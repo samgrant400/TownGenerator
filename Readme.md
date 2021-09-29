@@ -1,8 +1,8 @@
 ## Medieval Town(s) Generator ## 
-### (With MapMagic2, and Spline mesh implementation) ###
+### (With MapMagic2, and SplineMesh implementation) ###
 
 Requires Unity 2021.1 (2021 for [benoit-dumas/SplineMesh](https://github.com/benoit-dumas/SplineMesh) support)
-This version requires the free Assets Mapmagic2, SplinMesh to operate and the 'Objects' and the 'Splines' extensions for MapMagic2 which are not free.
+This version requires the free Assets Mapmagic2, SplineMesh to operate and the 'Objects' and the 'Splines' extensions for MapMagic2 which are not free.
 
 The Town Init service now creates multiple cities, spreads them based on a minimum distance and the CityLink tool provides automatic splines that link the locations.
 
@@ -21,17 +21,12 @@ Sample Scene Demo: Included
 
 Generator Options:
 
-![Generator Options](https://user-images.githubusercontent.com/915232/135138373-058cc28c-75b2-461d-a48e-971fc0a27b9b.png  "Generator Options")
+Maximum and minimum spread of the town cell count
 
-Town Options:
+Overall world size mutliplier
 
-- Walls: Does the generated town have walls
-- Towers: Does the generated town have towers
-- Water: CURRENTLY NOT SUPPORTED
+The other values are required for operation and the SampleScene demonstrates complete population and provides prefabs.
 
-Renderer Options:
-
-- Root: The parent of the generated town.
 - Materials: Various materials for different parts of the map
 - Various other supporting objects
 
@@ -46,6 +41,7 @@ Todos:
 3. Make the generation multithreaded via jobs
 4. Support water
 7. Finish a complete a whitebox prefab demo example
+8. Rewrite SplineMesh as an Output
 
 ### License ###
 
