@@ -46,13 +46,18 @@ namespace Town
             //     .ThenByDescending (bt => bt.MinSize)
             //     .ToList ();
 
-            foreach (BuildingType value in values)
+            var rev = values;
+
+            Array.Reverse(rev);
+
+            foreach (BuildingType value in rev)
             {
                 var buildingType = typeof (BuildingType).GetField (value.ToString ()).GetCustomAttribute<BuildingStatsAttribute> ();
                 var numOfType = (int) Math.Ceiling (estimatedPopulation / (float) buildingType.Population);
                 for (var i = 0; i < numOfType; i++)
                 {
-                    while (_buildings.Count > 0)
+                    if (_buildings.Count > 0)
+                    //while (_buildings.Count > 0)
                     {
                         var building = new Building (buildingType.Description, _buildings[0]);
                         populated.Add (building);

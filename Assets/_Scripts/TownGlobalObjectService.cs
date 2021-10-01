@@ -69,10 +69,10 @@ public class TownGlobalObjectService : MonoBehaviour
     }
 
 
-    [Range(9, 100)]
+    [Range(9, 70)]
     public int MaxCitySpreadreq = 30;
 
-    [Range(8, 100)]
+    [Range(8, 69)]
     public int MinCitySpreadreq = 15;
 
     [Range(1, 30)]

@@ -159,7 +159,7 @@ MonoBehaviour:
   tiles:
     allowMove: 1
     generateInfinite: 1
-    generateRange: 1
+    generateRange: 2
     retainMargin: 1
     genAroundMainCam: 1
     genAroundObjsTag: 0
@@ -460,12 +460,12 @@ LightingSettings:
   m_PrefabAsset: {fileID: 0}
   m_Name: Settings.lighting
   serializedVersion: 3
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_EnableBakedLightmaps: 1
   m_EnableRealtimeLightmaps: 0
   m_RealtimeEnvironmentLighting: 1
   m_BounceScale: 1
-  m_AlbedoBoost: 1
+  m_AlbedoBoost: 7.76
   m_IndirectOutputScale: 1
   m_UsingShadowmask: 1
   m_BakeBackend: 1
@@ -712,7 +712,7 @@ Camera:
   far clip plane: 2000
   field of view: 60
   orthographic: 1
-  orthographic size: 500
+  orthographic size: 620
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -893,13 +893,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180bfe2f1d8937742b894f9e59c7dae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxCitySpreadreq: 36
-  MinCitySpreadreq: 16
+  MaxCitySpreadreq: 37
+  MinCitySpreadreq: 8
   worldMultiplier: 8
   options:
     Overlay: 0
-    Walls: 1
-    Towers: 1
+    Walls: 0
+    Towers: 0
     Farm: 0
     Water: 0
     Roads: 0
