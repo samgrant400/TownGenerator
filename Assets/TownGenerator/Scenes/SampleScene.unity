@@ -297,6 +297,7 @@ GameObject:
   - component: {fileID: 282840813}
   - component: {fileID: 282840811}
   - component: {fileID: 282840812}
+  - component: {fileID: 282840815}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -327,7 +328,7 @@ MonoBehaviour:
   lookSpeed: 5
   moveSpeed: 2
   rotationX: 0
-  rotationY: 0
+  rotationY: -90
   autofly: 0
 --- !u!20 &282840813
 Camera:
@@ -386,6 +387,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &282840815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282840810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36b1fb2977c47848baabf9dabf936c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FloorSpeed: 5
+  floorcode: 102
+  JumpDistance: 500
+  godscode: 103
 --- !u!1 &305305201
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +666,7 @@ GameObject:
   - component: {fileID: 771485474}
   - component: {fileID: 771485476}
   - component: {fileID: 771485475}
+  - component: {fileID: 771485477}
   m_Layer: 0
   m_Name: TownCamera
   m_TagString: Untagged
@@ -729,6 +747,22 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &771485477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771485473}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e36b1fb2977c47848baabf9dabf936c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FloorSpeed: 5
+  floorcode: 102
+  JumpDistance: 500
+  godscode: 103
 --- !u!1 &923275846
 GameObject:
   m_ObjectHideFlags: 0
