@@ -97,7 +97,7 @@ public class TownTilePreRender : MonoBehaviour
 
             // But the actual town should be stored at the "Locality"  
 
-            bundle = mrMaker.MakeATileBundleWithThisTown(data.area.Coord, false, false, locality);
+            bundle = mrMaker.MakeATileBundleWithThisTown(data.area.Coord, false, true, locality);
 
             // by here all our splineSys and transition lists should be filled.
 

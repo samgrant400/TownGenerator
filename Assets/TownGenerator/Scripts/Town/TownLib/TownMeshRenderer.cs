@@ -60,7 +60,7 @@ namespace Town
 
             skeletonOptions.IOC = false;
             skeletonOptions.Farm = false;
-            skeletonOptions.Roads = false;
+            skeletonOptions.Roads = true;
             skeletonOptions.Walls = false;
             skeletonOptions.CityDetail = false;
 
@@ -265,8 +265,10 @@ namespace Town
                 }
             }
 
-            if (options.Roads)
-            {
+            if (true)
+            { 
+            //if (options.Roads)
+            //{
 
               
 
@@ -407,9 +409,11 @@ namespace Town
         private void DrawRoads(TownGeometry geometry, StringBuilder sb)
         {
             Roads = new GameObject("Roads");
+            Roads.layer = LayerMask.NameToLayer("Map");
             Roads.transform.parent = child;
             Roads.transform.localPosition = Vector3.zero;
             Cube cube;
+           
             foreach (var road in geometry.Roads)
             {
                 Geom.Vector2 last = new Geom.Vector2(0, 0);
@@ -417,14 +421,21 @@ namespace Town
                 {
                     if (last.x != 0 && last.y != 0)
                     {
+                        float MovedlastX = ScaleToWorldWithOffset(last.x, town.townOffset.x);
+                        float MovedlastY = ScaleToWorldWithOffset(last.y, town.townOffset.y);
+
+                        float MovedcurrentX = ScaleToWorldWithOffset(current.x, town.townOffset.x);
+                        float MovedcurrentY = ScaleToWorldWithOffset(current.y, town.townOffset.y);
+
                         cube = new Cube("Road", GetLineVertices(
-                            last.x,
-                            current.x,
-                            last.y,
-                            current.y,
-                            2
-                        ), 0.2f, rendererOptions.RoadMaterial, Roads.transform);
-                        cube.Transform.localPosition = Vector3.zero;
+                            MovedlastX,
+                            MovedcurrentX,
+                            MovedlastY,
+                            MovedcurrentY,
+                            3
+                        ), .2f, rendererOptions.RoadMaterial, Roads.transform,false,true);
+                        cube.Transform.localPosition = new Vector3(0, 1000f, 0);
+                        cube.GameObject.layer = LayerMask.NameToLayer("Map");
                     }
                     last = current;
                 }

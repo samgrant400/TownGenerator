@@ -383,49 +383,57 @@ public class RunOnTileActionEvent : MonoBehaviour
                 continue;
             }
 
-          //  Transform child = null;
-                        
 
-                            // TODO make this an actual hash and shove it in a table
-                           // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-                          //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-                            string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", newValue.nodes[0].Position.x, newValue.nodes[0].Position.y, newValue.nodes[0].Position.z, newValue.nodes[newValue.nodes.Count-1].Position.x, newValue.nodes[newValue.nodes.Count - 1].Position.y, newValue.nodes[newValue.nodes.Count - 1].Position.z);
+            if ((newValue.nodes[1].Position - newValue.nodes[0].Position).sqrMagnitude == 0)
+            {
+                continue;
+            }
+
+            //  Transform child = null;
 
 
-                        // TODO replace this with a lookup  SOOOOON
-                       
+            // TODO make this an actual hash and shove it in a table
+            // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
+            //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
+            string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", newValue.nodes[0].Position.x, newValue.nodes[0].Position.y, newValue.nodes[0].Position.z, newValue.nodes[newValue.nodes.Count-1].Position.x, newValue.nodes[newValue.nodes.Count - 1].Position.y, newValue.nodes[newValue.nodes.Count - 1].Position.z);
 
-                        //foreach (Transform children in DynamicHolder.parent)
-                        //{
-                        //   // if(child.IsNull())
-                        //    child ??= children.Find(hash);
-                        //}
 
-                        //// we already rendered this  remove the gmeobject then and do it again.?
-                        //if (child !=null)
-                        //    {
-                        //        var code = child.GetComponent<SplineMesh.Spline>();
-                        //        bool wipeit = false;
-                        //        for (int nodeat = 0; nodeat < code.nodes.Count; nodeat++)
-                        //        {
+            // TODO replace this with a lookup  SOOOOON
 
-                        //            var thisnode = code.nodes[nodeat];
-                        //            if (thisnode.Position.y == 0)
-                        //            {
-                        //                wipeit = true;
-                        //            }
-                        //        }
 
-                        //        if (wipeit)
-                        //        {
-                        //            DestroyImmediate(child.gameObject);
-                        //        }
-                        //        else
-                        //        {
-                        //            continue;
-                        //        } 
+            //foreach (Transform children in DynamicHolder.parent)
+            //{
+            //   // if(child.IsNull())
+            //    child ??= children.Find(hash);
+            //}
 
-                        //    }
+            //// we already rendered this  remove the gmeobject then and do it again.?
+            //if (child !=null)
+            //    {
+            //        var code = child.GetComponent<SplineMesh.Spline>();
+            //        bool wipeit = false;
+            //        for (int nodeat = 0; nodeat < code.nodes.Count; nodeat++)
+            //        {
+
+            //            var thisnode = code.nodes[nodeat];
+            //            if (thisnode.Position.y == 0)
+            //            {
+            //                wipeit = true;
+            //            }
+            //        }
+
+            //        if (wipeit)
+            //        {
+            //            DestroyImmediate(child.gameObject);
+            //        }
+            //        else
+            //        {
+            //            continue;
+            //        } 
+
+            //    }
+
+
 
             var newSpline = ((objectRendered)newValue.chosenType) switch
             {

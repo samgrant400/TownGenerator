@@ -29,7 +29,7 @@ public class TownInitService : MonoBehaviour
     public int ExtraCities = 10;
 
     [HideInInspector]
-    public bool AllowTileMerging = false;
+    public bool AllowTileMerging = true;
 
     private int ExpandXZsAfterTries = 300;
 

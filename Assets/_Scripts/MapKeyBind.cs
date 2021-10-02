@@ -15,6 +15,8 @@ namespace Twobob.Mm2
         public KeyCode pluscode = KeyCode.KeypadPlus;
         private bool Lerping;
       
+
+
         
         float Movement = 100f;
 
@@ -28,7 +30,7 @@ namespace Twobob.Mm2
 
         Position currentPosition = Position.Wide;
 
-        enum Position   { Close, Mid, Wide }
+        enum Position   { Close, Mid, Wide, World1, World2, World3, }
         enum RequestType { Cam, Follow }
 
         /// <summary>
@@ -47,6 +49,9 @@ namespace Twobob.Mm2
                 Position.Close => new float[]{100f,300f }[(int)rank],
                 Position.Mid => new float[] { 300f, 500f }[(int)rank],
                 Position.Wide => new float[] { 620f, 1500f }[(int)rank],
+                Position.World1 => new float[] { 2000f, 2900f }[(int)rank],
+                Position.World2 => new float[] { 5000f, 2900f }[(int)rank],
+                Position.World3 => new float[] { 10000f, 2900f }[(int)rank],
                 _ => new float[] { 620f, 620f }[(int)rank],
             };
         }
@@ -58,11 +63,11 @@ namespace Twobob.Mm2
 
             if (currentPosition < 0)
             {
-                currentPosition = 0;
+                currentPosition = Position.Close;
             }
-            if (currentPosition > Position.Wide)
+            if (currentPosition > Position.World3)
             {
-                currentPosition = Position.Wide;
+                currentPosition = Position.World3;
             }
 
 

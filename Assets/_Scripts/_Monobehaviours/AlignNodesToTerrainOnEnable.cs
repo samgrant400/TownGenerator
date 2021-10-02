@@ -28,7 +28,7 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
             testArr.Add( 500f);
         }
 
-      
+        spline.enabled = false;
 
         int testcount = 0;
 
@@ -43,7 +43,7 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
            
         }
 
-        if (!spline.enabled)
+     //   if (!spline.enabled)
             spline.enabled = true;
 
 
