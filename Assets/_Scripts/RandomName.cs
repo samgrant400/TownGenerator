@@ -10,7 +10,7 @@ namespace Twobob
     {
 
         //List will contain the contents of the name files.
-        private List<String> fileContent = new List<String>();
+        private readonly List<String> fileContent = new List<String>();
 
         //Generates Male First Names...
         public string GenerateFirstNameMale()

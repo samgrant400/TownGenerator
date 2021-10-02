@@ -10,7 +10,7 @@ using System.Linq;
 
 // REF: https://dotnetfiddle.net/6P71ow
 
-[DefaultExecutionOrder(-501)]
+
 public class TownGlobalObjectService : MonoBehaviour
 {
 
@@ -24,7 +24,9 @@ public class TownGlobalObjectService : MonoBehaviour
     static int initCiySize = 9;
     static int secondCiySize = 30;
 
-    public static float WorldMultiplier = 1;  
+    public static float WorldMultiplier = 1;
+
+    public static TownGlobalObjectService StaticInstance;
 
     public static List<TownRequest> TownRequests = new List<TownRequest>() {
 
@@ -176,6 +178,7 @@ public class TownGlobalObjectService : MonoBehaviour
     // We Always do the checks.
     void Awake()
     {
+        StaticInstance = Instance;
         DoChecks();
     }
 
@@ -211,10 +214,10 @@ public class TownGlobalObjectService : MonoBehaviour
         initCiySize = MinCitySpreadreq;
         secondCiySize = MaxCitySpreadreq;
 
-        if (FindObjectOfType<MapMagic.Core.MapMagicObject>() == null)
-        {
-            return;
-        }
+        //if (FindObjectOfType<MapMagic.Core.MapMagicObject>() == null)
+        //{
+        //    return;
+        //}
 
         ProduceOverlay = options.Overlay;
         //  if (TownGlobalObject.bundles == null || TownGlobalObject.townsData == null)
@@ -356,7 +359,7 @@ public static class TownHolder
         {
             if (instance == null)
             {
-                instance = Component.FindObjectOfType<TownGlobalObjectService>();
+                instance = TownGlobalObjectService.StaticInstance;
                
             }
             return instance;

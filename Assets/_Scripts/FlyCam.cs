@@ -11,7 +11,8 @@ public class FlyCam : MonoBehaviour
 
 	public bool autofly = false;
 	private bool blockloops = false;
-	
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Unity")]
     void Update()
     {
         if (Input.GetMouseButton(0))
@@ -20,17 +21,18 @@ public class FlyCam : MonoBehaviour
             rotationY += Input.GetAxis("Mouse Y") * lookSpeed;
             rotationY = Mathf.Clamp(rotationY, -90.0f, 90.0f);
         }
-
-        transform.localRotation  = Quaternion.AngleAxis(rotationX, Vector3.up);
-        transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
-
-        transform.position += transform.forward * moveSpeed * Input.GetAxis("Vertical");
-        transform.position += transform.right * moveSpeed * Input.GetAxis("Horizontal");
-        transform.position += transform.up * 3 * moveSpeed * Input.GetAxis("Mouse ScrollWheel");
-   	
-	if (Input.GetMouseButton(1))
+        if (!Input.GetMouseButton(1))
         {
-			if (!blockloops)
+            transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
+            transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
+
+            transform.position += transform.forward * moveSpeed * Input.GetAxis("Vertical");
+            transform.position += transform.right * moveSpeed * Input.GetAxis("Horizontal");
+            transform.position += transform.up * 3 * moveSpeed * Input.GetAxis("Mouse ScrollWheel");
+        }
+        if (Input.GetMouseButton(1))
+        {
+            if (!blockloops)
 			{
 			autofly =! autofly;
 			}
