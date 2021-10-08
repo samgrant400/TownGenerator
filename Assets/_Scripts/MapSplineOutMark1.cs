@@ -384,9 +384,10 @@ namespace Twobob.Mm2
 
                 // Create splines holder 
 
-                var splineHolder = new GameObject();
-
-                splineHolder.name = "SPLINE_FOR_" + string.Format("Tile_{0},{1}", data_area_cood.x, data_area_cood.z);
+                var splineHolder = new GameObject
+                {
+                    name = "SPLINE_FOR_" + string.Format("Tile_{0},{1}", data_area_cood.x, data_area_cood.z)
+                };
 
 
                 splineHolder.transform.parent = DynamicHolder;
@@ -436,47 +437,7 @@ namespace Twobob.Mm2
 
 
 
-                        GameObject child = new GameObject();
-
-                        child.transform.parent = splineHolder.transform;
-
-                        SplineMesh.Spline splineScriptObj = child.GetComponent<SplineMesh.Spline>();
-                        //  if (splineScriptObj == null) splineScriptObj = splineHolder.transform.parent.GetComponentInChildren<SplineMesh.Spline>();
-                        if (splineScriptObj == null) splineScriptObj = child.gameObject.AddComponent<SplineMesh.Spline>();
-
-
-
-                        //finding holder
-                        SplineMesh.ExampleSower splineObj = child.GetComponent<SplineMesh.ExampleSower>();
-                        //   if (splineObj == null) splineObj = terrain.transform.parent.GetComponentInChildren<SplineMesh.ExampleSower>();
-                        if (splineObj == null) splineObj = child.gameObject.AddComponent<SplineMesh.ExampleSower>();
-
-
-
-                        Transform reft;
-                        GameObject go;
-
-                        //or creating it
-                        if (splineObj == null)
-                        {
-                            // GameObject go;
-
-
-
-                            go = new GameObject();
-
-
-                        }
-                        else
-                        {
-                            go = child.gameObject;
-                            reft = child.gameObject.transform;
-                        }
-
-
-                        go.transform.parent = splineHolder.transform;
-
-
+                      
 
                         myarray = new List<SplineNode>();
                         SplineNode refnode = new SplineNode(Vector3.positiveInfinity, Vector3.positiveInfinity);
@@ -529,9 +490,11 @@ namespace Twobob.Mm2
 
                         if (myarray.Count == 0)
                         {
+
+                            
                             continue;
                         }
-
+                        
 
                         if (myarray.Count == 1)
                         {
@@ -557,16 +520,64 @@ namespace Twobob.Mm2
 
                         if ((myarray[1].Position - myarray[0].Position).sqrMagnitude == 0)
                     {
-                        continue;
+                           
+                            continue;
                     }
 
-                    //  Transform child = null;
+                        //  Transform child = null;
 
 
-                    // TODO make this an actual hash and shove it in a table
-                    // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-                    //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-                    string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", myarray[0].Position.x, myarray[0].Position.y, myarray[0].Position.z, myarray[myarray.Count - 1].Position.x, myarray[myarray.Count - 1].Position.y, myarray[myarray.Count - 1].Position.z);
+
+
+                        GameObject child = new GameObject();
+
+                        child.transform.parent = splineHolder.transform;
+
+                        SplineMesh.Spline splineScriptObj = child.GetComponent<SplineMesh.Spline>();
+                        //  if (splineScriptObj == null) splineScriptObj = splineHolder.transform.parent.GetComponentInChildren<SplineMesh.Spline>();
+                        if (splineScriptObj == null) splineScriptObj = child.gameObject.AddComponent<SplineMesh.Spline>();
+
+
+
+                        //finding holder
+                        SplineMesh.ExampleSower splineObj = child.GetComponent<SplineMesh.ExampleSower>();
+                        //   if (splineObj == null) splineObj = terrain.transform.parent.GetComponentInChildren<SplineMesh.ExampleSower>();
+                        if (splineObj == null) splineObj = child.gameObject.AddComponent<SplineMesh.ExampleSower>();
+
+
+
+                        Transform reft;
+                        GameObject go;
+
+                        //or creating it
+                        if (splineObj == null)
+                        {
+                            // GameObject go;
+
+
+
+                            go = new GameObject();
+
+
+                        }
+                        else
+                        {
+                            go = child.gameObject;
+                            reft = child.gameObject.transform;
+                        }
+
+
+                        go.transform.parent = splineHolder.transform;
+
+
+
+
+
+
+                        // TODO make this an actual hash and shove it in a table
+                        // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
+                        //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
+                        string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", myarray[0].Position.x, myarray[0].Position.y, myarray[0].Position.z, myarray[myarray.Count - 1].Position.x, myarray[myarray.Count - 1].Position.y, myarray[myarray.Count - 1].Position.z);
 
 
 
