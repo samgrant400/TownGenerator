@@ -47,7 +47,7 @@ namespace Twobob.Mm2
                 data.MarkFinalize(Finalize, stop);
             }
             else
-                data.RemoveFinalize(finalizeAction);
+                data.RemoveFinalize(Finalize);
 
 #if MM_DEBUG
 			Log.Add("HOLE generated (id:" + id + " draft:" + data.isDraft + ")");

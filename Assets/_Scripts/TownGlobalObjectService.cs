@@ -137,7 +137,7 @@ public class TownGlobalObjectService : MonoBehaviour
 
     public GameObject SplineMeshGatehouseMasterSpawner;
 
-
+    public Transform TownCamera;
 
 
     // this largely just handles the onscreen districts display

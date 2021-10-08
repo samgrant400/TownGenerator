@@ -29,7 +29,7 @@ namespace SplineMesh {
     [DisallowMultipleComponent]
     public class ExampleSower : MonoBehaviour {
         private GameObject generated;
-        private Spline spline = null;
+        public Spline spline = null;
         private bool toUpdate = true;
 
         public GameObject prefab = null;
@@ -45,6 +45,8 @@ namespace SplineMesh {
             generated = generatedTranform != null ? generatedTranform.gameObject : UOUtility.Create(generatedName, gameObject);
 
             spline = GetComponentInParent<Spline>();
+
+
             spline.NodeListChanged += (s, e) => {
                 toUpdate = true;
                 foreach (CubicBezierCurve curve in spline.GetCurves()) {

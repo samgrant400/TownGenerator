@@ -24,6 +24,20 @@ using System;
             return inst.Next() % 2 == 0;
         }
 
+    public static float Range01()
+    {
+        System.Random inst = _local;
+        if (inst == null)
+        {
+            byte[] buffer = new byte[4];
+            _global.GetBytes(buffer);
+            _local = inst = new System.Random(
+                BitConverter.ToInt32(buffer, 0));
+        }
+        return inst.Next(0, 1000000) * 0.000001f;
+    }
+
+
     public static int NextValidRandomPatchAmountFromTGOSRange()
     {
         return

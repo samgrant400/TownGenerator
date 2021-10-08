@@ -1,20 +1,48 @@
+using Den.Tools;
+using MapMagic.Core;
+using MapMagic.Terrains;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+
+
 public class AlignNodesToTerrainOnEnable : MonoBehaviour
 {
+    public static Coord CoordForTileFromVec3(Vector3 vec) { return new Coord((int)(vec.x * 0.001f), (int)(vec.y * 0.001f)); }
+
+    public Transform mapMagicTransform;
+
     public int attempts = 0;
     public float checkVal = 0.005f;
     private int MaxAttempts = 20;
     SplineMesh.Spline spline; 
     void OnEnable()
     {
-        spline = GetComponent<SplineMesh.Spline>();
-        TryToFloor();
+        RunIt();
         //  splineFormer.InvalidateMesh();
     }
+
+  //  TerrainTile tile;
+
+    public void RunIt()
+    {
+
+        spline = GetComponent<SplineMesh.Spline>();
+
+        //  tile = spline.gameObject.transform.parent.parent.GetComponent<TerrainTile>();
+
+        if (mapMagicTransform == null)
+
+        mapMagicTransform = Component.FindObjectOfType<MapMagicObject>().transform;
+
+
+        TryToFloor();
+
+
+    }
+
 
     private void TryToFloor()
     {
@@ -32,10 +60,64 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
 
         int testcount = 0;
 
+
+
+        int maxdepth = 5;
+
+        Vector3 totalOffsetFromRoot = Vector3.zero;
+
+        Transform newchild = transform.parent;
+
+        for (int depth = 0; depth < maxdepth; depth++)
+        {
+
+            totalOffsetFromRoot = totalOffsetFromRoot + newchild.position;
+
+            newchild = newchild.parent;
+            if (newchild == mapMagicTransform)
+            {
+                break;
+            }
+
+        }
+
+        totalOffsetFromRoot *= .5f;
+
+
+
+           Coord tilecoord = CoordForTileFromVec3(totalOffsetFromRoot);
+
+           var locality = TownGlobalObject.GetIndexAtCoord(tilecoord);
+
+         //  Vector3 townOffset = -(tilecoord.ToTileSizeVector3() - locality.ToTileSizeVector3());
+
+
+
+
         for (int i = 0; i < spline.nodes.Count; i++)
         {
             var node = spline.nodes[i];
-            testArr[i] = GetTerrainPos(node.Position.x, node.Position.z).y;
+
+           // Vector3 modulod = new Vector3((node.Position.x - (totalOffsetFromRoot.x * 0.5f)) % 1000, node.Position.y, (node.Position.z - (totalOffsetFromRoot.z * 0.5f)) % 1000);
+            Vector3 modulod = new Vector3((node.Position.x - (totalOffsetFromRoot.x )) % 1000, node.Position.y, (node.Position.z - (totalOffsetFromRoot.z )) % 1000);
+
+
+            Vector3 newpos = totalOffsetFromRoot + modulod;
+
+
+
+            //Vector2 testpos = new Vector2(
+            //  newpos.x,
+            //  newpos.z  );
+
+
+            Vector2 testpos = new Vector2(
+            node.Position.x + totalOffsetFromRoot.x,
+            node.Position.z + totalOffsetFromRoot.z);
+
+
+
+            testArr[i] = GetTerrainPos(testpos.x, testpos.y).y;
            
             node.Position = node.Direction = new Vector3(node.Position.x, testArr[i], node.Position.z);
             
@@ -111,6 +193,8 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
 
         Physics.Raycast(ray, out RaycastHit hit, 501f, mask);
 
+
+        Debug.DrawRay(origin, Vector3.down, Color.red, 15f, false);
 
         //  Debug.Log("Terrain location found at " + hit.point);
         return hit.point;

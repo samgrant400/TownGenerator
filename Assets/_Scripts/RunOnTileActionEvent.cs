@@ -152,7 +152,8 @@ public class RunOnTileActionEvent : MonoBehaviour
         for (int i = tile.transform.childCount - 1; i > 0; i--)
         {
 
-            if (tile.transform.GetChild(i).name.StartsWith("__SPLINE__"))
+            if (tile.transform.GetChild(i).name.StartsWith("__SPLINE__") ||
+             tile.transform.GetChild(i).name.StartsWith("SPLINE"))
                 DestroyImmediate(tile.transform.GetChild(i).gameObject);
 
         }

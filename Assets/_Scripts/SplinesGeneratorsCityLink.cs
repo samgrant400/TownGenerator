@@ -66,6 +66,11 @@ namespace MapMagic.Nodes.SplinesGenerators
 
                 foreach (var road in subtown.Value.Roads)
                 {
+                    if (road.Count < 1)
+                    {
+                        continue;
+                    }
+
                     Town.Geom.Vector2 offsettedroad = new Town.Geom.Vector2(
                         road[road.Count - 1].x * TownGlobalObjectService.WorldMultiplier + subtown.Value.townOffset.x,
                          road[road.Count - 1].y * TownGlobalObjectService.WorldMultiplier + subtown.Value.townOffset.y
