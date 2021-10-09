@@ -835,7 +835,12 @@ exit:
             if (geom.Gates.Contains(start))
             {
                 matched = State.yes;
-                replacedGates.Add(start);
+              
+                
+
+               replacedGates.Add(start);
+                
+
                 start = start + Town.Geom.Vector2.Scale(end - start, 0.3f);
                 wall.A = start;
                 geom.Gates.Add(start);
@@ -891,18 +896,18 @@ exit:
             }
 
 
+//            foreach (var replacedgate in replacedGates.Distinct())
+//            {
+//                passedwall.Gates.Remove(replacedgate);
 
-            //if (geom.Gates.Contains(end))
-            //{
-            //    replacedGates.Add(end);
-            //    end = end - Town.Geom.Vector2.Scale(end - start, 0.3f);
-            //    wall.B = end;
-            //    geom.Gates.Add(end);
-            //}
+
+////                geom.Gates.Remove(replacedgate);
+//            }
+
+
 
             // add a line here
 
-            //    Town.Geom.Vector2 WorldOffset = town.townOffset;
 
             Vector3 vecA = new Vector3(
                         ScaleAndShiftToWorldX(
@@ -917,13 +922,6 @@ exit:
                         ScaleAndShiftToWorldZ(
                             TownGlobalObjectService.WorldMultiplier, end, WorldOffset));
 
-            //    CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
-
-
-            // maybe this filter will work?
-
-
-          //  if (TwoVectorsToTileSpaceBothIsTruncated(ref vecA, ref vecB, newOffset))
 
                 lineList.Add(new Line(vecA, vecB));
             
@@ -940,11 +938,6 @@ exit:
 
             var towLoc = new Coord((int)towA, (int)towB);
 
-            //  towLoc.  ClampByRect(new CoordRect(new Coord((int)WorldOffset.x, (int)WorldOffset.y), new Coord(1000)));
-
-            // Vector3 testVecStart = new Vector3(towA. x, 250f, start.y);
-            //  Vector3 testVecEnd = new Vector3(end.x, 250f, end.y);
-
             if (newOffset.Contains(towLoc))
             {
                 if (! ( towA == 0 && towB ==0 ))
@@ -959,7 +952,6 @@ exit:
         {
             CastleWallEdges.lines = lineList.ToArray<Line>();
         }
-        // CastleWallEdges.lines = temp.ToArray<Line>();
 
         // ADD TO THE BUNDLE #############
 
@@ -977,40 +969,9 @@ exit:
 
         // ADDED TO THE BUNDLE #############
 
-        //   Debug.Log("Begin splineStreetSys with streets: " + splineStreetSys.lines.Length);
-        //   data.StoreProduct(castleWallEdgeSplineOut, CastleWallEdges);
-
-        //foreach (var replacedGate in replacedGates.Distinct())
-        //{
-        //    geom.Gates.Remove(replacedGate);
-        //}
-
-        //foreach (var tower in geom.Towers)
-        //{
-        //    // Do objects.
-
-        //    //    cube = new Cube("Tower", GetVertices(4, 4, tower.x - 2, tower.y - 2), 0.1f, rendererOptions.TowerMaterial, Walls.transform);
-        //    //    cube.Transform.localPosition = Vector3.zero;
-        //    //    cube = new Cube("TowerMesh", GetVertices(4, 4, tower.x - 2, tower.y - 2), 8, rendererOptions.TowerMaterial, WallsMesh.transform, false);
-        //    //    cube.Transform.localPosition = Vector3.zero;
-        //    //}
-
-        //}
-        //foreach (var gate in geom.Gates)
-        //{
-        //    // Do objects.
-
-        //    //cube = new Cube("Gate", GetVertices(4, 4, gate.x - 2, gate.y - 2), 0.1f, rendererOptions.GateMaterial, Walls.transform);
-        //    //cube.Transform.localPosition = Vector3.zero;
-        //    //cube = new Cube("GateMesh", GetVertices(4, 4, gate.x - 2, gate.y - 2), 6, rendererOptions.GateMaterial, WallsMesh.transform, false);
-        //    //cube.Transform.localPosition = Vector3.zero;
-        //}
-
-
         // NOW DO TOWN WALL
 
         SplineSys TownWallEdges = new SplineSys();
-
 
         // Also do the gatehouses
 
@@ -1020,21 +981,6 @@ exit:
         // List<Line> 
         // reset temp
         lineList = new List<Line>();
-
-        // var replacedGates = new List<Town.Geom.Vector2>();
-
-        // TransitionsList towerLocOut = new TransitionsList();
-
-        //foreach (var section in wall.Towers)
-        //{
-
-        //// you could just assume the tower sit on the edge. and connect them [n]->[n+1]
-
-        //}
-
-
-      // passedwall.Gates
-
       
 
         IEnumerable<Town.Geom.Edge> edges = passedwall.GetEdges();
@@ -1047,8 +993,6 @@ exit:
            
             var start = edge.A;
             var end = edge.B;
-
-          
 
             // determine what is a gate and add it.
             // great place to determine node pairing for gatehouse splines...
@@ -1092,7 +1036,7 @@ exit:
                     {
                         continue;
                     }
-                    if ( Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count-1] - test) < 40000    )
+                    if ( Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count-1] - test) < 990000    )
                     {
 
                         gatehouseLines.Add(new Line(gatehouseNodes[gatehouseNodes.Count - 1], test));
@@ -1114,23 +1058,6 @@ exit:
                
             }
 
-
-
-            //if (loops ==0)
-            //{
-            //    replacedGates.Add(start);
-            //    start += Town.Geom.Vector2.Scale(end - start, 0.3f);
-            //    edge.A = start;
-            //    geom.Gates.Add(start);
-            //}
-
-            //if (loops == edges.Count()-1)
-            //{
-            //    replacedGates.Add(end);
-            //    end -= Town.Geom.Vector2.Scale(end - start, 0.3f);
-            //    edge.B = end;
-            //    geom.Gates.Add(end);
-            //}
 
             // add a line here
 
@@ -1170,21 +1097,6 @@ exit:
                     );
 
 
-
-
-            //foreach (var gate in geom.Gates)
-            //{
-            //    // Do objects.
-
-            //    //cube = new Cube("Gate", GetVertices(4, 4, gate.x - 2, gate.y - 2), 0.1f, rendererOptions.GateMaterial, Walls.transform);
-            //    //cube.Transform.localPosition = Vector3.zero;
-            //    //cube = new Cube("GateMesh", GetVertices(4, 4, gate.x - 2, gate.y - 2), 6, rendererOptions.GateMaterial, WallsMesh.transform, false);
-            //    //cube.Transform.localPosition = Vector3.zero;
-            //}
-
-
-
-
             loops += 1;
 
         }
@@ -1193,10 +1105,6 @@ exit:
         {
             TownWallEdges.lines = lineList.ToArray<Line>();
         }
-        // CastleWallEdges.lines = temp.ToArray<Line>();
-
-        //   Debug.Log("Begin splineStreetSys with streets: " + splineStreetSys.lines.Length);
-        //data.StoreProduct(castleWallEdgeSplineOut, CastleWallEdges);
 
         TownWallEdges.Clamp(tileLocation, tileSize);
 

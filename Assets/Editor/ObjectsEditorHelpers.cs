@@ -23,7 +23,7 @@ namespace Twobob.Mm2
 	{
 		public static void DrawObjectPrefabs (ref GameObject[] prefabs, bool multiPrefab=true, bool treeIcon=false)
 		{
-			string iconName = treeIcon ?  "DPUI/Icons/TreeDisabled" : "DPUI/Icons/ObjectDisabled";
+			string iconName = !treeIcon ?  "DPUI/Icons/TreeDisabled" : "DPUI/Icons/ObjectDisabled";
 
 			if (multiPrefab)
 				using (Cell.LineStd) 
@@ -63,55 +63,98 @@ namespace Twobob.Mm2
 
 		public static void DrawPositioningSettings (PositioningSettings posSettings, bool billboardRotWaring=false, bool showRelativeHeight=true)
 		{
-			//height
-			Cell.EmptyLinePx(1);
-			using (Cell.LinePx(0))
-				using (new Draw.FoldoutGroup(ref posSettings.guiHeight, "Height"))
-					if (posSettings.guiHeight)
-					{
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.objHeight, "Object Height");
-//						if (showRelativeHeight)
-							using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.relativeHeight, "Relative Height");
-					}
+          //  height
 
-			//rotation
-			Cell.EmptyLinePx(1);
-			using (Cell.LinePx(0))
-				using (new Draw.FoldoutGroup(ref posSettings.guiRotation, "Rotation"))
-					if (posSettings.guiRotation)
-					{
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useRotation, "Use Rotation");
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.takeTerrainNormal, "Terrain Normal");
-						using (Cell.LineStd) 
-						{
-							Cell.current.disabled = posSettings.takeTerrainNormal;
-							Draw.ToggleLeft(ref posSettings.rotateYonly, "Rotate Y Only"); //
-						}
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabRotation, "Use Prefab Rot.");
+            //            Cell.EmptyLinePx(1);
+            //using (Cell.LinePx(0))
+            //using (new Draw.FoldoutGroup(ref posSettings.guiHeight, "Height"))
+            //    if (posSettings.guiHeight)
+            //    {
+            //        using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.objHeight, "Object Height");
+            //        //						if (showRelativeHeight)
+            //        using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.relativeHeight, "Relative Height");
+            //    }
 
-						if (billboardRotWaring)
-						{
-							using (Cell.LinePx(40)) 
-								Draw.Helpbox("Note that Unity billboard trees could not be rotated");
-							Cell.EmptyLinePx(2);
-						}
-					}
+            //rotation
+            Cell.EmptyLinePx(1);
+            using (Cell.LinePx(0))
+            using (new Draw.FoldoutGroup(ref posSettings.guiRotation, "Rotation"))
+                if (posSettings.guiRotation)
+                {
+                    using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.isRandomYaw, "Random Yaw?");
 
-			//scale
-			Cell.EmptyLinePx(1);
+                    //using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useRotation, "Use Rotation");
+                    //using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.takeTerrainNormal, "Terrain Normal");
+                    //using (Cell.LineStd)
+                    //{
+                    //    Cell.current.disabled = posSettings.takeTerrainNormal;
+                    //    Draw.ToggleLeft(ref posSettings.rotateYonly, "Rotate Y Only"); //
+                    //}
+                   // using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabRotation, "Use Prefab Rot.");
+
+                    if (billboardRotWaring)
+                    {
+                        using (Cell.LinePx(40))
+                            Draw.Helpbox("Note that Unity billboard trees could not be rotated");
+                        Cell.EmptyLinePx(2);
+                    }
+                }
+
+
+            Cell.EmptyLinePx(1);
+            using (Cell.LinePx(0))
+            using (new Draw.FoldoutGroup(ref posSettings.guiPosition, "Mesh Options"))
+                if (posSettings.guiPosition)
+                {
+                    //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useScale, "Use Scale");
+                    //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.scaleYonly, "Scale Y Only");
+                    //using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabScale, "Use Prefab Scale");
+
+
+                    using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.spacingFromScale, "Spacing from Scale");
+
+                        using (Cell.LineStd)
+                        {
+                            Cell.current.disabled = posSettings.spacingFromScale;
+                           Draw.Field(ref posSettings.spacing, "Spacing");
+                         }
+
+
+                    using (Cell.LineStd) Draw.Field(ref posSettings.spacingRange, "Spacing Range");
+
+                    using (Cell.LineStd) Draw.Field(ref posSettings.offset, "Start Offset");                
+
+                    using (Cell.LineStd) Draw.Field(ref posSettings.offsetRange, "Offset Range");
+                    
+                    //using (Cell.LineStd) 
+                    //{
+                    //	Cell.EmptyRowPx(18);
+                    //	using (Cell.Row) Draw.Label("Scale");  
+                    //}
+                }
+
+
+
+            //scale
+            Cell.EmptyLinePx(1);
 			using (Cell.LinePx(0))
 				using (new Draw.FoldoutGroup(ref posSettings.guiScale, "Scale"))
 					if (posSettings.guiScale)
 					{
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useScale, "Use Scale");
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.scaleYonly, "Scale Y Only");
-						using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabScale, "Use Prefab Scale");
-						//using (Cell.LineStd) 
-						//{
-						//	Cell.EmptyRowPx(18);
-						//	using (Cell.Row) Draw.Label("Scale");  
-						//}
-					}
+                    //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useScale, "Use Scale");
+                    //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.scaleYonly, "Scale Y Only");
+                    //using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabScale, "Use Prefab Scale");
+
+                    using (Cell.LineStd) Draw.Field(ref posSettings.scale, "Mesh Scale");
+
+                    using (Cell.LineStd) Draw.Field(ref posSettings.scaleRange, "Scale Range");
+
+                    //using (Cell.LineStd) 
+                    //{
+                    //	Cell.EmptyRowPx(18);
+                    //	using (Cell.Row) Draw.Label("Scale");  
+                    //}
+                }
 		}
 	}
 }

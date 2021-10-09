@@ -17,7 +17,7 @@ namespace Twobob.Mm2
     [Serializable]
     [GeneratorMenu(
         menu = "Spline",
-        name = "Shunt",
+        name = "SplineMesh",
         section = 2,
         colorType = typeof(SplineSys),
         helpLink = "https://gitlab.com/denispahunov/mapmagic/wikis/output_generators/Spline")]
@@ -70,10 +70,21 @@ namespace Twobob.Mm2
 
         public static PositioningSettings CreatePosSettings(MapSplineOutMark1 output)
         {
-            PositioningSettings ps = new PositioningSettings();
-            ps.objHeight = output.objHeight; ps.relativeHeight = output.relativeHeight; ps.guiHeight = output.guiHeight;
-            ps.useRotation = output.useRotation; ps.takeTerrainNormal = output.takeTerrainNormal; ps.rotateYonly = output.rotateYonly; ps.regardPrefabRotation = output.regardPrefabRotation; ps.guiRotation = output.guiRotation;
-            ps.useScale = output.useScale; ps.scaleYonly = output.scaleYonly; ps.regardPrefabScale = output.regardPrefabScale; ps.guiScale = output.guiScale;
+            PositioningSettings ps = new PositioningSettings
+            {
+                objHeight = output.objHeight,
+                relativeHeight = output.relativeHeight,
+                guiHeight = output.guiHeight,
+                useRotation = output.useRotation,
+                takeTerrainNormal = output.takeTerrainNormal,
+                rotateYonly = output.rotateYonly,
+                regardPrefabRotation = output.regardPrefabRotation,
+                guiRotation = output.guiRotation,
+                useScale = output.useScale,
+                scaleYonly = output.scaleYonly,
+                regardPrefabScale = output.regardPrefabScale,
+                guiScale = output.guiScale
+            };
             return ps;
         }
 
@@ -94,8 +105,8 @@ namespace Twobob.Mm2
                     prototypes.Add(new ObjectsPool.Prototype()
                     {
                         prefab = prefabs[p],
-                        allowReposition = allowReposition,
-                        instantiateClones = instantiateClones,
+                        allowReposition = false,
+                        instantiateClones = false,
                         regardPrefabRotation = posSettings.regardPrefabRotation,
                         regardPrefabScale = posSettings.regardPrefabScale
                     });
@@ -106,7 +117,6 @@ namespace Twobob.Mm2
         public override void Generate(TileData data, StopToken stop)
         {
 
-
             //loading source
             if (stop != null && stop.stop) return;
             SplineSys src = data.ReadInletProduct(this);
@@ -114,16 +124,10 @@ namespace Twobob.Mm2
 
             SplineSys copy = new SplineSys(src);
 
-           // copy.Optimize(.5f);
-
-         //  copy.UpdateLength();
-
             if (copy.lines.Length == 0)
                 return;
 
             var locality = TownGlobalObject.GetIndexAtCoord(data.area.Coord);
-
-            //     Vector3 townOffset = -(data.area.Coord.ToTileSizeVector3() - locality.ToTileSizeVector3());
 
             copy.Clamp((Vector3)data.area.active.worldPos, (Vector3)data.area.active.worldSize);
 
@@ -137,17 +141,12 @@ namespace Twobob.Mm2
                     var end = copy.lines[i].segments[j].end;
 
 
-
                  start.pos -=(Vector3)data.area.active.worldPos;
-
 
                  end.pos -= (Vector3)data.area.active.worldPos;
 
                 }
             }
-
-
-         
 
             //adding to finalize
             if (enabled && copy.NodesCount > 0 ) 
@@ -160,6 +159,14 @@ namespace Twobob.Mm2
         }
 
         public static FinalizeAction finalizeAction = Finalize; //class identified for FinalizeData
+
+
+        /*
+         * 
+         * What follows is an optional "wait on height finalized" workflow
+         * currently not used
+         */
+
 
 //#if UNITY_EDITOR
 //        [UnityEditor.InitializeOnLoadMethod]
@@ -199,11 +206,13 @@ namespace Twobob.Mm2
 
                 if (!objs.ContainsKey(ran)) objs.Add(ran, new List<Transition>());
 
+
+
+                // Whats follows is a possible long hand per-object prefab -> prototypes link.
+                // Currently not used.
+
                 //foreach (ObjectsPool.Prototype prot in prototypes)
                 //{
-
-                   
-
 
                 //  //  if (!objs.ContainsKey(prot)) objs.Add(prototypes[(int)(RandomGen.Range01() * prototypes.Count)], new List<Transition>());
 
@@ -268,13 +277,34 @@ namespace Twobob.Mm2
                 foreach ((MapSplineOutMark1 output, SplineSys product, MatrixWorld biomeMask)
                        in data.Outputs<MapSplineOutMark1, SplineSys, MatrixWorld>(typeof(MapSplineOutMark1), inSubs: true))
                 {
-                
+
                 mergedSpline.Add(new SplineSysWithPrefab(product)
                 {
-                    chosenType = objs.Keys.ToArray()[mergedSpline.Count]
+                    chosenType = objs.Keys.ToArray()[mergedSpline.Count],
+
+                    spacingFromScale = output.posSettings.spacingFromScale,
+
+                    spacing = output.posSettings.spacing,
+
+                    spacingRange = output.posSettings.spacingRange,
+
+
+                    scale = output.posSettings.scale,
+
+                    scaleRange = output.posSettings.scaleRange,
+
+
+
+                    offset = output.posSettings.offset,
+
+                    offsetRange = output.posSettings.offsetRange,
+
+                    isRandomYaw = output.posSettings.isRandomYaw,
+
+
                 }
-                   
-                ) ;
+
+                );
                 
                 
               
@@ -320,9 +350,6 @@ namespace Twobob.Mm2
         }
 
 
-
-
-
         public class ApplyData : IApplyData // IApplyDataRoutine
         {
             public List<SplineSysWithPrefab> splines;
@@ -337,16 +364,14 @@ namespace Twobob.Mm2
             {
 
 
-                // OBJECTS
+                // unless there is no spline data
 
                 if (splines == null || splines.Count == 0 || splines[0].lines.Length == 0)
                 {
                     return;
                 }
 
-
-
-                // By this point this should absolutely exist - unless there is no spline data!
+                // By this point this should absolutely exist - 
                 int totalNumberOfListsOfSplineMeshSplines = splines.Count;
 
                 // There is nothing in the list
@@ -354,7 +379,6 @@ namespace Twobob.Mm2
                 {
                     return;
                 }
-
 
                 List<GameObject> thingsToActivate = new List<GameObject>();
 
@@ -368,20 +392,6 @@ namespace Twobob.Mm2
 
                 var DynamicHolder = TownHolder.Instance.MapMagicObjectReference.transform.Find(string.Format("Tile {0},{1}", data_area_cood.x, data_area_cood.z));
 
-
-
-
-
-                // For like the 4th time we check this  TODO: Make it part of the Town Instancing
-                TownGlobalObject.townsData[locality].TownGameObject ??= new GameObject(TownGlobalObject.townsData[locality].name);
-
-
-                //create or use the holder now it has the right name.
-                var towngo = TownGlobalObject.townsData[locality].TownGameObject;
-
-
-
-
                 // Create splines holder 
 
                 var splineHolder = new GameObject
@@ -392,29 +402,20 @@ namespace Twobob.Mm2
 
                 splineHolder.transform.parent = DynamicHolder;
 
-
-
                 splineHolder.transform.localPosition = new Vector3();
 
 
-
                 Coord tilecoord = splineHolder.transform.parent.GetComponent<TerrainTile>().coord;
-
-
 
 
                 // We walk over the nodes assuming pairs?
 
                 for (int i = 0; i < totalNumberOfListsOfSplineMeshSplines; i++)
                 {
-                    //SplineMesh.Spline();
-                  //  TypedSpline newValue = TownGlobalObject.GetSplineList(data_area_cood)[i];
 
                     SplineSys spline = splines[i];
 
-
                     var myarray = new List<SplineMesh.SplineNode>();
-
 
                     // No splines for us...
                     if (spline.NodesCount == 0)
@@ -422,23 +423,12 @@ namespace Twobob.Mm2
                         continue;
                     }
 
-
                     var global = new List<SplineNode>();
 
                     var positionalFactor = 1f;
 
-
-                 
-
-
                     foreach (var road in spline.lines.Reverse())
                     {
-
-
-
-
-                      
-
                         myarray = new List<SplineNode>();
                         SplineNode refnode = new SplineNode(Vector3.positiveInfinity, Vector3.positiveInfinity);
 
@@ -451,7 +441,7 @@ namespace Twobob.Mm2
                         {
                             Segment thissegment = road.segments.Where(x => x.GetHashCode() == current.GetHashCode()).First();
 
-                           
+
                             thissegment.start.pos -= DynamicHolder.transform.localPosition;
                             thissegment.end.pos -= DynamicHolder.transform.localPosition;
 
@@ -491,10 +481,10 @@ namespace Twobob.Mm2
                         if (myarray.Count == 0)
                         {
 
-                            
+
                             continue;
                         }
-                        
+
 
                         if (myarray.Count == 1)
                         {
@@ -519,15 +509,10 @@ namespace Twobob.Mm2
 
 
                         if ((myarray[1].Position - myarray[0].Position).sqrMagnitude == 0)
-                    {
-                           
+                        {
+
                             continue;
-                    }
-
-                        //  Transform child = null;
-
-
-
+                        }
 
                         GameObject child = new GameObject();
 
@@ -537,13 +522,10 @@ namespace Twobob.Mm2
                         //  if (splineScriptObj == null) splineScriptObj = splineHolder.transform.parent.GetComponentInChildren<SplineMesh.Spline>();
                         if (splineScriptObj == null) splineScriptObj = child.gameObject.AddComponent<SplineMesh.Spline>();
 
-
-
                         //finding holder
                         SplineMesh.ExampleSower splineObj = child.GetComponent<SplineMesh.ExampleSower>();
                         //   if (splineObj == null) splineObj = terrain.transform.parent.GetComponentInChildren<SplineMesh.ExampleSower>();
                         if (splineObj == null) splineObj = child.gameObject.AddComponent<SplineMesh.ExampleSower>();
-
 
 
                         Transform reft;
@@ -552,12 +534,7 @@ namespace Twobob.Mm2
                         //or creating it
                         if (splineObj == null)
                         {
-                            // GameObject go;
-
-
-
                             go = new GameObject();
-
 
                         }
                         else
@@ -570,63 +547,46 @@ namespace Twobob.Mm2
                         go.transform.parent = splineHolder.transform;
 
 
-
-
-
-
                         // TODO make this an actual hash and shove it in a table
                         // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
                         //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
                         string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", myarray[0].Position.x, myarray[0].Position.y, myarray[0].Position.z, myarray[myarray.Count - 1].Position.x, myarray[myarray.Count - 1].Position.y, myarray[myarray.Count - 1].Position.z);
 
-
-
                         var newSpline = go;
 
 
+                        newSpline.name = hash + splines[i].chosenType.prefab.name;
 
-
-                     newSpline.name = hash + splines[i].chosenType.prefab.name;
-
-                     splineScriptObj.nodes = myarray;
-
-
-                    
+                        splineScriptObj.nodes = myarray;
 
                         newSpline.transform.localPosition = new Vector3();
 
 
                         splineObj.prefab = splines[i].chosenType.prefab;
-                        splineObj.scale = 10;
-                        splineObj.spacing = 10;
 
+                        splineObj.isRandomYaw = splines[i].isRandomYaw;
 
+                        splineObj.spacing = (splines[i].spacingFromScale) ? splineObj.scale : splines[i].spacing;
 
+                        splineObj.spacingRange = splines[i].spacingRange;
+                        splineObj.offset = splines[i].offset;
+                        splineObj.offsetRange = splines[i].offsetRange;
 
+                        splineObj.scale = splines[i].scale;
+                        splineObj.scaleRange = splines[i].scaleRange;
 
                         splineObj.spline.nodes = myarray.ToList();
                         splineScriptObj.nodes = myarray.ToList();
 
-
-                        
                         splineScriptObj.RefreshCurves();
 
                         var scrp = newSpline.AddComponent<AlignNodesToTerrainOnEnable>();
                         splineObj.Sow();
 
                         scrp.RunIt();
-
                     }
-
-
                 }
-              
-
-           }
-
-
-       //     splineObj.splineSys = spline;
-          
+            }
 
             public static ApplyData Empty
             { get { return new ApplyData() { splines = null }; } }
@@ -655,39 +615,9 @@ namespace Twobob.Mm2
 
         public override void ClearApplied(TileData data, Terrain terrain)
         {
-            //var tile = terrain.gameObject.transform.parent;
-
-            //for (int i = tile.transform.childCount - 1; i > 0; i--)
-            //{
-
-            //    if (tile.transform.GetChild(i).name.StartsWith("__SPLINE__"))
-            //        DestroyImmediate(tile.transform.GetChild(i).gameObject);
-
-            //}
-
-            //if (TownGlobalObject.splinesNodesDataForTile.ContainsKey(tile.coord))
-            //{
-
-            //    if (!TownGlobalObject.splinesNodesDataForTile.TryRemove(tile.coord, out var ret))
-            //    { Debug.LogError("remove spline failed"); };
-
-            //}
+            // IS Now HANDLED IN RunOnTileActionEvent.cs OnTileMoved(TerrainTile tile)
 
 
-
-            //if (posSettings == null)
-            //    posSettings = CreatePosSettings(this);
-
-            //TerrainData terrainData = terrain.terrainData;
-            //Vector3 terrainSize = terrainData.size;
-
-            //ObjectsPool pool = terrain.transform.parent.GetComponent<TerrainTile>().objectsPool;
-            //List<ObjectsPool.Prototype> prototypes = GetPrototypes();
-            //pool.ClearPrototypes(prototypes.ToArray());
-     
-
-
-        
         }
 
 
