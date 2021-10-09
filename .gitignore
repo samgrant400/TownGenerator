@@ -35,3 +35,6 @@ sysinfo.txt
 
 # Builds
 *.apk
+
+Assets/TextMesh Pro*
+Assets/MapMagic*
