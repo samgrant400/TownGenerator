@@ -61,7 +61,7 @@ namespace Twobob.Mm2
 			Cell.EmptyLinePx(4);
 		}
 
-		public static void DrawPositioningSettings (PositioningSettings posSettings, bool billboardRotWaring=false, bool showRelativeHeight=true)
+		public static void DrawPositioningSettings (PositioningSettingsSpline posSettings, bool billboardRotWaring=false, bool showRelativeHeight=true)
 		{
           //  height
 

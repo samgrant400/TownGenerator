@@ -27,7 +27,7 @@ namespace Twobob.Mm2
      
         //common settings
         public GameObject[] prefabs = new GameObject[1];
-        public PositioningSettings posSettings = null; // new PositioningSettings(); //to load older output
+        public PositioningSettingsSpline posSettings = null; // new PositioningSettings(); //to load older output
         public BiomeBlend biomeBlend = BiomeBlend.Random;
 
         public OutputLevel outputLevel = OutputLevel.Main;
@@ -68,9 +68,9 @@ namespace Twobob.Mm2
 
 
 
-        public static PositioningSettings CreatePosSettings(MapSplineOutMark1 output)
+        public static PositioningSettingsSpline CreatePosSettings(MapSplineOutMark1 output)
         {
-            PositioningSettings ps = new PositioningSettings
+            PositioningSettingsSpline ps = new PositioningSettingsSpline
             {
                 objHeight = output.objHeight,
                 relativeHeight = output.relativeHeight,
@@ -273,11 +273,11 @@ namespace Twobob.Mm2
 
             List<SplineSysWithPrefab> mergedSpline = new List<SplineSysWithPrefab>();
 
-           
-                foreach ((MapSplineOutMark1 output, SplineSys product, MatrixWorld biomeMask)
-                       in data.Outputs<MapSplineOutMark1, SplineSys, MatrixWorld>(typeof(MapSplineOutMark1), inSubs: true))
-                {
 
+            foreach ((MapSplineOutMark1 output, SplineSys product, MatrixWorld biomeMask)
+                   in data.Outputs<MapSplineOutMark1, SplineSys, MatrixWorld>(typeof(MapSplineOutMark1), inSubs: true))
+            {
+                // We will use the position settings and jam it into the parseable output
                 mergedSpline.Add(new SplineSysWithPrefab(product)
                 {
                     chosenType = objs.Keys.ToArray()[mergedSpline.Count],
@@ -294,22 +294,13 @@ namespace Twobob.Mm2
                     scaleRange = output.posSettings.scaleRange,
 
 
-
                     offset = output.posSettings.offset,
 
                     offsetRange = output.posSettings.offsetRange,
 
                     isRandomYaw = output.posSettings.isRandomYaw,
-
-
-                }
-
-                );
-                
-                
-              
-                }
-
+                });
+            }
 
             //pushing to apply
             if (stop != null && stop.stop) return;
@@ -328,36 +319,18 @@ namespace Twobob.Mm2
         }
 
 
-
-        Vector3[] GetLineVertices(float startX, float endX, float startY, float endY, float thickness = 1f)
-        {
-            var p1 = new Vector3(startX, 0, startY);
-            var p2 = new Vector3(endX, 0, endY);
-            var dir = (p1 - p2).normalized;
-            var norm = Vector3.Cross(dir, Vector3.up);
-            var halfThickness = (norm * thickness) / 2;
-            var p3 = p2 + halfThickness;
-            var p4 = p1 + halfThickness + dir / 2;
-            p1 = p1 - halfThickness + dir / 2;
-            p2 = p2 - halfThickness;
-            return new Vector3[]
-            {
-                p1,
-                p2,
-                p3,
-                p4
-            };
-        }
-
-
         public class ApplyData : IApplyData // IApplyDataRoutine
         {
             public List<SplineSysWithPrefab> splines;
 
             public ObjectsPool.Prototype[] prototypes;
             public List<Transition>[] transitions;
+
+            //  TODO we could just use this to level the final objects rather than the horror-story ray casts. 
             //      public float terrainHeight; //to get relative object height (since all of the terrain data is 0-1). //TODO: maybe move it to HeightData in "Height in meters" task
-            //    public int objsPerIteration = 500;
+           
+            // TODO we could limit the perframe activities mid-spawn          
+           //    public int objsPerIteration = 500;
 
 
             public void Apply(Terrain terrain)
@@ -555,6 +528,8 @@ namespace Twobob.Mm2
                         var newSpline = go;
 
 
+                       // Extract the stuff we welded in the settings and reweld it to the output
+
                         newSpline.name = hash + splines[i].chosenType.prefab.name;
 
                         splineScriptObj.nodes = myarray;
@@ -595,10 +570,6 @@ namespace Twobob.Mm2
 
             public IEnumerator ApplyRoutine(Terrain terrain)
             {
-                //  ObjectsPool pool = terrain.transform.parent.GetComponent<TerrainTile>().objectsPool;
-
-                //  IEnumerator e = pool.RepositionRoutine(prototypes, transitions, objsPerIteration);
-                //   while (e.MoveNext()) { yield return null; }
                 yield return null;
 
                 Apply(terrain);
