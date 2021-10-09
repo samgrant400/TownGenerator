@@ -303,7 +303,7 @@ namespace Twobob.Mm2
 
                     spacingFromScale = output.posSettings.spacingFromScale,
 
-                    spacing = output.posSettings.spacing,
+                    spacing = (output.posSettings.spacingFromScale) ? output.posSettings.scale : output.posSettings.spacing,
 
                     spacingRange = output.posSettings.spacingRange,
 
@@ -560,7 +560,7 @@ namespace Twobob.Mm2
 
                         splineObj.isRandomYaw = splines[i].isRandomYaw;
 
-                        splineObj.spacing = (splines[i].spacingFromScale) ? splineObj.scale : splines[i].spacing;
+                        splineObj.spacing = splines[i].spacing;
 
                         splineObj.spacingRange = splines[i].spacingRange;
                         splineObj.offset = splines[i].offset;
