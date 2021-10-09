@@ -20,7 +20,7 @@ namespace Twobob.Mm2
 	/// Not in objects but in Nodes since it's used by Brush core
 	{
         //height
-        public int randomSeed = 0;
+      //  public int randomSeed = 0;
 
 
         public bool objHeight = true;
@@ -37,17 +37,21 @@ namespace Twobob.Mm2
 		public bool guiRotation;
 
 
-        public float offset = 0, offsetRange = 0;
+        public float offset;
+        public float offsetRange;
         
         public bool spacingFromScale = false;
-        public float spacing = 1f, spacingRange = 0;
-        public bool guiPosition;
+        public float spacing = 1f;
+        public float spacingRange;
+        public bool guiPositionSettings;
+       
 
         //scale
         public bool useScale = true;
 		public bool scaleYonly = false;
 		public bool regardPrefabScale = false;
-        public float scale = 1f, scaleRange = 0;
+        public float scale = 1f;
+        public float scaleRange;
         public bool guiScale;
         
 

@@ -44,14 +44,23 @@ namespace Twobob.Mm2
         public bool objHeight = true;
         public bool relativeHeight = true;
         public bool guiHeight;
+        public bool isRandomYaw = false;
         public bool useRotation = true;
         public bool takeTerrainNormal = false;
         public bool rotateYonly = false;
         public bool regardPrefabRotation = false;
         public bool guiRotation;
+        public float offset;
+        public float offsetRange;
+        public bool spacingFromScale = false;
+        public float spacing = 1f;
+        public float spacingRange;
+        public bool guiPositionSettings;
         public bool useScale = true;
         public bool scaleYonly = false;
         public bool regardPrefabScale = false;
+        public float scale = 1f;
+        public float scaleRange;
         public bool guiScale;
 
 
@@ -75,15 +84,25 @@ namespace Twobob.Mm2
                 objHeight = output.objHeight,
                 relativeHeight = output.relativeHeight,
                 guiHeight = output.guiHeight,
+                isRandomYaw = output.isRandomYaw,
                 useRotation = output.useRotation,
                 takeTerrainNormal = output.takeTerrainNormal,
                 rotateYonly = output.rotateYonly,
                 regardPrefabRotation = output.regardPrefabRotation,
                 guiRotation = output.guiRotation,
+                offset = output.offset,
+                offsetRange = output.offsetRange,
+                spacingFromScale = output.spacingFromScale,
+                spacing = output.spacing,
+                spacingRange = output.spacingRange,
+                guiPositionSettings = output.guiPositionSettings,
+                scale = output.scale,
+                scaleRange = output.scaleRange,
                 useScale = output.useScale,
                 scaleYonly = output.scaleYonly,
                 regardPrefabScale = output.regardPrefabScale,
                 guiScale = output.guiScale
+
             };
             return ps;
         }

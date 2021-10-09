@@ -103,8 +103,8 @@ namespace Twobob.Mm2
 
             Cell.EmptyLinePx(1);
             using (Cell.LinePx(0))
-            using (new Draw.FoldoutGroup(ref posSettings.guiPosition, "Mesh Options"))
-                if (posSettings.guiPosition)
+            using (new Draw.FoldoutGroup(ref posSettings.guiPositionSettings, "Mesh Options"))
+                if (posSettings.guiPositionSettings)
                 {
                     //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useScale, "Use Scale");
                     //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.scaleYonly, "Scale Y Only");
