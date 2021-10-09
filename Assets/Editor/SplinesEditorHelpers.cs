@@ -110,7 +110,7 @@ namespace Twobob.Mm2
                     //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.scaleYonly, "Scale Y Only");
                     //using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabScale, "Use Prefab Scale");
 
-
+                    using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.mergeSegments, "Segment Merge?");
                     using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.spacingFromScale, "Spacing from Scale");
 
                         using (Cell.LineStd)

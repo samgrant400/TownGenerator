@@ -961,11 +961,7 @@ exit:
         //public readonly Outlet<SplineSys> castleWallEdgeSplineOut = new Outlet<SplineSys>();
 
 
-        CastleWallEdges.Clamp(tileLocation, tileSize);
-
-        SplineSysBundle.Add(new SplineSysWrapper(
-                   nameof(CastleWallEdges), CastleWallEdges, "castleWallEdgeSplineOut"
-                   ));
+       
 
         // ADDED TO THE BUNDLE #############
 
@@ -1107,6 +1103,26 @@ exit:
         }
 
         TownWallEdges.Clamp(tileLocation, tileSize);
+
+
+        TownWallEdges.lines.Select(x => x );
+
+
+        CastleWallEdges.Clamp(tileLocation, tileSize);
+
+        SplineSys result = new SplineSys
+        {
+            lines = CastleWallEdges.lines.Reverse().Except(TownWallEdges.lines).ToArray()
+        };
+
+
+        // the abridged array
+        SplineSysBundle.Add(new SplineSysWrapper(
+                   nameof(CastleWallEdges), result, "castleWallEdgeSplineOut"
+                   ));
+
+
+
 
 
         SplineSysBundle.Add(new SplineSysWrapper(

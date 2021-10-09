@@ -39,7 +39,8 @@ namespace Twobob.Mm2
 
         public float offset;
         public float offsetRange;
-        
+
+        public bool mergeSegments = true;
         public bool spacingFromScale = false;
         public float spacing = 1f;
         public float spacingRange;

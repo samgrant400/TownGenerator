@@ -52,6 +52,7 @@ namespace Twobob.Mm2
         public bool guiRotation;
         public float offset;
         public float offsetRange;
+        public bool mergeSegments;
         public bool spacingFromScale = false;
         public float spacing = 1f;
         public float spacingRange;
@@ -92,6 +93,7 @@ namespace Twobob.Mm2
                 guiRotation = output.guiRotation,
                 offset = output.offset,
                 offsetRange = output.offsetRange,
+                mergeSegments = output.mergeSegments,
                 spacingFromScale = output.spacingFromScale,
                 spacing = output.spacing,
                 spacingRange = output.spacingRange,
@@ -296,10 +298,17 @@ namespace Twobob.Mm2
             foreach ((MapSplineOutMark1 output, SplineSys product, MatrixWorld biomeMask)
                    in data.Outputs<MapSplineOutMark1, SplineSys, MatrixWorld>(typeof(MapSplineOutMark1), inSubs: true))
             {
+
+
+
+
+
                 // We will use the position settings and jam it into the parseable output
                 mergedSpline.Add(new SplineSysWithPrefab(product)
                 {
                     chosenType = objs.Keys.ToArray()[mergedSpline.Count],
+
+                    mergeSegments = output.posSettings.mergeSegments,
 
                     spacingFromScale = output.posSettings.spacingFromScale,
 
@@ -312,13 +321,12 @@ namespace Twobob.Mm2
 
                     scaleRange = output.posSettings.scaleRange,
 
-
                     offset = output.posSettings.offset,
 
                     offsetRange = output.posSettings.offsetRange,
 
                     isRandomYaw = output.posSettings.isRandomYaw,
-                });
+                }) ;
             }
 
             //pushing to apply
@@ -419,23 +427,42 @@ namespace Twobob.Mm2
 
                     var positionalFactor = 1f;
 
+                    myarray = new List<SplineNode>();
+
+                    SplineNode refnode = new SplineNode(Vector3.positiveInfinity, Vector3.positiveInfinity);
+
+                    SplineNode startnode = refnode;
+                    SplineNode endnode = refnode;
+
+                    Segment lastSegment = new Segment();
+                    Segment thissegment = new Segment();
+
+                    lastSegment.end.pos = thissegment.start.pos = Vector3.positiveInfinity;
+
                     foreach (var road in spline.lines.Reverse())
                     {
-                        myarray = new List<SplineNode>();
-                        SplineNode refnode = new SplineNode(Vector3.positiveInfinity, Vector3.positiveInfinity);
 
-                        SplineNode startnode = refnode;
-                        SplineNode endnode = refnode;
-
-                        Segment lastSegment = new Segment();
+                        if(!splines[i].mergeSegments) myarray = new List<SplineNode>();
 
                         foreach (var current in road.segments)
                         {
-                            Segment thissegment = road.segments.Where(x => x.GetHashCode() == current.GetHashCode()).First();
+                            // We need to check if the last segments end connects to the next segments start or RenderOutSplinesSoFar;
+
+                            thissegment = road.segments.Where(x => x.GetHashCode() == current.GetHashCode()).First();
 
 
                             thissegment.start.pos -= DynamicHolder.transform.localPosition;
                             thissegment.end.pos -= DynamicHolder.transform.localPosition;
+
+                            if (splines[i].mergeSegments)
+                            {
+                                //  Render out the segments if they are far apart (square root of 200) - have some data get parsed - and have been selected for merging
+                                if (Vector3.SqrMagnitude(lastSegment.end.pos - thissegment.start.pos) > 200f && myarray.Count > 1)
+                                {
+                                    RenderOutSplinesSoFar(splineHolder, i, myarray);
+                                    myarray = new List<SplineNode>();
+                                }
+                            }
 
 
                             lastSegment = thissegment;
@@ -506,80 +533,92 @@ namespace Twobob.Mm2
                             continue;
                         }
 
-                        GameObject child = new GameObject();
 
-                        child.transform.parent = splineHolder.transform;
+                        // Render out as just segment node pairs
+                      if(!splines[i].mergeSegments)  RenderOutSplinesSoFar(splineHolder, i, myarray);
 
-                        SplineMesh.Spline splineScriptObj = child.GetComponent<SplineMesh.Spline>();
-                        //  if (splineScriptObj == null) splineScriptObj = splineHolder.transform.parent.GetComponentInChildren<SplineMesh.Spline>();
-                        if (splineScriptObj == null) splineScriptObj = child.gameObject.AddComponent<SplineMesh.Spline>();
-
-                        //finding holder
-                        SplineMesh.ExampleSower splineObj = child.GetComponent<SplineMesh.ExampleSower>();
-                        //   if (splineObj == null) splineObj = terrain.transform.parent.GetComponentInChildren<SplineMesh.ExampleSower>();
-                        if (splineObj == null) splineObj = child.gameObject.AddComponent<SplineMesh.ExampleSower>();
-
-
-                        Transform reft;
-                        GameObject go;
-
-                        //or creating it
-                        if (splineObj == null)
-                        {
-                            go = new GameObject();
-
-                        }
-                        else
-                        {
-                            go = child.gameObject;
-                            reft = child.gameObject.transform;
-                        }
-
-
-                        go.transform.parent = splineHolder.transform;
-
-
-                        // TODO make this an actual hash and shove it in a table
-                        // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-                        //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-                        string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", myarray[0].Position.x, myarray[0].Position.y, myarray[0].Position.z, myarray[myarray.Count - 1].Position.x, myarray[myarray.Count - 1].Position.y, myarray[myarray.Count - 1].Position.z);
-
-                        var newSpline = go;
-
-
-                       // Extract the stuff we welded in the settings and reweld it to the output
-
-                        newSpline.name = hash + splines[i].chosenType.prefab.name;
-
-                        splineScriptObj.nodes = myarray;
-
-                        newSpline.transform.localPosition = new Vector3();
-
-
-                        splineObj.prefab = splines[i].chosenType.prefab;
-
-                        splineObj.isRandomYaw = splines[i].isRandomYaw;
-
-                        splineObj.spacing = splines[i].spacing;
-
-                        splineObj.spacingRange = splines[i].spacingRange;
-                        splineObj.offset = splines[i].offset;
-                        splineObj.offsetRange = splines[i].offsetRange;
-
-                        splineObj.scale = splines[i].scale;
-                        splineObj.scaleRange = splines[i].scaleRange;
-
-                        splineObj.spline.nodes = myarray.ToList();
-                        splineScriptObj.nodes = myarray.ToList();
-
-                        splineScriptObj.RefreshCurves();
-
-                        var scrp = newSpline.AddComponent<AlignNodesToTerrainOnEnable>();
-                        splineObj.Sow();
-
-                        scrp.RunIt();
                     }
+
+                    // Attempt to merge near pairs
+                    if (splines[i].mergeSegments) RenderOutSplinesSoFar(splineHolder, i, myarray);
+
                 }
+            }
+
+            private void RenderOutSplinesSoFar(GameObject splineHolder, int i, List<SplineNode> myarray)
+            {
+                GameObject child = new GameObject();
+
+                child.transform.parent = splineHolder.transform;
+
+                SplineMesh.Spline splineScriptObj = child.GetComponent<SplineMesh.Spline>();
+                //  if (splineScriptObj == null) splineScriptObj = splineHolder.transform.parent.GetComponentInChildren<SplineMesh.Spline>();
+                if (splineScriptObj == null) splineScriptObj = child.gameObject.AddComponent<SplineMesh.Spline>();
+
+                //finding holder
+                SplineMesh.ExampleSower splineObj = child.GetComponent<SplineMesh.ExampleSower>();
+                //   if (splineObj == null) splineObj = terrain.transform.parent.GetComponentInChildren<SplineMesh.ExampleSower>();
+                if (splineObj == null) splineObj = child.gameObject.AddComponent<SplineMesh.ExampleSower>();
+
+
+                Transform reft;
+                GameObject go;
+
+                //or creating it
+                if (splineObj == null)
+                {
+                    go = new GameObject();
+
+                }
+                else
+                {
+                    go = child.gameObject;
+                    reft = child.gameObject.transform;
+                }
+
+
+                go.transform.parent = splineHolder.transform;
+
+
+                // TODO make this an actual hash and shove it in a table
+                // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
+                //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
+                string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", myarray[0].Position.x, myarray[0].Position.y, myarray[0].Position.z, myarray[myarray.Count - 1].Position.x, myarray[myarray.Count - 1].Position.y, myarray[myarray.Count - 1].Position.z);
+
+                var newSpline = go;
+
+
+                // Extract the stuff we welded in the settings and reweld it to the output
+
+                newSpline.name = hash + splines[i].chosenType.prefab.name;
+
+                splineScriptObj.nodes = myarray;
+
+                newSpline.transform.localPosition = new Vector3();
+
+
+                splineObj.prefab = splines[i].chosenType.prefab;
+
+                splineObj.isRandomYaw = splines[i].isRandomYaw;
+
+                splineObj.spacing = splines[i].spacing;
+
+                splineObj.spacingRange = splines[i].spacingRange;
+                splineObj.offset = splines[i].offset;
+                splineObj.offsetRange = splines[i].offsetRange;
+
+                splineObj.scale = splines[i].scale;
+                splineObj.scaleRange = splines[i].scaleRange;
+
+                splineObj.spline.nodes = myarray.ToList();
+                splineScriptObj.nodes = myarray.ToList();
+
+                splineScriptObj.RefreshCurves();
+
+                var scrp = newSpline.AddComponent<AlignNodesToTerrainOnEnable>();
+                splineObj.Sow();
+
+                scrp.RunIt();
             }
 
             public static ApplyData Empty

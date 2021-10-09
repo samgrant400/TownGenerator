@@ -1052,9 +1052,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180bfe2f1d8937742b894f9e59c7dae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxCitySpreadreq: 33
-  MinCitySpreadreq: 26
-  worldMultiplier: 8
+  MaxCitySpreadreq: 30
+  MinCitySpreadreq: 9
+  worldMultiplier: 7
   options:
     Overlay: 0
     Walls: 1
@@ -1138,7 +1138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MapSpread: 30
-  ExtraCities: 3
+  ExtraCities: 7
   AllowTileMerging: 0
   InitTradeScripts: 0
   MinimumDistance: 3
