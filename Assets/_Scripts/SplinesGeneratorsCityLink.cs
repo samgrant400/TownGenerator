@@ -40,6 +40,8 @@ namespace MapMagic.Nodes.SplinesGenerators
             if (!enabled) return;
             // if (data.isDraft) return;
 
+            if (stop != null && stop.stop) return;
+
             // nodes for spline
             List<Vector3> markers = new List<Vector3>(); //TownGlobalObjectService.TownRequests.Count + TownInitService.__totalCities + 1);
             //data - whatever data
@@ -55,8 +57,8 @@ namespace MapMagic.Nodes.SplinesGenerators
                    
 
             }
-           
 
+            if (stop != null && stop.stop) return;
             // add the first one again, as a node. for a loop.
             markers.Add(markers[0]);
 
@@ -85,7 +87,7 @@ namespace MapMagic.Nodes.SplinesGenerators
                 }
             }
 
-           
+            if (stop != null && stop.stop) return;
 
             // make some holders
             SplineSys spline = new SplineSys();
@@ -93,13 +95,16 @@ namespace MapMagic.Nodes.SplinesGenerators
             line.SetNodes(markers.ToArray());
             spline.AddLine(line);
 
+            if (stop != null && stop.stop) return;
+
             // setup the clamp mask
-           var tileLocation = data.area.Coord.ToVector3(1000);
+            var tileLocation = data.area.Coord.ToVector3(1000);
            var tileSize = new Vector3(1000, 500, 1000);
 
             // now magically create perfect size slices for this tile.  Thanks Denis.
             spline.Clamp(tileLocation, tileSize);
 
+            if (stop != null && stop.stop) return;
 
             //save it.
             data.StoreProduct(this, spline);

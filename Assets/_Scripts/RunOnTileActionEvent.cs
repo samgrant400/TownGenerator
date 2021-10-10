@@ -152,7 +152,7 @@ public class RunOnTileActionEvent : MonoBehaviour
         for (int i = tile.transform.childCount - 1; i > 0; i--)
         {
 
-            if (tile.transform.GetChild(i).name.StartsWith("__SPLINE__") ||
+            if ( //tile.transform.GetChild(i).name.StartsWith("__SPLINE__") ||
              tile.transform.GetChild(i).name.StartsWith("SPLINE"))
                 DestroyImmediate(tile.transform.GetChild(i).gameObject);
 
@@ -279,8 +279,9 @@ public class RunOnTileActionEvent : MonoBehaviour
 
     public static void SetPlaceName(Coord coord) {
 
-      
-        DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = ReturnTownName(coord);
+
+        DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().enabled = true;
+             DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = ReturnTownName(coord);
        
  
      }

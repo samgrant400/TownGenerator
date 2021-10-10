@@ -169,6 +169,8 @@ namespace Twobob.Mm2
                 }
             }
 
+            if (stop != null && stop.stop) return;
+
             //adding to finalize
             if (enabled && copy.NodesCount > 0 ) 
             {

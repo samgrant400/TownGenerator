@@ -45,13 +45,13 @@ namespace Twobob.Mm2
             return pos switch
             {
 
-
-                Position.Close => new float[]{100f,300f }[(int)rank],
-                Position.Mid => new float[] { 300f, 500f }[(int)rank],
+            
+                Position.Close => new float[]{100f,320f }[(int)rank],
+                Position.Mid => new float[] { 320f, 500f }[(int)rank],
                 Position.Wide => new float[] { 620f, 1500f }[(int)rank],
-                Position.World1 => new float[] { 2000f, 2900f }[(int)rank],
-                Position.World2 => new float[] { 5000f, 2900f }[(int)rank],
-                Position.World3 => new float[] { 10000f, 2900f }[(int)rank],
+                Position.World1 => new float[] { 3000f, 2900f }[(int)rank],
+                Position.World2 => new float[] { 6000f, 2900f }[(int)rank],
+                Position.World3 => new float[] { 9000f, 2900f }[(int)rank],
                 _ => new float[] { 620f, 620f }[(int)rank],
             };
         }
