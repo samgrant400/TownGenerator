@@ -7,7 +7,7 @@ This version requires the free Assets Mapmagic2, SplineMesh to operate and the '
 The Town Init service now creates multiple cities, spreads them based on a minimum distance and the CityLink tool provides automatic splines that link the locations.
 
 [zulfajuniadi/TownGenerator](https://github.com/zulfajuniadi/TownGenerator/) Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
-Then Twobob modified it to generate [MapMagic2](https://assetstore.unity.com/packages/tools/terrain/mapmagic-2-165180) objects, splines and other things like a floating mini-map area overlay from the Area Patches.   This also contains a version of [twobob/MapMagic2Scripts](https://github.com/twobob/MapMagic2Scripts/commit/e93d9ed3122215709945521cb473cc59809e7067)
+Then Twobob modified it to generate [MapMagic2](https://assetstore.unity.com/packages/tools/terrain/mapmagic-2-165180) objects, splines and other things like a floating mini-map area overlay from the Area Patches.   This also contains a version of [twobob/MapMagic2Scripts](https://github.com/twobob/MapMagic2Scripts/tree/e93d9ed3122215709945521cb473cc59809e7067)
 
 Generated Town: (This is using not-included prefabs in a feature complete project)
 
