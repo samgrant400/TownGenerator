@@ -106,7 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4673968267716122669}
   m_Layer: 18
-  m_Name: TEST
+  m_Name: Footsteps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
