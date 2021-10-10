@@ -1113,22 +1113,12 @@ exit:
 
             if (TownWallEdges.NodesCount > 0)
             {
+                // exclude segments in the CastleWallEdges.lines based on segments in the TownWallEdges.lines.segments arrays
 
-                List<Segment> exclude = new List<Segment>();
-                SegmentsToList(TownWallEdges, exclude);
-
-                List<Line> rep = new List<Line>();
-
-                foreach (var item in CastleWallEdges.lines.Reverse())
-                {
-                    Line temp = new Line
-                    {
-                        segments = item.segments.Except(exclude).ToArray()
-                    };
-
-                    rep.Add(temp);
-                }
-
+                List<Line> rep = (
+                    CastleWallEdges.lines.Reverse().Select(item => 
+                    new Line {segments = item.segments.Except(SegmentsToList(TownWallEdges)).ToArray()})).ToList();
+                
                 SplineSys result = new SplineSys
                 {
                     lines = rep.ToArray()
@@ -1232,9 +1222,11 @@ exit:
         //  data.StoreProduct(towersOut, towerLocOut);
     }
 
-    private static void SegmentsToList(SplineSys TownWallEdges, List<Segment> exclude)
+    private static List<Segment> SegmentsToList(SplineSys TownWallEdges)
     {
+        List<Segment> exclude = new List<Segment>();
         exclude.AddRange(TownWallEdges.lines.SelectMany(item => item.segments.Select(seg => seg)));
+        return exclude;
     }
 
     private void Wrapper_Spline_DistrictPatchEdges(Town.Town town, Town.Geom.Vector2 WorldOffset, CoordRect newOffset, bool AppendToExistingBundle)
