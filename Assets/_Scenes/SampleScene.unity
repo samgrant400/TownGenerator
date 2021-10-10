@@ -469,13 +469,14 @@ GameObject:
   - component: {fileID: 474051417}
   - component: {fileID: 474051419}
   - component: {fileID: 474051418}
+  - component: {fileID: 474051420}
   m_Layer: 5
   m_Name: Details
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &474051417
 RectTransform:
   m_ObjectHideFlags: 0
@@ -493,7 +494,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 10, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 400, y: 60}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &474051418
 MonoBehaviour:
@@ -515,9 +516,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Loading
+  m_text: 'Press Play
 
-'
+    Check MainCamera for Keys'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -544,8 +545,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -594,6 +595,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 474051416}
   m_CullTransparentMesh: 1
+--- !u!114 &474051420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474051416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8d2b184675041e49b9e7ff5da918b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!850595691 &700018292
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -1052,8 +1065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 180bfe2f1d8937742b894f9e59c7dae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxCitySpreadreq: 33
-  MinCitySpreadreq: 26
+  MaxCitySpreadreq: 31
+  MinCitySpreadreq: 13
   worldMultiplier: 8
   options:
     Overlay: 0
@@ -1132,13 +1145,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957245712}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d7c52ea2e180354ea916c9401ea0b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapSpread: 30
-  ExtraCities: 3
+  MapSpread: 3
+  ExtraCities: 7
   AllowTileMerging: 0
   InitTradeScripts: 0
   MinimumDistance: 3
@@ -1250,7 +1263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &1044180292
 MeshCollider:
   m_ObjectHideFlags: 0

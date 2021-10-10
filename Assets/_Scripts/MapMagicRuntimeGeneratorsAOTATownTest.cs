@@ -285,6 +285,8 @@ namespace MapMagic.Nodes.MatrixGenerators
 
 
 
+
+
         public override void Generate(TileData data, StopToken stop)
         {
 
@@ -293,16 +295,23 @@ namespace MapMagic.Nodes.MatrixGenerators
                 return;
             }
 
+            // the only reason we could get here that I can figure is if you pinned so lets init things.
+
             if (!TownGlobalObject.InitialTownsGenerated)
             {
+              
                 Debug.Log("***** !TownGlobalObject.InitialTownsGenerated THIS IS BAD*****");
                 return;
             }
 
 
+
+
             Dictionary<string, ulong> OutletFullList; // = new Dictionary<string, ulong>();
 
             InitNamedOutputsDicts(out OutletFullList);
+
+            if (stop.stop ) return;
 
             //// Town stuff  /////////// ********
 
