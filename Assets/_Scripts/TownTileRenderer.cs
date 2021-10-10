@@ -1105,49 +1105,60 @@ exit:
         TownWallEdges.Clamp(tileLocation, tileSize);
 
 
-        TownWallEdges.lines.Select(x => x);
-
-
         CastleWallEdges.Clamp(tileLocation, tileSize);
 
-        SplineSys result = new SplineSys
+
+        if ( CastleWallEdges.NodesCount > 0)
         {
 
-        };
-
-
-        List<Segment> exclude = new List<Segment>();
-        SegmentsToList(TownWallEdges, exclude);
-
-        List<Line> rep = new List<Line>();
-
-        foreach (var item in CastleWallEdges.lines.Reverse())
-        {
-            Line temp = new Line
+            if (TownWallEdges.NodesCount > 0)
             {
-                segments = item.segments.Except(exclude).ToArray()
-            };
 
-            rep.Add(temp);
+                List<Segment> exclude = new List<Segment>();
+                SegmentsToList(TownWallEdges, exclude);
+
+                List<Line> rep = new List<Line>();
+
+                foreach (var item in CastleWallEdges.lines.Reverse())
+                {
+                    Line temp = new Line
+                    {
+                        segments = item.segments.Except(exclude).ToArray()
+                    };
+
+                    rep.Add(temp);
+                }
+
+                SplineSys result = new SplineSys
+                {
+                    lines = rep.ToArray()
+                };
+
+                // the abridged array
+                SplineSysBundle.Add(new SplineSysWrapper(
+                           nameof(CastleWallEdges), result, "castleWallEdgeSplineOut"
+                           ));
+            }
+            else
+            {
+                // the abridged array
+                SplineSysBundle.Add(new SplineSysWrapper(
+                           nameof(CastleWallEdges), CastleWallEdges, "castleWallEdgeSplineOut"
+                           ));
+            }
+       
+           
         }
 
+        if (TownWallEdges.NodesCount > 0) {
 
 
-        result.lines = rep.ToArray();
+            SplineSysBundle.Add(new SplineSysWrapper(
+           nameof(TownWallEdges), TownWallEdges, "townWallSplineOut"));
 
+        }
 
-        // the abridged array
-        SplineSysBundle.Add(new SplineSysWrapper(
-                   nameof(CastleWallEdges), result, "castleWallEdgeSplineOut"
-                   ));
-
-
-
-
-
-        SplineSysBundle.Add(new SplineSysWrapper(
-       nameof(TownWallEdges), TownWallEdges, "townWallSplineOut"));
-
+      
 
         if (gatehouseLines.Count > 0)
         {
