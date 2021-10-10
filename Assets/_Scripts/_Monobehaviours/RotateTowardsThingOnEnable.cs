@@ -37,7 +37,10 @@ public class RotateTowardsThingOnEnable : MonoBehaviour
 
         target ??= center.transform;
 
-       
+        if (!target.gameObject.activeInHierarchy)
+        {
+            return;
+        }
 
         // Determine which direction to rotate towards
         Vector3 targetDirection = target.position - transform.position;

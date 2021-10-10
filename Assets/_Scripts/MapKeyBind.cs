@@ -82,28 +82,64 @@ namespace Twobob.Mm2
             cam.orthographicSize = GetPositonFromEnum(currentPosition,RequestType.Cam);
         }
 
+        public void LerpUp() {
+
+            Lerping = false;
+
+            ChangeCurrentPosition(1);
+
+            StartCoroutine(LerpCamSize(GetPositonFromEnum(currentPosition, RequestType.Cam), MoveSpeed));
+            StartCoroutine(LerpFollowHeight(GetPositonFromEnum(currentPosition, RequestType.Follow), MoveSpeed));
+
+        }
+
+        public void LerpDown() {
+
+            Lerping = false;
+
+            ChangeCurrentPosition(-1);
+
+            StartCoroutine(LerpCamSize(GetPositonFromEnum(currentPosition, RequestType.Cam), MoveSpeed));
+            StartCoroutine(LerpFollowHeight(GetPositonFromEnum(currentPosition, RequestType.Follow), MoveSpeed));
+
+        }
+
+
+        public void LerpLoop()
+        {
+
+            Lerping = false;
+
+            
+            if (currentPosition == Position.Close)
+            {
+                currentPosition = Position.World3;
+            }
+            else
+            {
+                ChangeCurrentPosition(-1);
+            }
+
+
+            StartCoroutine(LerpCamSize(GetPositonFromEnum(currentPosition, RequestType.Cam), MoveSpeed));
+            StartCoroutine(LerpFollowHeight(GetPositonFromEnum(currentPosition, RequestType.Follow), MoveSpeed));
+
+        }
+
+
+
         void Update()
         {
             //Floor
             if (Input.GetKeyDown(minuscode))
             {
-                Lerping = false;
 
-                ChangeCurrentPosition(1);
-
-                StartCoroutine(LerpCamSize(GetPositonFromEnum(currentPosition, RequestType.Cam), MoveSpeed));
-                StartCoroutine(LerpFollowHeight(GetPositonFromEnum(currentPosition, RequestType.Follow), MoveSpeed));
-
+                LerpUp();
             }
 
             if (Input.GetKeyDown(pluscode))
             {
-                Lerping = false;
-
-                ChangeCurrentPosition(-1);
-
-                StartCoroutine(LerpCamSize(GetPositonFromEnum(currentPosition, RequestType.Cam), MoveSpeed));
-                StartCoroutine(LerpFollowHeight(GetPositonFromEnum(currentPosition, RequestType.Follow), MoveSpeed));
+                LerpDown();
             }
 
 
