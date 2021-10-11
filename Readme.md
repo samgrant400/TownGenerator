@@ -53,8 +53,8 @@ Todos:
 4. Support water
 5. Globalise Roads
 6. Look at also implmenting Segs and generic future outputs
- ~~7. Finish a complete a whitebox prefab demo example ~~
- ~~8. Rewrite SplineMesh as an Output ~~
+7. ~~. Finish a complete a whitebox prefab demo example ~~
+8. ~~. Rewrite SplineMesh as an Output ~~
 
 ### License ###
 
