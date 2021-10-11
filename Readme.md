@@ -34,14 +34,25 @@ Usage:
 
 View the `TownTileBuilder.cs` and `TownMeshBuilder.cs` file to see how the generation is initiated.
 
+Using the demos
+
+![layers](https://user-images.githubusercontent.com/915232/136863777-d708b1cb-74a3-42cc-a524-1771d3e9c0d1.png)
+Add the following layers.
+Layer 18: Map
+Layer 19: NotMap
+
+The scenes are located in the \_Scenes folder 
+
 Todos:
 
 1. Migrate the scripts to use UnityEngine.Vector2.
-2. Reduce GC allocation for generation (Now its around 100MB)
-3. Make the generation multithreaded via jobs
+2. Reduce GC allocation for generation (Now its around 100MB per city)
+3. Make the generation multithreaded via jobs or MM
 4. Support water
-7. Finish a complete a whitebox prefab demo example
-8. Rewrite SplineMesh as an Output
+5. Globalise Roads
+6. Look at also implmenting Segs and generic future outputs
+ ~~7. Finish a complete a whitebox prefab demo example ~~
+ ~~8. Rewrite SplineMesh as an Output ~~
 
 ### License ###
 
