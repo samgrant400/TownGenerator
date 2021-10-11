@@ -37,9 +37,11 @@ View the `TownTileBuilder.cs` and `TownMeshBuilder.cs` file to see how the gener
 Using the demos
 
 ![layers](https://user-images.githubusercontent.com/915232/136863777-d708b1cb-74a3-42cc-a524-1771d3e9c0d1.png)
+
 Add the following layers.
-Layer 18: Map
-Layer 19: NotMap
+
+- Layer 18: **Map**
+- Layer 19: **NotMap**
 
 The scenes are located in the \_Scenes folder 
 
