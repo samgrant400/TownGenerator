@@ -29,6 +29,12 @@ namespace Twobob.Mm2
 
         TextMeshProUGUI textMeshProUGUI;
 
+        public KeyCode hugscode = KeyCode.H;
+        public bool floorHug = true;
+        public float HugVerticalOffset = 1.0f;
+
+
+
         void Update()
         {
             //Floor
@@ -51,7 +57,7 @@ namespace Twobob.Mm2
             {
                 Lerping = false;
                transform.position += new Vector3(0, JumpDistance, 0);
-
+                HugVerticalOffset += JumpDistance;
             }
 
             // Gods
@@ -59,7 +65,13 @@ namespace Twobob.Mm2
             {
                 Lerping = false;
                 transform.position += new Vector3(0, -JumpDistance, 0);
+                HugVerticalOffset += -JumpDistance;
+            }
 
+            // HUG floor
+            if (Input.GetKeyDown(hugscode))
+            {
+                floorHug = !floorHug; 
             }
 
 
@@ -103,6 +115,16 @@ namespace Twobob.Mm2
         }
 
 
+        private void LateUpdate()
+        {
+            if (floorHug)
+            {
+
+                curpos = transform;
+                curpos.position = GetTerrainPosUnmasked(curpos.position.x, curpos.position.z) + new Vector3(0, HugVerticalOffset, 0);
+
+            }
+        }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Invoke")]
         private void TryToFloor()
@@ -220,12 +242,29 @@ namespace Twobob.Mm2
         }
 
 
+        static Vector3 GetTerrainPos(float x, float y)  // Get the default layer // The actual terrain. Ignoring Objects.
+        {
 
+            string mask = "Default";
+            return GetTerrainPosLayered(x, y, mask);
 
+        }
 
+        static Vector3 GetTerrainPosUnmasked(float x, float y)  // The terrain. Including Objects.
+        {
 
+            return GetTerrainPosLayered(x, y, null);
 
-        static Vector3 GetTerrainPos(float x, float y)  // The actual terrain. Ignoring Objects.
+        }
+
+        static Vector3 GetTerrainPosMasked(float x, float y, string layername)  // A specific Layer arrangement... Should include terrain
+        {
+
+            return GetTerrainPosLayered(x, y, null);
+
+        }
+
+        static Vector3 GetTerrainPosLayered(float x, float y, string maskname)  // The actual terrain. Ignoring Objects.
         {
 
             //Create object to store raycast data
@@ -238,16 +277,25 @@ namespace Twobob.Mm2
 
 
             // TODO : MASK SELECTION
-            LayerMask mask = LayerMask.GetMask("Default");
+            //  LayerMask mask = LayerMask.GetMask("Default");
 
             Ray ray = new Ray(origin, Vector3.down);
+            RaycastHit foundhit;
 
-
-            Physics.Raycast(ray, out RaycastHit hit, 501f, mask);
-
+            if (string.IsNullOrEmpty(maskname))
+            {
+                Physics.Raycast(ray, out RaycastHit hit, 501f);
+                foundhit = hit;
+            }
+            else
+            {
+                LayerMask mask = LayerMask.GetMask(maskname);
+                Physics.Raycast(ray, out RaycastHit hit, 501f, mask);
+                foundhit = hit;
+            }
 
             //  Debug.Log("Terrain location found at " + hit.point);
-            return hit.point;
+            return foundhit.point;
 
         }
 
