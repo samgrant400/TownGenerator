@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class TownTilePreRender : MonoBehaviour
 {
-
     public void Awake()
     {
         //public static Action<TerrainTile, TileData> OnBeforeTileStart;
@@ -24,7 +23,6 @@ public class TownTilePreRender : MonoBehaviour
         //public static Action<TerrainTile> OnAfterResetTerrain;
 
         TryRegisterHandlers();
-
     }
 
     public void OnEnable()
@@ -32,12 +30,10 @@ public class TownTilePreRender : MonoBehaviour
         TryRegisterHandlers();
     }
 
-
     public void Start()
     {
         TryRegisterHandlers();
     }
-
 
     private void TryRegisterHandlers()
     {
@@ -59,12 +55,8 @@ public class TownTilePreRender : MonoBehaviour
 
     public void OnBeforeTileGenerateCheckFirst(TerrainTile tile, TileData data, StopToken stop)
     {
-        OnBeforeTileGenerateCheck( tile,  data);
-
-
+        OnBeforeTileGenerateCheck(tile, data);
     }
-
-
 
     private AOTABundle bundle;
 
@@ -79,12 +71,8 @@ public class TownTilePreRender : MonoBehaviour
         // This will ALLLLLways return something... it SHOULD be the town.
         Coord locality = TownGlobalObject.GetIndexAtCoord(data.area.Coord);
 
-
-        if (!TownGlobalObject.bundles.ContainsKey(data.area.Coord))  // By this point  !bundle.isBundled && !bundle.isTileDataInBundle  - basically the bundle is a blank.
+        if (!TownGlobalObject.bundles.ContainsKey(data.area.Coord)) // By this point  !bundle.isBundled && !bundle.isTileDataInBundle  - basically the bundle is a blank.
         {
-
-
-
             // WE DID NOT HIT THE BUNDLE
 
             //Debug.LogFormat("bundle not found for tile {1}, town {0} during the {2} phase", locality, data.area.Coord,
@@ -95,7 +83,7 @@ public class TownTilePreRender : MonoBehaviour
 
             TownTileRenderer mrMaker = new TownTileRenderer();
 
-            // But the actual town should be stored at the "Locality"  
+            // But the actual town should be stored at the "Locality"
 
             bundle = mrMaker.MakeATileBundleWithThisTown(data.area.Coord, false, true, locality);
 
@@ -107,58 +95,48 @@ public class TownTilePreRender : MonoBehaviour
 
             bundle.MarkIsTileDataInBundleTrue();
 
-
             TownGlobalObject.bundles[data.area.Coord] = bundle;
-
-
-
         }
         // WE DID HIT THE BUNDLE
 
         bundle = TownGlobalObject.bundles[data.area.Coord];
 
-
         if (locality == data.area.Coord && !bundle.isTileDataInBundle)
         {
-            Debug.LogFormat("This is a town tile. Is the locality Town stored? {0}", TownGlobalObject.townsData.ContainsKey(locality));
-
-
+            Debug.LogFormat(
+                "This is a town tile. Is the locality Town stored? {0}",
+                TownGlobalObject.townsData.ContainsKey(locality)
+            );
         }
-
-
 
         // Handle the WE HAVE THE TILE DATA ALREADY case
         if (bundle.isBundled && bundle.isTileDataInBundle)
         {
-
             return;
-
-
         }
         // The Unrendered case. Lets double check.
         else if (bundle.isBundled && !bundle.isTileDataInBundle)
         {
-
             TownTileRenderer mrMaker = new TownTileRenderer();
             bundle = mrMaker.MakeATileBundle(data.area.Coord, false, false);
 
-            Debug.LogFormat("rewrite for UNRENDERED {0}, {1}, {2} during {3} phase and {4} and {5}",
-               string.Format("{0}:{1}", bundle.town.mapOffset.x, bundle.town.mapOffset.y),
+            Debug.LogFormat(
+                "rewrite for UNRENDERED {0}, {1}, {2} during {3} phase and {4} and {5}",
+                string.Format("{0}:{1}", bundle.town.mapOffset.x, bundle.town.mapOffset.y),
                 bundle.town.name,
                 bundle.name,
                 (data.isDraft) ? "DRAFT" : "MAIN",
-                 (bundle.isBundled) ? " is bundled :)" : "is not bundled :(",
-                    (bundle.isTileDataInBundle) ? " Tile Data IS In Bundle :)" : "TILE DATA MISSING!!!!!!!!!!"
-                );
-
+                (bundle.isBundled) ? " is bundled :)" : "is not bundled :(",
+                (bundle.isTileDataInBundle)
+                  ? " Tile Data IS In Bundle :)"
+                  : "TILE DATA MISSING!!!!!!!!!!"
+            );
 
             // by here all our splineSys and transition lists should be filled.
 
             // Bless it.
 
             bundle.MarkisBundledTrue();
-
-
 
             TownGlobalObject.bundles[data.area.Coord] = bundle;
 
@@ -170,16 +148,16 @@ public class TownTilePreRender : MonoBehaviour
             //  if (bundle2test == bundletest)
             //  {
             Debug.LogFormat(
-         " FINAL TEST {0} is null = {1}, {2} is {3}, {4} .isBundled is {5}",
-           string.Format("{0}:{1}", data.area.Coord.x, data.area.Coord.z),
-
-         bundletest == null,
-         nameof(bundletest),
-         bundletest,
-         nameof(bundletest),
-       (bundletest.isBundled) ? " Tile Data IS In Bundle :)" : "TILE DATA MISSING!!!!!!!!!!"
-         );
-
+                " FINAL TEST {0} is null = {1}, {2} is {3}, {4} .isBundled is {5}",
+                string.Format("{0}:{1}", data.area.Coord.x, data.area.Coord.z),
+                bundletest == null,
+                nameof(bundletest),
+                bundletest,
+                nameof(bundletest),
+                (bundletest.isBundled)
+                  ? " Tile Data IS In Bundle :)"
+                  : "TILE DATA MISSING!!!!!!!!!!"
+            );
 
             //   RenderOutlet(data, bundle, OutletFullList);
             bundle.MarkIsTileDataInBundleTrue();

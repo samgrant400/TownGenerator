@@ -1,22 +1,22 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor (typeof (TownBuilder))]
+[CustomEditor(typeof(TownBuilder))]
 public class TownBuilderEditor : Editor
 {
-    public override void OnInspectorGUI ()
+    public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI ();
+        base.OnInspectorGUI();
         TownBuilder builder = target as TownBuilder;
 
-        if (GUILayout.Button ("Generate"))
+        if (GUILayout.Button("Generate"))
         {
-            builder.Generate ();
+            builder.Generate();
         }
 
-        if (GUILayout.Button ("Generate Random"))
+        if (GUILayout.Button("Generate Random"))
         {
-            builder.GenerateRandom ();
+            builder.GenerateRandom();
         }
     }
 }

@@ -9,12 +9,16 @@ public class FlyCam : MonoBehaviour
     public float rotationX = 0.0f;
     public float rotationY = 0.0f;
 
-	public bool autofly = false;
-	private bool blockloops = false;
+    public bool autofly = false;
+    private bool blockloops = false;
 
     public bool JustLook = false;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Unity")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Code Quality",
+        "IDE0051:Remove unused private members",
+        Justification = "Unity"
+    )]
     void Update()
     {
         if (Input.GetMouseButton(0))
@@ -32,25 +36,25 @@ public class FlyCam : MonoBehaviour
             {
                 transform.position += transform.forward * moveSpeed * Input.GetAxis("Vertical");
                 transform.position += transform.right * moveSpeed * Input.GetAxis("Horizontal");
-                transform.position += transform.up * 3 * moveSpeed * Input.GetAxis("Mouse ScrollWheel");
+                transform.position +=
+                    transform.up * 3 * moveSpeed * Input.GetAxis("Mouse ScrollWheel");
             }
-        
         }
         if (Input.GetMouseButton(1) && !JustLook)
         {
             if (!blockloops)
-			{
-			autofly =! autofly;
-			}
-			blockloops = true;
-		}
-	else
-		{blockloops = false;
-		if (autofly && !JustLook)
-		{
-			   transform.position += transform.forward * moveSpeed ;
-		}
-	}
-	}
-	
+            {
+                autofly = !autofly;
+            }
+            blockloops = true;
+        }
+        else
+        {
+            blockloops = false;
+            if (autofly && !JustLook)
+            {
+                transform.position += transform.forward * moveSpeed;
+            }
+        }
+    }
 }

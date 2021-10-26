@@ -14,39 +14,38 @@ using System.Linq;
 
 namespace MapMagic.Nodes.SplinesGenerators
 {
-
     [System.Serializable]
     [GeneratorMenu(
-    menu = "Spline/Initial",
-    name = "FromObjects",
-    iconName = "GeneratorIcons/Constant",
-    colorType = typeof(SplineSys),
-    disengageable = true,
-    helpLink = "https://gitlab.com/denispahunov/mapmagic/wikis/map_generators/spline")]
+        menu = "Spline/Initial",
+        name = "FromObjects",
+        iconName = "GeneratorIcons/Constant",
+        colorType = typeof(SplineSys),
+        disengageable = true,
+        helpLink = "https://gitlab.com/denispahunov/mapmagic/wikis/map_generators/spline"
+    )]
     public class AutoSplinesFromObjects : Generator, IInlet<TransitionsList>, IOutlet<SplineSys>
     {
+        [Val("Positions", "Positions")]
+        public readonly Inlet<TransitionsList> input = new Inlet<TransitionsList>();
 
-        [Val("Positions", "Positions")] public readonly Inlet<TransitionsList> input = new Inlet<TransitionsList>();
-
-        [Val("Output", "Outlet")] public readonly Outlet<SplineSys> output = new Outlet<SplineSys>();
-
+        [Val("Output", "Outlet")]
+        public readonly Outlet<SplineSys> output = new Outlet<SplineSys>();
 
 #if UNITY_EDITOR
         [UnityEditor.InitializeOnLoadMethod]
-        static void EnlistInMenu() => MapMagic.Nodes.GUI.CreateRightClick.generatorTypes.Add(typeof(AutoSplinesFromObjects));
+        static void EnlistInMenu() =>
+            MapMagic.Nodes.GUI.CreateRightClick.generatorTypes.Add(typeof(AutoSplinesFromObjects));
 #endif
 
         public void RemoveAnyBlanksInTransitionListArrayHelper(ref TransitionsList list)
         {
             list.arr = list.arr.Truncated(list.count);
-
         }
-         
+
         public override void Generate(TileData data, StopToken stop)
         {
-            
-
-            if (!enabled) return;
+            if (!enabled)
+                return;
             // if (data.isDraft) return;
 
             TransitionsList src = data.ReadInletProduct<TransitionsList>(this);
@@ -60,7 +59,7 @@ namespace MapMagic.Nodes.SplinesGenerators
             // setup the clamp mask
             var tileLocation = data.area.Coord.ToVector3(1000); // x 0 z
             var tileLocationV2 = tileLocation.V2(); // x z
-            var tileSize = new Vector3(1000, 500, 1000);  // TODO: Set this to the mapmagic tile size... not assume 1k
+            var tileSize = new Vector3(1000, 500, 1000); // TODO: Set this to the mapmagic tile size... not assume 1k
 
             // now magically create perfect size slices for this tile.  Thanks Denis.
             // dst.Clamp(tileLocation, tileSize);
@@ -68,9 +67,7 @@ namespace MapMagic.Nodes.SplinesGenerators
             //data - whatever data
             foreach (var item in copy.arr)
             {
-
                 Vector2 offsetted = (item.pos.V2() + tileLocationV2);
-
 
                 var offsettedstore = new Vector3(offsetted.x, item.pos.y, offsetted.y);
 
@@ -82,12 +79,17 @@ namespace MapMagic.Nodes.SplinesGenerators
                     }
                     catch (Exception e)
                     {
-                        Debug.LogErrorFormat(" Edge case {0} with location {1},{2},{3} and a list of Length {4}", e.Message, offsettedstore.x, offsettedstore.y, offsettedstore.z, markers.Count);
+                        Debug.LogErrorFormat(
+                            " Edge case {0} with location {1},{2},{3} and a list of Length {4}",
+                            e.Message,
+                            offsettedstore.x,
+                            offsettedstore.y,
+                            offsettedstore.z,
+                            markers.Count
+                        );
                         // ignore this weird edge case.
                     }
-
             }
-
 
             // add the first one again, as a node. for a loop. and to ensure we have two.. which we will now test for..
             markers.Add(markers[0]);
@@ -106,10 +108,8 @@ namespace MapMagic.Nodes.SplinesGenerators
             line.SetNodes(markers.ToArray());
             spline.AddLine(line);
 
-
             // now magically create perfect size slices for this tile.  Thanks Denis.
             spline.Clamp(tileLocation, tileSize);
-
 
             //save it.
             data.StoreProduct(this, spline);

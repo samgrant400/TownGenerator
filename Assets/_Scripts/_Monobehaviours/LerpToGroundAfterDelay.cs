@@ -15,8 +15,8 @@ public class LerpToGroundAfterDelay : MonoBehaviour
 
     private void DoLerping()
     {
-
-        Vector3 positionToMoveTo = GetTerrainPos(transform.position.x, transform.position.z) + new Vector3(0, -1f, 0);
+        Vector3 positionToMoveTo =
+            GetTerrainPos(transform.position.x, transform.position.z) + new Vector3(0, -1f, 0);
 
         if (positionToMoveTo.y > 0)
         {
@@ -24,25 +24,20 @@ public class LerpToGroundAfterDelay : MonoBehaviour
         }
     }
 
-    static Vector3 GetTerrainPos(float x, float y)  // The actual terrain. Ignoring Objects.
+    static Vector3 GetTerrainPos(float x, float y) // The actual terrain. Ignoring Objects.
     {
-
         //Create origin for raycast that is above the terrain. I chose 500.
         Vector3 origin = new Vector3(x, 500f, y);
 
-       
         //TODO : GLOBAL MASK SELECTION
         LayerMask mask = LayerMask.GetMask("Default");
 
         Ray ray = new Ray(origin, Vector3.down);
 
-
         Physics.Raycast(ray, out RaycastHit hit, 501f, mask);
-
 
         //  Debug.Log("Terrain location found at " + hit.point);
         return hit.point;
-
     }
 
     IEnumerator LerpPosition(Vector3 targetPosition, float duration)

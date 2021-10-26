@@ -6,43 +6,39 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-
 public class AlignNodesToTerrainOnEnable : MonoBehaviour
 {
-    public static Coord CoordForTileFromVec3(Vector3 vec) { return new Coord((int)(vec.x * 0.001f), (int)(vec.y * 0.001f)); }
+    public static Coord CoordForTileFromVec3(Vector3 vec)
+    {
+        return new Coord((int)(vec.x * 0.001f), (int)(vec.y * 0.001f));
+    }
 
     public Transform mapMagicTransform;
 
     public int attempts = 0;
     public float checkVal = 0.005f;
     private int MaxAttempts = 20;
-    SplineMesh.Spline spline; 
+    SplineMesh.Spline spline;
     void OnEnable()
     {
         RunIt();
         //  splineFormer.InvalidateMesh();
     }
 
-  //  TerrainTile tile;
+    //  TerrainTile tile;
 
     public void RunIt()
     {
-
         spline = GetComponent<SplineMesh.Spline>();
 
         //  tile = spline.gameObject.transform.parent.parent.GetComponent<TerrainTile>();
 
         if (mapMagicTransform == null)
 
-        mapMagicTransform = Component.FindObjectOfType<MapMagicObject>().transform;
-
+            mapMagicTransform = Component.FindObjectOfType<MapMagicObject>().transform;
 
         TryToFloor();
-
-
     }
-
 
     private void TryToFloor()
     {
@@ -53,14 +49,12 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
 
         for (int i = 0; i < spline.nodes.Count; i++)
         {
-            testArr.Add( 500f);
+            testArr.Add(500f);
         }
 
         spline.enabled = false;
 
         int testcount = 0;
-
-
 
         int maxdepth = 5;
 
@@ -70,7 +64,6 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
 
         for (int depth = 0; depth < maxdepth; depth++)
         {
-
             totalOffsetFromRoot = totalOffsetFromRoot + newchild.position;
 
             newchild = newchild.parent;
@@ -78,18 +71,15 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
             {
                 break;
             }
-
         }
 
         totalOffsetFromRoot *= .5f;
 
+        Coord tilecoord = CoordForTileFromVec3(totalOffsetFromRoot);
 
+        var locality = TownGlobalObject.GetIndexAtCoord(tilecoord);
 
-           Coord tilecoord = CoordForTileFromVec3(totalOffsetFromRoot);
-
-           var locality = TownGlobalObject.GetIndexAtCoord(tilecoord);
-
-         //  Vector3 townOffset = -(tilecoord.ToTileSizeVector3() - locality.ToTileSizeVector3());
+        //  Vector3 townOffset = -(tilecoord.ToTileSizeVector3() - locality.ToTileSizeVector3());
 
 
 
@@ -98,13 +88,14 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
         {
             var node = spline.nodes[i];
 
-           // Vector3 modulod = new Vector3((node.Position.x - (totalOffsetFromRoot.x * 0.5f)) % 1000, node.Position.y, (node.Position.z - (totalOffsetFromRoot.z * 0.5f)) % 1000);
-            Vector3 modulod = new Vector3((node.Position.x - (totalOffsetFromRoot.x )) % 1000, node.Position.y, (node.Position.z - (totalOffsetFromRoot.z )) % 1000);
-
+            // Vector3 modulod = new Vector3((node.Position.x - (totalOffsetFromRoot.x * 0.5f)) % 1000, node.Position.y, (node.Position.z - (totalOffsetFromRoot.z * 0.5f)) % 1000);
+            Vector3 modulod = new Vector3(
+                (node.Position.x - (totalOffsetFromRoot.x)) % 1000,
+                node.Position.y,
+                (node.Position.z - (totalOffsetFromRoot.z)) % 1000
+            );
 
             Vector3 newpos = totalOffsetFromRoot + modulod;
-
-
 
             //Vector2 testpos = new Vector2(
             //  newpos.x,
@@ -112,30 +103,29 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
 
 
             Vector2 testpos = new Vector2(
-            node.Position.x + totalOffsetFromRoot.x,
-            node.Position.z + totalOffsetFromRoot.z);
-
-
+                node.Position.x + totalOffsetFromRoot.x,
+                node.Position.z + totalOffsetFromRoot.z
+            );
 
             testArr[i] = GetTerrainPos(testpos.x, testpos.y).y;
-           
-            node.Position = node.Direction = new Vector3(node.Position.x, testArr[i], node.Position.z);
-            
-             testcount += 1;
-           
+
+            node.Position = node.Direction = new Vector3(
+                node.Position.x,
+                testArr[i],
+                node.Position.z
+            );
+
+            testcount += 1;
         }
 
-     //   if (!spline.enabled)
-            spline.enabled = true;
-
+        //   if (!spline.enabled)
+        spline.enabled = true;
 
         if (testArr.Contains(0))
         {
-
             // Last pop get nuclear
             if (attempts > MaxAttempts - 4)
             {
-
                 // check every single node.
                 for (int i = 0; i < spline.nodes.Count; i++)
                 {
@@ -144,17 +134,24 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
                     // move x closer
                     if (Mathf.Abs(node.Position.x % 1) <= (checkVal))
                     {
-                        node.Position = new Vector3(Mathf.Round(node.Position.x), node.Position.y, node.Position.z);
+                        node.Position = new Vector3(
+                            Mathf.Round(node.Position.x),
+                            node.Position.y,
+                            node.Position.z
+                        );
                     }
                     // Move z closer
                     if (Mathf.Abs(node.Position.z % 1) <= (checkVal))
                     {
-                        node.Position = new Vector3(node.Position.x, node.Position.y, Mathf.Round(node.Position.z));
+                        node.Position = new Vector3(
+                            node.Position.x,
+                            node.Position.y,
+                            Mathf.Round(node.Position.z)
+                        );
                     }
                 }
 
                 checkVal *= 8;
-
             }
 
             if (attempts < MaxAttempts)
@@ -165,14 +162,14 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
             }
             else
             {
-              
-                Debug.LogFormat(gameObject, "Failed to floor splines {0} on countout", gameObject.name);
+                Debug.LogFormat(
+                    gameObject,
+                    "Failed to floor splines {0} on countout",
+                    gameObject.name
+                );
                 return;
             }
         }
-
-       
-       
     }
 
     static Vector3 GetTerrainPos(float x, float y)
@@ -190,15 +187,11 @@ public class AlignNodesToTerrainOnEnable : MonoBehaviour
 
         Ray ray = new Ray(origin, Vector3.down);
 
-
         Physics.Raycast(ray, out RaycastHit hit, 501f, mask);
-
 
         Debug.DrawRay(origin, Vector3.down, Color.red, 15f, false);
 
         //  Debug.Log("Terrain location found at " + hit.point);
         return hit.point;
     }
-
-
 }

@@ -4,8 +4,16 @@ namespace Town.Geom
 {
     public static class GeometryHelpers
     {
-        public static Vector2 IntersectLines(float x1, float y1, float dx1, float dy1, float x2, float y2, float dx2,
-            float dy2)
+        public static Vector2 IntersectLines(
+            float x1,
+            float y1,
+            float dx1,
+            float dy1,
+            float x2,
+            float y2,
+            float dx2,
+            float dy2
+        )
         {
             var d = dx1 * dy2 - dy1 * dx2;
             if (Math.Abs(d) < 0.01)
@@ -14,7 +22,8 @@ namespace Town.Geom
             }
 
             var t2 = (dy1 * (x2 - x1) - dx1 * (y2 - y1)) / d;
-            var t1 = Math.Abs(dx1) > 0.0001 ? (x2 - x1 + dx2 * t2) / dx1 : (y2 - y1 + dy2 * t2) / dy1;
+            var t1 =
+                Math.Abs(dx1) > 0.0001 ? (x2 - x1 + dx2 * t2) / dx1 : (y2 - y1 + dy2 * t2) / dy1;
 
             return new Vector2(t1, t2);
         }
@@ -40,6 +49,5 @@ namespace Town.Geom
 
             return Vector2.Dot(ap, ab) / (ab.Length * ab.Length);
         }
-
     }
 }

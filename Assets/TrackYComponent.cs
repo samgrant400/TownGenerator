@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TrackYComponent : MonoBehaviour
 {
-
     public Transform thing;
 
     private Vector3 place;
@@ -16,7 +15,6 @@ public class TrackYComponent : MonoBehaviour
     private void OnEnable()
     {
         place = thing.position;
-
     }
 
     void LateUpdate()
@@ -25,9 +23,11 @@ public class TrackYComponent : MonoBehaviour
         {
             place = thing.position;
 
-            transform.position = new Vector3(transform.position.x, place.y + offset, transform.position.z);
+            transform.position = new Vector3(
+                transform.position.x,
+                place.y + offset,
+                transform.position.z
+            );
         }
-
-       
     }
 }

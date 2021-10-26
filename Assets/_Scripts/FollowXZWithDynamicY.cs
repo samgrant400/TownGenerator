@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FollowXZWithDynamicY : MonoBehaviour
 {
-
     public Transform thingXZ;
 
     public Transform thingY;
@@ -38,6 +37,6 @@ public class FollowXZWithDynamicY : MonoBehaviour
         if (!rotateWithPlayer)
             return;
 
-        transform.eulerAngles = new Vector3( 90, thingXZ.rotation.eulerAngles.y, 0);
+        transform.eulerAngles = new Vector3(90, thingXZ.rotation.eulerAngles.y, 0);
     }
 }

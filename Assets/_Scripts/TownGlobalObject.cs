@@ -9,8 +9,6 @@ using Town;
 using System.Text;
 using System.Threading;
 
-
-
 // REF: https://dotnetfiddle.net/6P71ow
 
 //public static class ConcurrentDictionaryExtensions
@@ -43,10 +41,15 @@ public static class TownGlobalObject
 
     public static List<TypedSpline> GetSplineList(Coord coord)
     {
-        var output =  TownGlobalObject.splinesNodesDataForTile.GetOrAdd(coord, key =>
-        {        return  ConcreteList(key);      });
+        var output = TownGlobalObject.splinesNodesDataForTile.GetOrAdd(
+            coord,
+            key =>
+            {
+                return ConcreteList(key);
+            }
+        );
 
-      //  List < SplineMesh.Spline > copy = output.ToList<SplineMesh.Spline>();
+        //  List < SplineMesh.Spline > copy = output.ToList<SplineMesh.Spline>();
 
         return output;
     }
@@ -54,14 +57,11 @@ public static class TownGlobalObject
     public static List<TypedSpline> ConcreteList(Coord coord)
     {
         if (!TownGlobalObject.splinesNodesDataForTile.ContainsKey(coord))
-        { 
+        {
             TownGlobalObject.splinesNodesDataForTile.GetOrAdd(coord, new List<TypedSpline>());
         }
         return TownGlobalObject.splinesNodesDataForTile[coord];
-
     }
-
-
 
     public static bool InitialTownsGenerated = false;
 
@@ -75,7 +75,7 @@ public static class TownGlobalObject
     // So we can use every ODD quare number for this calc to get a limit
 
     //  1, 9, 25, 49, 81, 121
-    // shows that a perimiter of (4 layers of 10*10 squared) 
+    // shows that a perimiter of (4 layers of 10*10 squared)
     // cities is the upper maximum for now until we figure out a better system,
 
     // public  static int initialCapacity = 53;
@@ -86,17 +86,20 @@ public static class TownGlobalObject
     // operations like resizing the dictionary take longer as the concurrencyLevel rises.
     // For the purposes of this example, we'll compromise at numCores * 2.
     static int numProcs = System.Environment.ProcessorCount;
-   public static int concurrencyLevel = numProcs * 2;
+    public static int concurrencyLevel = numProcs * 2;
 
-  //  public static int CityTileModulo = 5;  // MUST BE MULTIPLE OF 2 ?
+    //  public static int CityTileModulo = 5;  // MUST BE MULTIPLE OF 2 ?
 
 
-    // 
+    //
     // ADJUST THE TOWN TO BUNDLEs
 
-    public static LazyConcurrentDictionary<Coord, Town.Town> towns = new LazyConcurrentDictionary<Coord, Town.Town>();
+    public static LazyConcurrentDictionary<Coord, Town.Town> towns = new LazyConcurrentDictionary<
+        Coord,
+        Town.Town
+    >();
     public static Dictionary<Coord, AOTABundle> bundles; //= new Dictionary<Coord, AOTABundle>();
-    public static Dictionary<Coord, Town.Town> townsData =  new Dictionary<Coord, Town.Town>();
+    public static Dictionary<Coord, Town.Town> townsData = new Dictionary<Coord, Town.Town>();
 
     public static List<Coord> renderedTowns = new List<Coord>();
     public static List<BoxCollider> renderedBoxColliders = new List<BoxCollider>();
@@ -105,13 +108,15 @@ public static class TownGlobalObject
 
     public static bool TownWaitingToRender { get; set; }
     public static string NextTownPreviewName { get; set; }
-    
 
     public static Queue<TownMeshRenderer> TownsWaitingToRender = new Queue<TownMeshRenderer>();
 
     public static int LastPreviewedTownId = 0;
     public static bool PreviewActive = false;
-    public static ConcurrentDictionary<Coord, List<TypedSpline>> splinesNodesDataForTile { get; set; }
+    public static ConcurrentDictionary<
+        Coord,
+        List<TypedSpline>
+    > splinesNodesDataForTile { get; set; }
 
     public static Dictionary<Coord, List<TypedSpline>> splinesNodesDataForTileConcrete { get; set; }
     public static Dictionary<Coord, bool> isSplinesMeshRenderedOnTile { get; set; }
@@ -125,14 +130,10 @@ public static class TownGlobalObject
         Coord currentPosition = fromThis;
         foreach (Coord potentialTarget in locations)
         {
-
-        
-
             directionToTarget = potentialTarget - currentPosition;
-           float dSqrToTarget = directionToTarget.SqrMagnitude;
+            float dSqrToTarget = directionToTarget.SqrMagnitude;
 
-
-          //  float dSqrToTarget = Coord.DistanceSq(potentialTarget, currentPosition);
+            //  float dSqrToTarget = Coord.DistanceSq(potentialTarget, currentPosition);
             sb.Append(potentialTarget);
             if (dSqrToTarget == 0)
             {
@@ -141,7 +142,6 @@ public static class TownGlobalObject
             }
             if (dSqrToTarget < closestDistanceSqr)
             {
-                
                 closestDistanceSqr = dSqrToTarget;
                 bestTarget = potentialTarget;
             }
@@ -150,8 +150,6 @@ public static class TownGlobalObject
         return bestTarget;
     }
 
-
-
     public static Coord GetClosest(Coord startPosition, List<Coord> pickups)
     {
         Coord bestTarget = new Coord();
@@ -159,7 +157,6 @@ public static class TownGlobalObject
         Coord directionToTarget = new Coord();
 
         StringBuilder sb = new StringBuilder();
-
 
         foreach (Coord potentialTarget in pickups)
         {
@@ -175,8 +172,7 @@ public static class TownGlobalObject
             }
         }
 
-
-       // Debug.LogFormat("Final Mag was {0} : for {1} : matching {2} in list: {3} of {4} length" , directionToTarget.Magnitude, startPosition, bestTarget, sb.ToString(), pickups.Count);
+        // Debug.LogFormat("Final Mag was {0} : for {1} : matching {2} in list: {3} of {4} length" , directionToTarget.Magnitude, startPosition, bestTarget, sb.ToString(), pickups.Count);
         return bestTarget;
     }
 
@@ -185,7 +181,6 @@ public static class TownGlobalObject
         Coord bestTarget = new Coord();
         float closestDistanceSqr = Mathf.Infinity;
         Coord directionToTarget = new Coord();
-
 
         foreach (Coord potentialTarget in pickups)
         {
@@ -200,20 +195,14 @@ public static class TownGlobalObject
             }
         }
 
-
-    
         return directionToTarget.Magnitude;
     }
 
-
-
     public static Coord GetIndexAtCoord(Coord place)
     {
-        
-        List<Coord> coords = townsData.Keys.ToList<Coord> ();
+        List<Coord> coords = townsData.Keys.ToList<Coord>();
 
-
-       //  Debug.LogFormat("{0} results in {1}", coords.Count, nameof(townsData.Keys));
+        //  Debug.LogFormat("{0} results in {1}", coords.Count, nameof(townsData.Keys));
 
         //foreach (var item in coords)
         //{
@@ -226,14 +215,12 @@ public static class TownGlobalObject
 
         //Coord bestTarget = GetClosest (place, coords);
 
-  //      Debug.LogFormat("{0}:{1}, for {2} as {3}", bestTarget.x, bestTarget.z, place, nameof(bestTarget));
+        //      Debug.LogFormat("{0}:{1}, for {2} as {3}", bestTarget.x, bestTarget.z, place, nameof(bestTarget));
 
         return bestTarget;
-        
-
         ////     |------------------000|000---------------------------| desired tile distribution
         ////     |----------------------000|000-------------------------|  0 = search range.
-        ////     |---^-----^-----^-----^---X-^-----^-----^-----^-----^--|  X=guy.  ^=City           
+        ////     |---^-----^-----^-----^---X-^-----^-----^-----^-----^--|  X=guy.  ^=City
         ////     |------------------9876543210123456789-----------------|   city at 0 - player a -2
         ////     |---------------9876543210123456789--------------------|
 
@@ -292,22 +279,23 @@ public static class TownGlobalObject
     }
 
     public static Town.Town MakeTown(
-        Coord index, 
+        Coord index,
         int townOffsetX = 0, // WE USE THESE <---- TO DO THE SUB-TILE RENDER OFFSETS FROM TOWN INFO
-        int townOffsetZ = 0, 
-        int seed =0,
-        int patches = 0)
+        int townOffsetZ = 0,
+        int seed = 0,
+        int patches = 0
+    )
     {
+        //   Debug.Log("*** REALLY * MAKING A TOWN ***********");
 
-     //   Debug.Log("*** REALLY * MAKING A TOWN ***********");
-       
 
         Town.TownOptions opt = new Town.TownOptions();
-        
+
         // TODO. make global Tile size from Terrain
-        opt.mapOffset = new Town.Geom.Vector2(index.x * 1000, index.z *1000 );
+        opt.mapOffset = new Town.Geom.Vector2(index.x * 1000, index.z * 1000);
         opt.townOffset = new Town.Geom.Vector2(townOffsetX * 1000, townOffsetZ * 1000);
-        opt.Patches = (patches ==0)? RandomGen.NextValidRandomPatchAmountFromTGOSRange() : patches ;
+        opt.Patches =
+            (patches == 0) ? RandomGen.NextValidRandomPatchAmountFromTGOSRange() : patches;
         opt.Overlay = TownGlobalObjectService.ProduceOverlay;
         opt.Water = false; // ( RandomGen.Next() % 2 == 0)?true:false;
         opt.CityDetail = true;
@@ -319,8 +307,8 @@ public static class TownGlobalObject
         opt.coord = index;
 
         Town.Town town = new Town.Town(opt);
-       // town.coord = index;
-       // town.Options.coord = index;
+        // town.coord = index;
+        // town.Options.coord = index;
 
         MeshRenderer = new TownMeshRenderer(town, opt, TownGlobalObjectService.rendererOptions);
 
@@ -328,43 +316,34 @@ public static class TownGlobalObject
 
         TownGlobalObject.TownWaitingToRender = true;
 
-
-        //Debug.LogFormat("{0} is {1} for location with {2} of {3} and {4} of {5} for {6} of size {7} ", 
-        //    nameof(index), 
-        //    index, 
-        //    nameof(opt.mapOffset), 
-        //    opt.mapOffset, 
-        //    nameof(opt.townOffset), 
-        //    opt.townOffset, 
+        //Debug.LogFormat("{0} is {1} for location with {2} of {3} and {4} of {5} for {6} of size {7} ",
+        //    nameof(index),
+        //    index,
+        //    nameof(opt.mapOffset),
+        //    opt.mapOffset,
+        //    nameof(opt.townOffset),
+        //    opt.townOffset,
         //    town.name,
         //    opt.Patches
         //    );
 
 
-      
+
 
         return town;
-
-
-     
-
-
     }
-
 
     public static AOTABundle SetBundle(Coord index, AOTABundle bundle)
     {
-
-        bundles[index] = bundle;// AddOrUpdate(index, (ka) => bundle, (k, v) => v);
+        bundles[index] = bundle; // AddOrUpdate(index, (ka) => bundle, (k, v) => v);
         return bundle;
-
     }
 
     //public static AOTABundle SetBundle(Coord index, AOTABundle bundle)
     //{
 
     //    towns.AddOrUpdate(index, (ka) => bundle, (k, v) =>  v);
-    //    return bundle;  
+    //    return bundle;
 
     //}
 
@@ -421,20 +400,18 @@ public static class TownGlobalObject
     //}
 
 
-        /// <summary>
+    /// <summary>
         /// 
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
     public static bool CanGetTownBundle(Coord index)
     {
-
         // Make request granular
 
 
 
         Coord lookup = GetIndexAtCoord(index);
-
 
         // Dont request granular
 
@@ -444,7 +421,7 @@ public static class TownGlobalObject
 
         // ensure we actually have a set of records and we only get them once by using lazy.
 
-      //    Debug.LogFormat("GetTownBundle() {0} is {1} and {2} for {3}", nameof(lookup), lookup, index , nameof(index));  
+        //    Debug.LogFormat("GetTownBundle() {0} is {1} and {2} for {3}", nameof(lookup), lookup, index , nameof(index));
 
 
 
@@ -460,10 +437,6 @@ public static class TownGlobalObject
         {
             return true;
         }
-
-     
-
-
         //   var lazyTown = new AOTABundle(index); // towns.GetOrAdd(lookup, k => new AOTABundle(index)); // MakeTown(lookup));
 
         //var lazyTown = SetBundle(index, bundle); // MakeTown(lookup));
@@ -481,10 +454,7 @@ public static class TownGlobalObject
         //   return lazyTown;
 
     }
-
-   
 }
-
 
 public class LazyConcurrentDictionary<TKey, TValue>
 {
@@ -492,39 +462,53 @@ public class LazyConcurrentDictionary<TKey, TValue>
 
     public LazyConcurrentDictionary()
     {
-
         // Let's make sure it get setup with our prime values
-        this.concurrentDictionary = new ConcurrentDictionary<TKey, Lazy<TValue>>(TownGlobalObject.concurrencyLevel, TownGlobalObject.initialCapacity);
+        this.concurrentDictionary = new ConcurrentDictionary<TKey, Lazy<TValue>>(
+            TownGlobalObject.concurrencyLevel,
+            TownGlobalObject.initialCapacity
+        );
     }
-
 
     public LazyConcurrentDictionary(int customCapacity)
     {
-
         // Let's make sure it get setup with our prime values
-        this.concurrentDictionary = new ConcurrentDictionary<TKey, Lazy<TValue>>(TownGlobalObject.concurrencyLevel, customCapacity);
+        this.concurrentDictionary = new ConcurrentDictionary<TKey, Lazy<TValue>>(
+            TownGlobalObject.concurrencyLevel,
+            customCapacity
+        );
     }
 
     public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
     {
-        var lazyResult = this.concurrentDictionary.GetOrAdd(key, k => new Lazy<TValue>(() => valueFactory(k), LazyThreadSafetyMode.ExecutionAndPublication));
+        var lazyResult = this.concurrentDictionary.GetOrAdd(
+            key,
+            k =>
+                new Lazy<TValue>(
+                    () => valueFactory(k),
+                    LazyThreadSafetyMode.ExecutionAndPublication
+                )
+        );
 
         return lazyResult.Value;
     }
 
-  //  AddOrUpdate<TKey, TValue>(this ConcurrentDictionary<TKey, Lazy<TValue>> dictionary, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
+    //  AddOrUpdate<TKey, TValue>(this ConcurrentDictionary<TKey, Lazy<TValue>> dictionary, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
 
 
-    public TValue AddOrUpdate(TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
+    public TValue AddOrUpdate(
+        TKey key,
+        Func<TKey, TValue> addValueFactory,
+        Func<TKey, TValue, TValue> updateValueFactory
+    )
     {
-      //  var lazyResult = this.concurrentDictionary.AddOrUpdate(key, k => new Lazy<TValue>(() => valueFactory(k), LazyThreadSafetyMode.ExecutionAndPublication));
+        //  var lazyResult = this.concurrentDictionary.AddOrUpdate(key, k => new Lazy<TValue>(() => valueFactory(k), LazyThreadSafetyMode.ExecutionAndPublication));
 
-        var lazyResult = this.concurrentDictionary.AddOrUpdate(key, new Lazy<TValue>(() => addValueFactory(key)), (key2, old) => new Lazy<TValue>(() => updateValueFactory(key2, old.Value)));
+        var lazyResult = this.concurrentDictionary.AddOrUpdate(
+            key,
+            new Lazy<TValue>(() => addValueFactory(key)),
+            (key2, old) => new Lazy<TValue>(() => updateValueFactory(key2, old.Value))
+        );
         return lazyResult.Value;
-
-       
     }
-
-
 }
 

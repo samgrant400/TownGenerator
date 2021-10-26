@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class RenderToImage : MonoBehaviour
 {
-
     public Texture2D ImageToRenderInto;
     public Camera CameraToUse;
     public int skimpFactor;
@@ -32,9 +31,16 @@ public class RenderToImage : MonoBehaviour
             CameraToUse.Render();
 
             // Make a new texture and read the active Render Texture into it.
-            Texture2D image = new Texture2D(CameraToUse.targetTexture.width, CameraToUse.targetTexture.height);
+            Texture2D image = new Texture2D(
+                CameraToUse.targetTexture.width,
+                CameraToUse.targetTexture.height
+            );
 
-            ImageToRenderInto.ReadPixels(new Rect(0, 0, CameraToUse.targetTexture.width, CameraToUse.targetTexture.height), 0, 0);
+            ImageToRenderInto.ReadPixels(
+                new Rect(0, 0, CameraToUse.targetTexture.width, CameraToUse.targetTexture.height),
+                0,
+                0
+            );
             ImageToRenderInto.Apply();
 
             // Replace the original active Render Texture.

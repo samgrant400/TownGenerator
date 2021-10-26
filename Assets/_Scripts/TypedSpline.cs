@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum objectRendered
 {
-    wall, fence, gatehouse
+    wall,
+    fence,
+    gatehouse
 }
 
 public class TypedSpline
@@ -21,20 +22,15 @@ public class TypedSpline
     public objectRendered rendered
     {
         get { return (objectRendered)chosenType; }
-
         private set { }
-
     }
 
     public TypedSpline()
     {
-
         // defaults and not null for list.
         this.nodes = new List<SplineMesh.SplineNode>();
         this.chosenType = 0;
         this.isRendered = false;
         this.tryToFloor = false;
-
     }
-
 }

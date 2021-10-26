@@ -7,14 +7,12 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 
-
 // REF: https://dotnetfiddle.net/6P71ow
 
 
 
 public class TownGlobalObjectService : MonoBehaviour
 {
-
     internal static int PatchCap = 50;
 
     internal static int PatchFloor = 15;
@@ -29,36 +27,40 @@ public class TownGlobalObjectService : MonoBehaviour
 
     public static TownGlobalObjectService StaticInstance;
 
-    public static List<TownRequest> TownRequests = new List<TownRequest>() {
+    public static List<TownRequest> TownRequests = new List<TownRequest>()
+    {
+        new TownRequest("Hometon", new Vector2(0, 0), initCiySize),
+        // new TownRequest("Magestown", new Vector2( ReturnNegativeOneToPositiveOne() ,QuestSpread + ReturnNegativeTwoToPositiveTwo()), (int)(secondCiySize))/*  * Give1to2()))  */
+        // ,
+        // new TownRequest("Farville", new Vector2(ReturnNegativeOneToPositiveOne(),-QuestSpread +ReturnNegativeTwoToPositiveTwo()), (int)(secondCiySize)) /*  * Give1to2())) */
+        // ,
 
-        new TownRequest("Hometon", new Vector2(0,0), initCiySize)
-        ,
-       // new TownRequest("Magestown", new Vector2( ReturnNegativeOneToPositiveOne() ,QuestSpread + ReturnNegativeTwoToPositiveTwo()), (int)(secondCiySize))/*  * Give1to2()))  */
-       // ,
-       // new TownRequest("Farville", new Vector2(ReturnNegativeOneToPositiveOne(),-QuestSpread +ReturnNegativeTwoToPositiveTwo()), (int)(secondCiySize)) /*  * Give1to2())) */
-       // ,
+        // new TownRequest("Edgerster", new Vector2(-QuestSpread +ReturnNegativeTwoToPositiveTwo(),ReturnNegativeOneToPositiveOne()) , (int)(secondCiySize)) /* * Give1to2())) */
+        // ,
 
-       // new TownRequest("Edgerster", new Vector2(-QuestSpread +ReturnNegativeTwoToPositiveTwo(),ReturnNegativeOneToPositiveOne()) , (int)(secondCiySize)) /* * Give1to2())) */
-       // ,
-
-       new TownRequest("Strongis", new Vector2(QuestSpread +ReturnNegativeTwoToPositiveTwo(),ReturnNegativeOneToPositiveOne()) , (int)(secondCiySize)) /*  * Give1to2())) */
-        
-
-       // new TownRequest("NorthEast", new Vector2( QuestSpread * DiagonalRatio , QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
-       // ,
-       // new TownRequest("NorthWest", new Vector2( -QuestSpread * DiagonalRatio , QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
-       // ,
-       // new TownRequest("SouthEast", new Vector2( QuestSpread * DiagonalRatio , -QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
-       // ,
-       // new TownRequest("SouthWest", new Vector2( -QuestSpread * DiagonalRatio , -QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
-       // ,
-       // new TownRequest("North", new Vector2(0,QuestSpread), secondCiySize)
-       // ,
-       //new TownRequest("South", new Vector2(0,-QuestSpread), secondCiySize)
-       // ,
-       //new TownRequest("East", new Vector2(QuestSpread,0), secondCiySize)
-       // ,
-       //new TownRequest("West", new Vector2(-QuestSpread,0), secondCiySize)
+        new TownRequest(
+            "Strongis",
+            new Vector2(
+                QuestSpread + ReturnNegativeTwoToPositiveTwo(),
+                ReturnNegativeOneToPositiveOne()
+            ),
+            (int)(secondCiySize)
+        ) /*  * Give1to2())) */
+        // new TownRequest("NorthEast", new Vector2( QuestSpread * DiagonalRatio , QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
+        // ,
+        // new TownRequest("NorthWest", new Vector2( -QuestSpread * DiagonalRatio , QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
+        // ,
+        // new TownRequest("SouthEast", new Vector2( QuestSpread * DiagonalRatio , -QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
+        // ,
+        // new TownRequest("SouthWest", new Vector2( -QuestSpread * DiagonalRatio , -QuestSpread * DiagonalRatio), (int)(secondCiySize * Give1to2())) //,
+        // ,
+        // new TownRequest("North", new Vector2(0,QuestSpread), secondCiySize)
+        // ,
+        //new TownRequest("South", new Vector2(0,-QuestSpread), secondCiySize)
+        // ,
+        //new TownRequest("East", new Vector2(QuestSpread,0), secondCiySize)
+        // ,
+        //new TownRequest("West", new Vector2(-QuestSpread,0), secondCiySize)
     };
 
     private static float ReturnNegativeOneToPositiveOne()
@@ -71,7 +73,6 @@ public class TownGlobalObjectService : MonoBehaviour
         return ((RandomGen.FlipACoin()) ? -Give1to2() : Give1to2());
     }
 
-
     [Range(9, 50)]
     public int MaxCitySpreadreq = 30;
 
@@ -81,56 +82,53 @@ public class TownGlobalObjectService : MonoBehaviour
     [Range(1, 30)]
     public float worldMultiplier = 6f;
 
-
     public Town.TownOptions options;
 
     // [Range(500, 500)]
     public static int WorldHeight = 500;
 
-
-
     public static Town.TownMeshRendererOptions rendererOptions;
     public Town.TownMeshRendererOptions LiveRendererOptions;
 
-
     public static Queue<string> NamesQueue;
 
-    public static Coord CoordFromVec3(Vector3 vec) { return new Coord((int)vec.x, (int)vec.y); }
-    public static Coord CoordForTileFromVec3(Vector3 vec) { return new Coord((int)(vec.x * 0.001f), (int)(vec.y * 0.001f)); }
+    public static Coord CoordFromVec3(Vector3 vec)
+    {
+        return new Coord((int)vec.x, (int)vec.y);
+    }
+    public static Coord CoordForTileFromVec3(Vector3 vec)
+    {
+        return new Coord((int)(vec.x * 0.001f), (int)(vec.y * 0.001f));
+    }
 
     public MapMagic.Core.MapMagicObject MapMagicObjectReference;
     public static MapMagic.Core.MapMagicObject MapMagicObjectRef;
 
     public static RandomName namegenref;
 
-   
-
     public static List<string> CurrentDistricts;
     public static List<string> RequestedDistricts;
 
     public RandomName namegen;
 
-    private Vector2 WorldZero;   // 1up
-    public static Vector3 WorldStart { get; private set; }   // one player only
+    private Vector2 WorldZero; // 1up
+    public static Vector3 WorldStart { get; private set; } // one player only
     public static Coord WorldHomeCoord { get; private set; }
 
-    public Transform ObjectToTrack;  // etc.
+    public Transform ObjectToTrack; // etc.
 
     public TextMeshProUGUI districtNameText;
 
-   
     //[Range(2, 30)]
     //public int CityTileInterstitialSpread = 6;
 
     public static bool ProduceOverlay = false;
 
-
-
     public GameObject MapIconPrefab;
 
-   // public GameObject HUDPrefab;
+    // public GameObject HUDPrefab;
 
-   // public GameObject FenceSplineFormer;
+    // public GameObject FenceSplineFormer;
 
     public GameObject SplineMeshFenceMasterSpawner;
 
@@ -140,11 +138,9 @@ public class TownGlobalObjectService : MonoBehaviour
 
     public Transform TownCamera;
 
-
     // this largely just handles the onscreen districts display
     void Update()
     {
-
         ProduceOverlay = options.Overlay;
 
         if (MaxCitySpreadreq < MinCitySpreadreq)
@@ -152,7 +148,6 @@ public class TownGlobalObjectService : MonoBehaviour
 
         if (LiveRendererOptions != rendererOptions)
             rendererOptions = LiveRendererOptions;
-
 
         WorldMultiplier = worldMultiplier;
         //   TownGlobalObject.CityTileModulo = CityTileInterstitialSpread;
@@ -171,13 +166,7 @@ public class TownGlobalObjectService : MonoBehaviour
                 CurrentDistricts.Clear();
             }
         }
-
-
-
     }
-
-
-
 
     // We Always do the checks.
 
@@ -196,8 +185,9 @@ public class TownGlobalObjectService : MonoBehaviour
         // Hard keep this
         WorldZero = new Vector2(ObjectToTrack.position.x, ObjectToTrack.position.z);
         WorldStart = ObjectToTrack.position;
-        WorldHomeCoord = TownGlobalObject.GetIndexAtCoord(CoordForTileFromVec3(ObjectToTrack.position));
-
+        WorldHomeCoord = TownGlobalObject.GetIndexAtCoord(
+            CoordForTileFromVec3(ObjectToTrack.position)
+        );
         //     WorldHomeCoord = new Coord(0);
 
     }
@@ -205,12 +195,8 @@ public class TownGlobalObjectService : MonoBehaviour
     // We Always do the checks.
     void OnEnable()
     {
-
         DoChecks();
-
     }
-
-
 
     void DoChecks()
     {
@@ -229,7 +215,7 @@ public class TownGlobalObjectService : MonoBehaviour
         //  {
         //   TownGlobalObject.bundles = new Dictionary<Coord, AOTABundle>();
         //   TownGlobalObject.townsData = new Dictionary<Coord, Town.Town>();
-        // 
+        //
         //  Debug.LogFormat("INITITALISED TownGlobalObject.bundles and .townsdata");
         //   }
 
@@ -248,7 +234,9 @@ public class TownGlobalObjectService : MonoBehaviour
         districtNameText.text = "";
 
         if (TownGlobalObjectService.namegenref != namegen)
-        { TownGlobalObjectService.namegenref = namegen; }
+        {
+            TownGlobalObjectService.namegenref = namegen;
+        }
 
         int allnames = 200;
 
@@ -267,11 +255,8 @@ public class TownGlobalObjectService : MonoBehaviour
                 while (TownGlobalObjectService.NamesQueue.Contains(tempname))
                 {
                     tempname = namegen.GeneratePlace();
-
                 }
                 TownGlobalObjectService.NamesQueue.Enqueue(tempname);
-
-
             }
         }
 
@@ -282,11 +267,6 @@ public class TownGlobalObjectService : MonoBehaviour
 
         if (LiveRendererOptions != rendererOptions)
             rendererOptions = LiveRendererOptions;
-
-
-     
-
-
     }
 
     public Coord ObjectToTrackPositionInTileCoords
@@ -294,9 +274,10 @@ public class TownGlobalObjectService : MonoBehaviour
         get
         {
             return new Vector3(
-          ObjectToTrack.position.x * 0.001f,
-         ObjectToTrack.position.y * 0.001f,
-         ObjectToTrack.position.z * 0.001f).ToCoord();
+                ObjectToTrack.position.x * 0.001f,
+                ObjectToTrack.position.y * 0.001f,
+                ObjectToTrack.position.z * 0.001f
+            ).ToCoord();
         }
         private set { }
     }
@@ -310,20 +291,15 @@ public class TownGlobalObjectService : MonoBehaviour
     public Coord LocalTown
     {
         get
-
         {
             Debug.Log(ObjectToTrack.position.ToCoord());
-            return TownGlobalObject.GetIndexAtCoord(
-          ObjectToTrack.position.ToCoord()
-          );
+            return TownGlobalObject.GetIndexAtCoord(ObjectToTrack.position.ToCoord());
         }
         private set { }
     }
 
-
     public static float Give1to2()
     {
-
         // var ret = 1 + Mathf.Clamp((RandomGen.Next() * (1 / int.MaxValue)), 0, 1);
 
         var ret = (float)(1 + (RandomGen.Next(10, 0) * 0.1f));
@@ -331,7 +307,6 @@ public class TownGlobalObjectService : MonoBehaviour
         // Debug.Log(ret);
 
         return ret;
-
     }
 
     public TownGlobalObjectService Instance => GetInstance();
@@ -342,12 +317,7 @@ public class TownGlobalObjectService : MonoBehaviour
     {
         return this;
     }
-
 }
-
-
-
-
 
 /// <summary>
 /// Don't do this
@@ -356,8 +326,6 @@ public static class TownHolder
 {
     private static TownGlobalObjectService instance;
 
-
-
     public static TownGlobalObjectService Instance
     {
         get
@@ -365,19 +333,15 @@ public static class TownHolder
             if (instance == null)
             {
                 instance = TownGlobalObjectService.StaticInstance;
-               
             }
 
             if (instance == null)
             {
                 instance = Component.FindObjectOfType<TownGlobalObjectService>();
-
             }
 
             return instance;
         }
-
         private set { }
-       
     }
 }

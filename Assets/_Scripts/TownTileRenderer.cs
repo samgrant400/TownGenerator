@@ -16,14 +16,18 @@ using System.Linq;
 using System.Reflection;
 using MapMagic.Nodes;
 
-public class TownTileRenderer 
+public class TownTileRenderer
 {
-    enum State {yes, noted, no};
+    enum State
+    {
+        yes,
+        noted,
+        no
+    };
 
     private const string CamMapLayer = "Map";
     private const string CamPlayerLayer = "NotMap";
     private const string CamWorldLayer = "Default";
-
 
     // ******************* BUNDLE *************
     private AOTABundle bundle;
@@ -33,8 +37,11 @@ public class TownTileRenderer
     public List<SplineSysWrapper> SplineSysBundle;
 
     public List<TransitionsListWrapper> TransitionsListBundle;
-    
-    AOTABundle GetBundle()   {        return bundle;    }
+
+    AOTABundle GetBundle()
+    {
+        return bundle;
+    }
 
     #region outputs and inputs reference
 
@@ -50,7 +57,7 @@ public class TownTileRenderer
     //[Val("Height", "Outlet")]
     //public readonly Outlet<MatrixWorld> heightOut = new Outlet<MatrixWorld>();
 
-        
+
 
     //  [Val("AreaPos", "Positions")]
     //   public readonly Outlet<TransitionsList> AreasobjsOut = new Outlet<TransitionsList>();
@@ -73,19 +80,22 @@ public class TownTileRenderer
     //    //  yield return roadsplineOut; yield return streetsplineOut;
     //    yield return splineDistrictsOut;
     //    //  yield return AreasobjsOut;
-    //    //  yield return OtherobjsOut; 
+    //    //  yield return OtherobjsOut;
     //}
 
     #endregion
 
 
-    public AOTABundle MakeATileBundleWithThisTown(Coord data_area_coords, bool CreateInitialCities, bool AppendToExistingBundle, Coord townLoc)
+    public AOTABundle MakeATileBundleWithThisTown(
+        Coord data_area_coords,
+        bool CreateInitialCities,
+        bool AppendToExistingBundle,
+        Coord townLoc
+    )
     {
-
         localitybundle = TownGlobalObject.bundles[townLoc];
-    
-        return MakeATileBundle(data_area_coords, CreateInitialCities, AppendToExistingBundle);
 
+        return MakeATileBundle(data_area_coords, CreateInitialCities, AppendToExistingBundle);
     }
 
     // make these easy to use.
@@ -99,7 +109,12 @@ public class TownTileRenderer
     /// <param name="data_area_coords">The Coords in tile space</param>
     /// <param name="stop">MM stop token, required</param>
     /// <param name="isDraft">optional, defaults to false</param>
-    public AOTABundle MakeATileBundle(Coord data_area_coords, bool CreateInitialCities, bool AppendToExistingBundle, int Patches =0)
+    public AOTABundle MakeATileBundle(
+        Coord data_area_coords,
+        bool CreateInitialCities,
+        bool AppendToExistingBundle,
+        int Patches = 0
+    )
     {
         if (Patches == 0)
             Patches = RandomGen.NextValidRandomPatchAmountFromTGOSRange();
@@ -111,65 +126,66 @@ public class TownTileRenderer
 
         // ASSUMPTIONS: HEIGHT IS 500  , TILE WIDTH IS 1000
 
-        // Create a Coord that is in 000.1f * scale - like the tiles are. 
+        // Create a Coord that is in 000.1f * scale - like the tiles are.
         // and segment it to the width of the "city spacing"
 
         // This is the local town
 
-      
+
 
         Coord locality;
 
-
-        if (CreateInitialCities) {
-          //  Debug.Log("I DID CreateInitialCities");
+        if (CreateInitialCities)
+        {
+            //  Debug.Log("I DID CreateInitialCities");
 
             locality = data_area_coords;
         }
-        else {
-
-         //   Debug.Log("I DID THIS");
-            locality = TownGlobalObject.GetIndexAtCoord(data_area_coords); }
+        else
+        {
+            //   Debug.Log("I DID THIS");
+            locality = TownGlobalObject.GetIndexAtCoord(data_area_coords);
+        }
 
         // CREATE A TOWN blank holder
         Town.Town town;
 
         if (AppendToExistingBundle)
-
-
         {
-
-         //   Town.Geom.Vector2 StoredOffset = TownGlobalObject.bundles[data_area_coords].town.mapOffset;
-
-
-           Debug.LogFormat("localitybundle coord is {0} for {1}", localitybundle.coord, localitybundle.name);
+            //   Town.Geom.Vector2 StoredOffset = TownGlobalObject.bundles[data_area_coords].town.mapOffset;
 
 
-         //   float tempX = StoredOffset.x;
-         //   float tempY = StoredOffset.y;
+            Debug.LogFormat(
+                "localitybundle coord is {0} for {1}",
+                localitybundle.coord,
+                localitybundle.name
+            );
 
-         //   float scaledX = tempX * 0.001f;
-         //   float scaledY = tempY * 0.001f;
+            //   float tempX = StoredOffset.x;
+            //   float tempY = StoredOffset.y;
 
-         ////   Debug.LogFormat("scaledX {0} : scaledY {1} for {2}:{3}   with {4}:{5}", scaledX, scaledY, StoredOffset.x, StoredOffset.y, tempX, tempY);
+            //   float scaledX = tempX * 0.001f;
+            //   float scaledY = tempY * 0.001f;
 
-         //   Coord OffsetTown = new Coord (
-         //      ( data_area_coords.x - (int)scaledX ),
-         //       ( data_area_coords.z - (int)scaledY )
-         //       );
+            ////   Debug.LogFormat("scaledX {0} : scaledY {1} for {2}:{3}   with {4}:{5}", scaledX, scaledY, StoredOffset.x, StoredOffset.y, tempX, tempY);
 
-            
+            //   Coord OffsetTown = new Coord (
+            //      ( data_area_coords.x - (int)scaledX ),
+            //       ( data_area_coords.z - (int)scaledY )
+            //       );
 
-         //   Debug.LogFormat("offset town is {0} for {1} from {2} when AppendToExistingBundle", OffsetTown, data_area_coords, StoredOffset);
 
-         //   localitybundle = TownGlobalObject.bundles[OffsetTown];
+
+            //   Debug.LogFormat("offset town is {0} for {1} from {2} when AppendToExistingBundle", OffsetTown, data_area_coords, StoredOffset);
+
+            //   localitybundle = TownGlobalObject.bundles[OffsetTown];
 
 
             town = localitybundle.town;
 
             SplineSysBundle = localitybundle.SplineSysBundle.ToList<SplineSysWrapper>();
-            TransitionsListBundle = localitybundle.TransitionsListBundle.ToList<TransitionsListWrapper>();
-
+            TransitionsListBundle =
+                localitybundle.TransitionsListBundle.ToList<TransitionsListWrapper>();
         }
         else
         {
@@ -178,17 +194,12 @@ public class TownTileRenderer
             SplineSysBundle = new List<SplineSysWrapper>();
             TransitionsListBundle = new List<TransitionsListWrapper>();
         }
-      
-
-       
-
 
         //// Home town stuff  /////////// ********
-        
-        // get town from locality it should exist. 
+
+        // get town from locality it should exist.
         if (TownGlobalObject.bundles.ContainsKey(locality) && !AppendToExistingBundle)
         {
-
             //if (CreateInitialCities)
             //{
             //    Debug.Log("****************************THIS SHOULD HAPPEN********************************************************");
@@ -200,34 +211,37 @@ public class TownTileRenderer
 
 
             localitybundle = TownGlobalObject.bundles[locality];
-
         }
         else if (!AppendToExistingBundle)
         {
+            //  if not... make one. make a bundle for the locality, attach a town to it.
 
-         //  if not... make one. make a bundle for the locality, attach a town to it.
-       
-         
+
 
             if (!CreateInitialCities)
             {
-                Debug.Log("****************************THIS SHOULD NEVER HAPPEN********************************************************");
-            }  
+                Debug.Log(
+                    "****************************THIS SHOULD NEVER HAPPEN********************************************************"
+                );
+            }
 
-          localitybundle = new AOTABundle(locality);
+            localitybundle = new AOTABundle(locality);
 
+            var lazyTown = TownGlobalObject.towns.GetOrAdd(
+                locality,
+                k =>
+                    TownGlobalObject.MakeTown(
+                        k,
+                        k.x,
+                        k.z,
+                        TownHolder.Instance.options.Seed,
+                        Patches
+                    )
+            );
 
+            var concrete = lazyTown;
 
-
-            var lazyTown = TownGlobalObject.towns.GetOrAdd(locality, k => TownGlobalObject.MakeTown(k, k.x, k.z, TownHolder.Instance.options.Seed, Patches) );
-
-           var concrete = lazyTown;
-
-          
-                    TownGlobalObject.townsData[locality] = concrete;
-               
-        
-
+            TownGlobalObject.townsData[locality] = concrete;
             //    Debug.LogFormat("created locality bundle, Is the town null? {0}", localitybundle.town == null);
 
 
@@ -243,11 +257,6 @@ public class TownTileRenderer
 
         }
 
-
-
-
-
-
         // we are not currenly 'at' the above town.
         if (!IsCoordLocality(data_area_coords) && !AppendToExistingBundle)
         {
@@ -256,18 +265,16 @@ public class TownTileRenderer
             //      Debug.Log("making data_area_coords bundle");
 
         }
-        else 
+        else
         {
-
             // We  Are at a town. and this May be our first time here
 
             bundle = localitybundle;
-          //  Debug.LogFormat("using locality bundle, {0} for {2}:{3} and CreateInitialCities is {1}", bundle.town.name, CreateInitialCities, data_area_coords.x, data_area_coords.z);
+            //  Debug.LogFormat("using locality bundle, {0} for {2}:{3} and CreateInitialCities is {1}", bundle.town.name, CreateInitialCities, data_area_coords.x, data_area_coords.z);
         }
-       
 
-
-        if (!AppendToExistingBundle) bundle.MarkIsTileDataInBundleTrue();
+        if (!AppendToExistingBundle)
+            bundle.MarkIsTileDataInBundleTrue();
 
         // By now we have two bundles that should have two sets of data in them
         /*====================================================================================
@@ -294,11 +301,10 @@ public class TownTileRenderer
 
         town = localitybundle.town;
 
-
-        // We need to override the town options on the Geometry retrival pass possibly 
+        // We need to override the town options on the Geometry retrival pass possibly
         // and Honour the townOffsetX townOffsetZ so as to get a valid tile location.
 
-        TownOptions Options =   town.Options;
+        TownOptions Options = town.Options;
 
         // opt.mapOffset = new Town.Geom.Vector2(index.x * (1000), index.z * 1000);
         //  opt.townOffset = new Town.Geom.Vector2(townOffsetX * (1000), townOffsetZ * 1000);
@@ -320,9 +326,10 @@ public class TownTileRenderer
         //   Debug.LogFormat("The offset for {0} is {1} on tile {2}", locality, Options.townOffset, data_area_coords);
 
 
-      if (!AppendToExistingBundle)   Options.townOffset = Options.mapOffset = (data_area_coords.ToVector2(1) - locality.ToVector2(1)).ToGeomVector2();        //    = Options.townOffset;
-
-
+        if (!AppendToExistingBundle)
+            Options.townOffset = Options.mapOffset = (
+                data_area_coords.ToVector2(1) - locality.ToVector2(1)
+            ).ToGeomVector2(); //    = Options.townOffset;
 
         //  Town.Geom.Vector2 WorldOffset = town.townOffset.ToTileSizeTownGeomVector2();
 
@@ -332,7 +339,7 @@ public class TownTileRenderer
 
         // Coord test = data_area_coords.ToVector2(1).ToGeomVector2().ToCoord();
 
-        // Here we setup a rect that we use to test if the tile contains a thing. 
+        // Here we setup a rect that we use to test if the tile contains a thing.
         // (pretty sure denis does this some other way like data_area_coords.active.area.Contains()) but w/e
 
         CoordRect newOffset = MakeCollisionRectWithOffset(data_area_coords);
@@ -343,7 +350,7 @@ public class TownTileRenderer
         TownGeometry geom = town.GetTownGeometry(Options);
 
         // setup and handle the onscreen UI of district names
-        #region dictrict UI            
+        #region dictrict UI
 
         // Create a holder for the simple display UI
 
@@ -372,14 +379,28 @@ public class TownTileRenderer
         #region export Road and street spline
 
 
-        Wrapper_Spline_Roads(town, WorldOffset, newOffset, out SharedSplineLineList, out SharedSplineLine, out SharedSplineLineArray, AppendToExistingBundle);
-
-
+        Wrapper_Spline_Roads(
+            town,
+            WorldOffset,
+            newOffset,
+            out SharedSplineLineList,
+            out SharedSplineLine,
+            out SharedSplineLineArray,
+            AppendToExistingBundle
+        );
 
         // ADDED TO THE BUNDLE #############
 
 
-        Wrapper_Spline_Streets(town, WorldOffset, newOffset, out SharedSplineLineList, out SharedSplineLine, out SharedSplineLineArray, AppendToExistingBundle);
+        Wrapper_Spline_Streets(
+            town,
+            WorldOffset,
+            newOffset,
+            out SharedSplineLineList,
+            out SharedSplineLine,
+            out SharedSplineLineArray,
+            AppendToExistingBundle
+        );
 
         #endregion
 
@@ -395,7 +416,6 @@ public class TownTileRenderer
         if (town.Patches.Count > 0)
         {
             Wrapper_Spline_DistrictPatchEdges(town, WorldOffset, newOffset, AppendToExistingBundle);
-
         }
 
         #endregion
@@ -449,8 +469,8 @@ public class TownTileRenderer
         #endregion
 
 
-        // ###  
-        // TODO - THIS DOES NOTHING 
+        // ###
+        // TODO - THIS DOES NOTHING
         //  SplineSys TownWallEdges is INACTIVE
 
         #region Town walls
@@ -467,8 +487,12 @@ public class TownTileRenderer
         #region Castle walls  geom.Walls and Towers
         if (geom.Walls.Count() > 0)
         {
-            Wrapper_Spline_CastleWalls_CastleWallTowers(WorldOffset, newOffset, geom, town.CityWall);
-
+            Wrapper_Spline_CastleWalls_CastleWallTowers(
+                WorldOffset,
+                newOffset,
+                geom,
+                town.CityWall
+            );
         }
 
         #endregion
@@ -479,22 +503,17 @@ public class TownTileRenderer
         #region castle locations
 
         TransitionsList castleLocOut = new TransitionsList();
-       
 
         foreach (var item in geom.Overlay.Where(x => x.HasCastle))
         {
-              
-            Town.Geom.Vector2 size = new Town.Geom.Vector2((float)(item.Center.x  * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
-                                   (float)(item.Center.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y);
+            Town.Geom.Vector2 size = new Town.Geom.Vector2(
+                (float)(item.Center.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
+                (float)(item.Center.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
+            );
 
             if (newOffset.Contains(size.ToCoord()))
             {
-
-
-                castleLocOut.Add(
-                           new Transition(
-                               size.x,
-                               size.y));
+                castleLocOut.Add(new Transition(size.x, size.y));
             }
         }
         // ADD TO THE BUNDLE #############
@@ -503,13 +522,11 @@ public class TownTileRenderer
 
         if (castleLocOut.count > 0)
         {
-
             castleLocOut.RemoveAnyBlanksInTransitionListArray();
 
-
-            TransitionsListBundle.Add(new TransitionsListWrapper(
-                   nameof(castleLocOut), castleLocOut, "castleOut"
-                   ));
+            TransitionsListBundle.Add(
+                new TransitionsListWrapper(nameof(castleLocOut), castleLocOut, "castleOut")
+            );
         }
         #endregion
 
@@ -520,16 +537,16 @@ public class TownTileRenderer
 
         CoordRect largeroffset = new CoordRect(newOffset.offset, newOffset.size * 2);
 
-
-        if (largeroffset.Contains(WorldOffset.ToCoord()  ))
+        if (largeroffset.Contains(WorldOffset.ToCoord()))
         {
-
-
             TransitionsList centerLocOut = new TransitionsList();
 
-            centerLocOut.Add(new Transition((float)town.Center.x + WorldOffset.x, (float)town.Center.y + WorldOffset.y));
-
-
+            centerLocOut.Add(
+                new Transition(
+                    (float)town.Center.x + WorldOffset.x,
+                    (float)town.Center.y + WorldOffset.y
+                )
+            );
 
             // ADD TO THE BUNDLE #############
 
@@ -537,10 +554,9 @@ public class TownTileRenderer
             //public readonly Outlet<TransitionsList> centerOut = new Outlet<TransitionsList>();
 
 
-            TransitionsListBundle.Add(new TransitionsListWrapper(
-                   nameof(centerLocOut), centerLocOut, "centerOut"
-                   ));
-
+            TransitionsListBundle.Add(
+                new TransitionsListWrapper(nameof(centerLocOut), centerLocOut, "centerOut")
+            );
         }
         // ADDED TO THE BUNDLE #############
 
@@ -557,7 +573,7 @@ public class TownTileRenderer
         #region Center of every building
 
         //    Debug.Log("Begin dstObjs");
-      
+
 
         List<Building> onsite = town.GetTownGeometry(town.Options).Buildings;
 
@@ -566,51 +582,50 @@ public class TownTileRenderer
 
         //  Debug.Log(onsite.Count+" buildings");
 
-      
+
 
         var richArea = geom.Overlay.Where(x => x.Area.ToString() == "Town.RichArea");
 
-      
         int totalRichBuildings = 0;
         int totalOtherBuildings = 0;
-        
-        
-        
-        
-        
+
         foreach (var building in onsite)
         {
-           
             var place = new Coord(
-                (int)((building.Shape.Center.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x),// town.mapOffset.x), 
-                (int)((building.Shape.Center.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y));//   town.mapOffset.y));
-          
+                (int)(
+                    (building.Shape.Center.x * TownGlobalObjectService.WorldMultiplier)
+                    + WorldOffset.x
+                ), // town.mapOffset.x),
+                (int)(
+                    (building.Shape.Center.y * TownGlobalObjectService.WorldMultiplier)
+                    + WorldOffset.y
+                )
+            ); //   town.mapOffset.y));
 
             if (newOffset.Contains(place))
             {
-               
-
                 bool match = false;
-                foreach (var item in richArea)  
-                    {
-
-                 
-
-                    var rectangle = item.Shape.GetBoundingBox()  ;
+                foreach (var item in richArea)
+                {
+                    var rectangle = item.Shape.GetBoundingBox();
                     var placeascoord = building.Shape.Center.ToCoord();
-                    CoordRect testrect = new CoordRect(new Rect(new Vector2(rectangle.Left, rectangle.Bottom), new Vector2(rectangle.Width, rectangle.Height)));
+                    CoordRect testrect = new CoordRect(
+                        new Rect(
+                            new Vector2(rectangle.Left, rectangle.Bottom),
+                            new Vector2(rectangle.Width, rectangle.Height)
+                        )
+                    );
 
                     if (testrect.Contains(placeascoord))
                     {
                         match = true;
-                      
+
                         //break;
                         goto exit;
                     }
+                }
 
-                } 
-                
-exit:                
+                exit:
 
                 if (match)
                 {
@@ -623,8 +638,6 @@ exit:
                     totalOtherBuildings += 1;
                 }
             }
-
-            
             //  Debug.LogFormat("{0} accepted for {1} with {2} | {3} | {4}", place, WorldOffset, bundle.town.townOffset, town.townOffset, newOffset);
             // place.ClampByRect(new CoordRect(new Coord((int) town.mapOffset.x, (int)town.mapOffset.y), new Coord(1000)));
 
@@ -645,16 +658,20 @@ exit:
 
 
 
-       
-        TransitionsListBundle.Add(new TransitionsListWrapper(
-          nameof(buildingLocOut),  buildingLocOut, "buildingOut"
-           ));
+
+        TransitionsListBundle.Add(
+            new TransitionsListWrapper(nameof(buildingLocOut), buildingLocOut, "buildingOut")
+        );
 
         richBuildingLocOut.RemoveAnyBlanksInTransitionListArray();
 
-        TransitionsListBundle.Add(new TransitionsListWrapper(
-         nameof(richBuildingLocOut), richBuildingLocOut, "richBuildingOut"
-          ));
+        TransitionsListBundle.Add(
+            new TransitionsListWrapper(
+                nameof(richBuildingLocOut),
+                richBuildingLocOut,
+                "richBuildingOut"
+            )
+        );
 
         #endregion
 
@@ -671,9 +688,9 @@ exit:
         {
             foreach (var item in town.Patches)
             {
-                patchLocOut.Add(new Transition(
-                    item.Center.x + WorldOffset.x,
-                    item.Center.y + WorldOffset.y));
+                patchLocOut.Add(
+                    new Transition(item.Center.x + WorldOffset.x, item.Center.y + WorldOffset.y)
+                );
             }
         }
 
@@ -681,10 +698,9 @@ exit:
 
         patchLocOut.RemoveAnyBlanksInTransitionListArray();
 
-       
-        TransitionsListBundle.Add(new TransitionsListWrapper(
-        nameof( patchLocOut),  patchLocOut, "patchOut"
-           ));
+        TransitionsListBundle.Add(
+            new TransitionsListWrapper(nameof(patchLocOut), patchLocOut, "patchOut")
+        );
 
         #endregion
 
@@ -693,7 +709,7 @@ exit:
 
         #region town.CityWall.Circumference as splines
 
-    //    Wrapper_Spline_TownWallsCircumference(town, WorldOffset);
+        //    Wrapper_Spline_TownWallsCircumference(town, WorldOffset);
 
         // ADDED TO THE BUNDLE #############
 
@@ -707,7 +723,7 @@ exit:
         //  ########### CASTLE WALL SPLINES
         #region town.Castle.Patch.Edges CIRCUMFERENCE AS WIDTH as splines
 
-  //      Wrapper_Spline_CastleWallCicumference(town, WorldOffset, newOffset);
+        //      Wrapper_Spline_CastleWallCicumference(town, WorldOffset, newOffset);
 
         // ADDED TO THE BUNDLE #############
 
@@ -719,23 +735,22 @@ exit:
 
         //// OBJECTS  stuff  /////////// ********
 
-        #region  'OtherObjects' random object 
+        #region  'OtherObjects' random object
         //    Debug.Log("Begin dstObjs");
-      //  TransitionsList otherobjsOut = new TransitionsList(town.Castle.Wall.Circumference.Count);
+        //  TransitionsList otherobjsOut = new TransitionsList(town.Castle.Wall.Circumference.Count);
 
         TransitionsList otherobjsOut = new TransitionsList();
 
-
         foreach (var item in town.Market.Edges)
         {
-
             Town.Geom.Vector2 middle = item.A - item.B;
 
-            otherobjsOut.Add(new Transition(
-                (middle.x * TownGlobalObjectService.WorldMultiplier)
-                + WorldOffset.x,
-                (middle.y * TownGlobalObjectService.WorldMultiplier) +
-                WorldOffset.y));
+            otherobjsOut.Add(
+                new Transition(
+                    (middle.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
+                    (middle.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
+                )
+            );
         }
 
         // ADD TO THE BUNDLE #############
@@ -745,9 +760,9 @@ exit:
 
         otherobjsOut.RemoveAnyBlanksInTransitionListArray();
 
-        TransitionsListBundle.Add(new TransitionsListWrapper(
-               nameof(otherobjsOut), otherobjsOut, "otherobjsOut"
-               ));
+        TransitionsListBundle.Add(
+            new TransitionsListWrapper(nameof(otherobjsOut), otherobjsOut, "otherobjsOut")
+        );
 
         // ADDED TO THE BUNDLE #############
 
@@ -776,23 +791,24 @@ exit:
             //bundle.town = null;
         }
 
-
         bundle.name = town.name;
 
         // ensure these are PER TILE. NOT PER TOWN.
         bundle.coord = data_area_coords;
-
 
         // BUNDLE SHOULD BE READY
         // ADDED TO THE BUNDLE #############
 
 
         return bundle;
-
-
     }
 
-    private void Wrapper_Spline_CastleWalls_CastleWallTowers(Town.Geom.Vector2 WorldOffset, CoordRect newOffset, TownGeometry geom, Wall passedwall)
+    private void Wrapper_Spline_CastleWalls_CastleWallTowers(
+        Town.Geom.Vector2 WorldOffset,
+        CoordRect newOffset,
+        TownGeometry geom,
+        Wall passedwall
+    )
     {
         SplineSys CastleWallEdges = new SplineSys();
 
@@ -803,9 +819,7 @@ exit:
         TransitionsList towerLocOut = new TransitionsList();
         TransitionsList gateLocOut = new TransitionsList();
 
-
-
-        var startingGates = new List<Town.Geom.Vector2>(geom.Gates.Count + passedwall.Gates.Count);// geom.Gates;
+        var startingGates = new List<Town.Geom.Vector2>(geom.Gates.Count + passedwall.Gates.Count); // geom.Gates;
 
         geom.Gates.ForEach(x => startingGates.Add(new Town.Geom.Vector2(x.x, x.y)));
 
@@ -836,24 +850,22 @@ exit:
             {
                 matched = State.yes;
 
-
-
                 replacedGates.Add(start);
-
 
                 start = start + Town.Geom.Vector2.Scale(end - start, 0.3f);
                 wall.A = start;
                 geom.Gates.Add(start);
 
-                var tot = new Town.Geom.Vector2(start.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
-                    start.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y);
+                var tot = new Town.Geom.Vector2(
+                    start.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
+                    start.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y
+                );
 
                 gatehouseNodes.Add(new Vector3(tot.x, 499.9f, tot.y));
             }
 
             if (geom.Gates.Contains(end) || matched == State.yes)
             {
-
                 matched = State.no;
 
                 if (geom.Gates.Contains(end))
@@ -865,11 +877,10 @@ exit:
                 if (geom.Gates.Contains(end))
                     geom.Gates.Add(end);
 
-
-
                 var tot = new Town.Geom.Vector2(
-                                                 end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
-                                                 end.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y);
+                    end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
+                    end.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y
+                );
 
                 var test = new Vector3(tot.x, 499.9f, tot.y);
 
@@ -880,21 +891,15 @@ exit:
                 }
                 if (Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count - 1] - test) < 40000)
                 {
-
                     gatehouseLines.Add(new Line(gatehouseNodes[gatehouseNodes.Count - 1], test));
                     gatehouseNodes.Clear();
-
                 }
                 else
                 {
                     // clear for a non match
                     gatehouseNodes.Clear();
                 }
-
-
-
             }
-
 
             //            foreach (var replacedgate in replacedGates.Distinct())
             //            {
@@ -910,42 +915,38 @@ exit:
 
 
             Vector3 vecA = new Vector3(
-                        ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, start, WorldOffset),
-                        TownGlobalObjectService.WorldHeight,
-                        ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, start, WorldOffset));
+                ScaleAndShiftToWorldX(TownGlobalObjectService.WorldMultiplier, start, WorldOffset),
+                TownGlobalObjectService.WorldHeight,
+                ScaleAndShiftToWorldZ(TownGlobalObjectService.WorldMultiplier, start, WorldOffset)
+            );
             Vector3 vecB = new Vector3(
-             ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, end, WorldOffset),
-                        TownGlobalObjectService.WorldHeight,
-                        ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, end, WorldOffset));
-
+                ScaleAndShiftToWorldX(TownGlobalObjectService.WorldMultiplier, end, WorldOffset),
+                TownGlobalObjectService.WorldHeight,
+                ScaleAndShiftToWorldZ(TownGlobalObjectService.WorldMultiplier, end, WorldOffset)
+            );
 
             lineList.Add(new Line(vecA, vecB));
-
 
             //// NOW HANDLING TOWER TRANSITIONS
 
 
 
 
-            var towA = ((start.x + ((end.x - start.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x;
+            var towA =
+                ((start.x + ((end.x - start.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier)
+                + WorldOffset.x;
 
             var towB =
-                ((start.y + ((end.y - start.y) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y;
+                ((start.y + ((end.y - start.y) * 0.5f)) * TownGlobalObjectService.WorldMultiplier)
+                + WorldOffset.y;
 
             var towLoc = new Coord((int)towA, (int)towB);
 
             if (newOffset.Contains(towLoc))
             {
                 if (!(towA == 0 && towB == 0))
-                    towerLocOut.Add(
-                         new Transition(towA, towB)
-                        );
+                    towerLocOut.Add(new Transition(towA, towB));
             }
-
         }
 
         if (lineList.Count() > 0)
@@ -973,20 +974,16 @@ exit:
 
         SplineSys GatehouseEdges = new SplineSys();
 
-
-        // List<Line> 
+        // List<Line>
         // reset temp
         lineList = new List<Line>();
-
 
         IEnumerable<Town.Geom.Edge> edges = passedwall.GetEdges();
         int loops = 0;
         matched = State.no;
 
-
         foreach (var edge in edges.Reverse())
         {
-
             var start = edge.A;
             var end = edge.B;
 
@@ -1000,12 +997,12 @@ exit:
                 edge.A = start;
                 geom.Gates.Add(start);
 
-
-                var tot = new Town.Geom.Vector2(start.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
-                    start.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y);
+                var tot = new Town.Geom.Vector2(
+                    start.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
+                    start.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y
+                );
 
                 gatehouseNodes.Add(new Vector3(tot.x, 499.9f, tot.y));
-
             }
 
             if (passedwall.Gates.Contains(end) || matched == State.yes || matched == State.noted)
@@ -1019,11 +1016,10 @@ exit:
                     edge.B = end;
                     geom.Gates.Add(end);
 
-
-
                     var tot = new Town.Geom.Vector2(
-                                                     end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
-                                                     end.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y);
+                        end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
+                        end.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y
+                    );
 
                     var test = new Vector3(tot.x, 499.9f, tot.y);
 
@@ -1032,46 +1028,61 @@ exit:
                     {
                         continue;
                     }
-                    if (Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count - 1] - test) < 990000)
+                    if (
+                        Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count - 1] - test)
+                        < 990000
+                    )
                     {
-
-                        gatehouseLines.Add(new Line(gatehouseNodes[gatehouseNodes.Count - 1], test));
+                        gatehouseLines.Add(
+                            new Line(gatehouseNodes[gatehouseNodes.Count - 1], test)
+                        );
                         gatehouseNodes.Clear();
-
                     }
                     else
                     {
                         // clear for a non match
                         gatehouseNodes.Clear();
                     }
-
                 }
                 // defer.
                 if (matched == State.yes)
                 {
                     matched = State.noted;
                 }
-
             }
-
 
             // add a line here
 
-            lineList.Add(new Line(
-            new Vector3(
+            lineList.Add(
+                new Line(
+                    new Vector3(
                         ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, start, WorldOffset),
-                       TownGlobalObjectService.WorldHeight,
+                            TownGlobalObjectService.WorldMultiplier,
+                            start,
+                            WorldOffset
+                        ),
+                        TownGlobalObjectService.WorldHeight,
                         ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, start, WorldOffset)),
-
-             new Vector3(
-             ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, end, WorldOffset),
-                       TownGlobalObjectService.WorldHeight,
+                            TownGlobalObjectService.WorldMultiplier,
+                            start,
+                            WorldOffset
+                        )
+                    ),
+                    new Vector3(
+                        ScaleAndShiftToWorldX(
+                            TownGlobalObjectService.WorldMultiplier,
+                            end,
+                            WorldOffset
+                        ),
+                        TownGlobalObjectService.WorldHeight,
                         ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, end, WorldOffset))));
-
+                            TownGlobalObjectService.WorldMultiplier,
+                            end,
+                            WorldOffset
+                        )
+                    )
+                )
+            );
 
             //    place an object - in the middle -of here
 
@@ -1079,22 +1090,20 @@ exit:
 
             //      Debug.Log("Begin StoreProduct RawAdjustedheightOut");
 
-            var towA = ((start.x + ((end.x - start.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x;
+            var towA =
+                ((start.x + ((end.x - start.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier)
+                + WorldOffset.x;
 
             var towB =
-                ((start.y + ((end.y - start.y) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y;
+                ((start.y + ((end.y - start.y) * 0.5f)) * TownGlobalObjectService.WorldMultiplier)
+                + WorldOffset.y;
 
             var towLoc = new Coord((int)towA, (int)towB);
 
-
             if (newOffset.Contains(towLoc))
-                towerLocOut.Add(
-                     new Transition(towA, towB)
-                    );
-
+                towerLocOut.Add(new Transition(towA, towB));
 
             loops += 1;
-
         }
 
         if (lineList.Count() > 0)
@@ -1104,64 +1113,69 @@ exit:
 
         TownWallEdges.Clamp(tileLocation, tileSize);
 
-
         CastleWallEdges.Clamp(tileLocation, tileSize);
 
-
-        if ( CastleWallEdges.NodesCount > 0)
+        if (CastleWallEdges.NodesCount > 0)
         {
-
             if (TownWallEdges.NodesCount > 0)
             {
                 // exclude segments in the CastleWallEdges.lines based on segments in the TownWallEdges.lines.segments arrays
 
                 List<Line> rep = (
-                    CastleWallEdges.lines.Reverse().Select(item => 
-                    new Line {segments = item.segments.Except(SegmentsToList(TownWallEdges)).ToArray()})).ToList();
-                
-                SplineSys result = new SplineSys
-                {
-                    lines = rep.ToArray()
-                };
+                    CastleWallEdges.lines
+                        .Reverse()
+                        .Select(
+                            item =>
+                                new Line
+                                {
+                                    segments = item.segments
+                                        .Except(SegmentsToList(TownWallEdges))
+                                        .ToArray()
+                                }
+                        )
+                ).ToList();
+
+                SplineSys result = new SplineSys { lines = rep.ToArray() };
 
                 // the abridged array
-                SplineSysBundle.Add(new SplineSysWrapper(
-                           nameof(CastleWallEdges), result, "castleWallEdgeSplineOut"
-                           ));
+                SplineSysBundle.Add(
+                    new SplineSysWrapper(nameof(CastleWallEdges), result, "castleWallEdgeSplineOut")
+                );
             }
             else
             {
                 // the abridged array
-                SplineSysBundle.Add(new SplineSysWrapper(
-                           nameof(CastleWallEdges), CastleWallEdges, "castleWallEdgeSplineOut"
-                           ));
+                SplineSysBundle.Add(
+                    new SplineSysWrapper(
+                        nameof(CastleWallEdges),
+                        CastleWallEdges,
+                        "castleWallEdgeSplineOut"
+                    )
+                );
             }
-       
-           
         }
 
-        if (TownWallEdges.NodesCount > 0) {
-
-
-            SplineSysBundle.Add(new SplineSysWrapper(
-           nameof(TownWallEdges), TownWallEdges, "townWallSplineOut"));
-
+        if (TownWallEdges.NodesCount > 0)
+        {
+            SplineSysBundle.Add(
+                new SplineSysWrapper(nameof(TownWallEdges), TownWallEdges, "townWallSplineOut")
+            );
         }
-
-      
 
         if (gatehouseLines.Count > 0)
         {
             GatehouseEdges.lines = gatehouseLines.ToArray<Line>();
 
-
-
             GatehouseEdges.Clamp(tileLocation, tileSize);
             if (GatehouseEdges.lines.Length > 0)
             {
-
-                SplineSysBundle.Add(new SplineSysWrapper(
-              nameof(GatehouseEdges), GatehouseEdges, "gatehouseSplineOut"));
+                SplineSysBundle.Add(
+                    new SplineSysWrapper(
+                        nameof(GatehouseEdges),
+                        GatehouseEdges,
+                        "gatehouseSplineOut"
+                    )
+                );
             }
         }
         // ADD TO THE BUNDLE #############
@@ -1173,49 +1187,35 @@ exit:
 
         foreach (var gate in startingGates)
         {
-
-
             var gateX = (gate.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x;
 
-            var gateY =
-                (gate.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y;
+            var gateY = (gate.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y;
 
             var gateLoc = new Coord((int)gateX, (int)gateY);
 
-
             if (newOffset.Contains(gateLoc))
-                gateLocOut.Add(
-                     new Transition(gateX, gateY)
-                    );
-
+                gateLocOut.Add(new Transition(gateX, gateY));
         }
 
-        // ONLY NOW STORE THESE - 
+        // ONLY NOW STORE THESE -
         // SINCE WE HAVE BOTH LISTS NOW.
 
         if (towerLocOut.count > 0)
         {
-
-
             towerLocOut.RemoveAnyBlanksInTransitionListArray();
 
-
-            TransitionsListBundle.Add(new TransitionsListWrapper(
-                       nameof(towerLocOut), towerLocOut, "towersOut"
-                       ));
+            TransitionsListBundle.Add(
+                new TransitionsListWrapper(nameof(towerLocOut), towerLocOut, "towersOut")
+            );
         }
 
         if (gateLocOut.count > 0)
         {
-
-
-
             gateLocOut.RemoveAnyBlanksInTransitionListArray();
 
-            TransitionsListBundle.Add(new TransitionsListWrapper(
-                      nameof(gateLocOut), gateLocOut, "gatesOut"
-                      ));
-
+            TransitionsListBundle.Add(
+                new TransitionsListWrapper(nameof(gateLocOut), gateLocOut, "gatesOut")
+            );
         }
         // ADDED TO THE BUNDLE #############
 
@@ -1229,7 +1229,12 @@ exit:
         return exclude;
     }
 
-    private void Wrapper_Spline_DistrictPatchEdges(Town.Town town, Town.Geom.Vector2 WorldOffset, CoordRect newOffset, bool AppendToExistingBundle)
+    private void Wrapper_Spline_DistrictPatchEdges(
+        Town.Town town,
+        Town.Geom.Vector2 WorldOffset,
+        CoordRect newOffset,
+        bool AppendToExistingBundle
+    )
     {
         SplineSys DistrictEdges = new SplineSys();
 
@@ -1255,30 +1260,44 @@ exit:
 
                     Vector3 VecA = new Vector3(
                         ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, edgeA, WorldOffset),
-                      TownGlobalObjectService.WorldHeight,
+                            TownGlobalObjectService.WorldMultiplier,
+                            edgeA,
+                            WorldOffset
+                        ),
+                        TownGlobalObjectService.WorldHeight,
                         ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, edgeA, WorldOffset));
+                            TownGlobalObjectService.WorldMultiplier,
+                            edgeA,
+                            WorldOffset
+                        )
+                    );
 
                     Vector3 VecB = new Vector3(
-                           ScaleAndShiftToWorldX(
-                               TownGlobalObjectService.WorldMultiplier, edgeB, WorldOffset),
-                             TownGlobalObjectService.WorldHeight,
-                         ScaleAndShiftToWorldZ(
-                             TownGlobalObjectService.WorldMultiplier, edgeB, WorldOffset)); ;
+                        ScaleAndShiftToWorldX(
+                            TownGlobalObjectService.WorldMultiplier,
+                            edgeB,
+                            WorldOffset
+                        ),
+                        TownGlobalObjectService.WorldHeight,
+                        ScaleAndShiftToWorldZ(
+                            TownGlobalObjectService.WorldMultiplier,
+                            edgeB,
+                            WorldOffset
+                        )
+                    );
+                    ;
                     //    CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
 
 
                     // maybe this filter will work?
-                  //  if (TwoVectorsToTileSpaceBothIsTruncated(ref VecA, ref VecB, newOffset))
-                 //   {
-                        // Now Modulo the value by tile width 1000
-                     //   VecA = new Vector3(VecA.x % 1000, VecA.y, VecA.z % 1000);
-                     //   VecB = new Vector3(VecB.x % 1000, VecB.y, VecB.z % 1000);
+                    //  if (TwoVectorsToTileSpaceBothIsTruncated(ref VecA, ref VecB, newOffset))
+                    //   {
+                    // Now Modulo the value by tile width 1000
+                    //   VecA = new Vector3(VecA.x % 1000, VecA.y, VecA.z % 1000);
+                    //   VecB = new Vector3(VecB.x % 1000, VecB.y, VecB.z % 1000);
 
-                        temp.Add(new Line(VecA, VecB));
-
-                //    }
+                    temp.Add(new Line(VecA, VecB));
+                    //    }
                 }
             }
         }
@@ -1287,7 +1306,7 @@ exit:
 
         //  RelaxOptimiseClampLineArray(DistrictEdges);
 
-       
+
 
         // ADD TO THE BUNDLE #############
 
@@ -1295,39 +1314,44 @@ exit:
         //public readonly Outlet<SplineSys> splineDistrictsOut = new Outlet<SplineSys>();
         DistrictEdges.Clamp(tileLocation, tileSize);
 
-
         ///TODO: IMPLEMENT THIS FOR ALL TYPES.
 
         if (AppendToExistingBundle)
         {
-            int locationInList = SplineSysBundle.FindIndex(x => x.outletName == "splineDistrictsOut");
+            int locationInList = SplineSysBundle.FindIndex(
+                x => x.outletName == "splineDistrictsOut"
+            );
 
             int oldlinecount = SplineSysBundle[locationInList].splineSys.lines.Length;
 
-            Debug.LogFormat("is {0} in a list of {1} for {2} with {3}  has {4} lines to begin", locationInList, SplineSysBundle.Count, town.name, bundle.name, oldlinecount);
+            Debug.LogFormat(
+                "is {0} in a list of {1} for {2} with {3}  has {4} lines to begin",
+                locationInList,
+                SplineSysBundle.Count,
+                town.name,
+                bundle.name,
+                oldlinecount
+            );
 
             SplineSysWrapper currentwrapper = SplineSysBundle[locationInList];
 
             currentwrapper.splineSys.AddLines(DistrictEdges.lines);
-       
 
-            Debug.LogFormat("{0} old lines plus {1} new lines gives {2} line", oldlinecount, DistrictEdges.lines.Length, currentwrapper.splineSys.lines.Length);
+            Debug.LogFormat(
+                "{0} old lines plus {1} new lines gives {2} line",
+                oldlinecount,
+                DistrictEdges.lines.Length,
+                currentwrapper.splineSys.lines.Length
+            );
 
             SplineSysBundle[locationInList] = currentwrapper;
         }
         else
         {
-
-            SplineSysBundle.Add(new SplineSysWrapper(
-           nameof(DistrictEdges), DistrictEdges, "splineDistrictsOut"
-           ));
-
+            SplineSysBundle.Add(
+                new SplineSysWrapper(nameof(DistrictEdges), DistrictEdges, "splineDistrictsOut")
+            );
         }
-
-
-
-
-
         //SplineSysBundle.Add(new SplineSysWrapper(
         //            nameof(DistrictEdges), DistrictEdges, "splineDistrictsOut"
         //            ));
@@ -1337,15 +1361,22 @@ exit:
         //     data.StoreProduct(splineDistrictsOut, DistrictEdges);
     }
 
-    private void Wrapper_Spline_Streets(Town.Town town, Town.Geom.Vector2 WorldOffset, CoordRect newOffset, out List<Line> RoadsplineList, out Line RoadSpline, out Line[] Roadsplines , bool AppendToExistingBundle)
+    private void Wrapper_Spline_Streets(
+        Town.Town town,
+        Town.Geom.Vector2 WorldOffset,
+        CoordRect newOffset,
+        out List<Line> RoadsplineList,
+        out Line RoadSpline,
+        out Line[] Roadsplines,
+        bool AppendToExistingBundle
+    )
     {
         SplineSys StreetsplineSys = new SplineSys();
-
 
         RoadsplineList = new List<Line>();
         // Spline mySpline = new Spline();
 
-       //  CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
+        //  CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
 
         RoadSpline = new Line();
 
@@ -1356,13 +1387,11 @@ exit:
 
         foreach (var listOfStreetNodes in town.Streets)
         {
-
             //   Debug.Log(++timeThru);
 
             //   Debug.Log("Begin street in streets");
 
             List<Vector3> mySplineNodes = new List<Vector3>();
-
 
             // float FUDGE_TO_FIT_MAP = 500f;
 
@@ -1370,28 +1399,24 @@ exit:
             if (town.Streets.Count < 1)
             {
                 Debug.LogWarning("No nodes in itemslist");
-
                 continue;
             }
 
             //    Debug.Log("Begin nodes in street");
 
-            //  We need to know which items connect to which so we will do every other item. 
+            //  We need to know which items connect to which so we will do every other item.
             // The list should always be divisible by two anyway
 
             for (int i = 0; i < listOfStreetNodes.Count - 1; i++)
             {
-
-                Vector3 nodeStart =
-              new Vector3(
-          (listOfStreetNodes[i].x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
-     // Make it almost on the ceiling                                                                           
-     499,
-          (listOfStreetNodes[i].y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
-
-          );
-
-
+                Vector3 nodeStart = new Vector3(
+                    (listOfStreetNodes[i].x * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.x,
+                    // Make it almost on the ceiling
+                    499,
+                    (listOfStreetNodes[i].y * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.y
+                );
 
                 //if (i + 1 > listOfStreetNodes.Count - 1)
                 //{
@@ -1400,12 +1425,14 @@ exit:
                 //    continue;
                 //}
 
-                Vector3 nodeEnd =
-            new Vector3(
-        (listOfStreetNodes[i + 1].x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
-   // Make it almost on the ceiling                                                                           
-   499,
-        (listOfStreetNodes[i + 1].y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y);
+                Vector3 nodeEnd = new Vector3(
+                    (listOfStreetNodes[i + 1].x * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.x,
+                    // Make it almost on the ceiling
+                    499,
+                    (listOfStreetNodes[i + 1].y * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.y
+                );
 
                 //    Debug.LogFormat("ORIG: {0},{1} to {2}{3} ", listOfRoadNodes[i].x, listOfRoadNodes[i].y, listOfRoadNodes[i + 1].x, listOfRoadNodes[i + 1].y);
 
@@ -1416,15 +1443,14 @@ exit:
 
 
 
-                       // if (TwoVectorsToTileSpaceBothIsTruncated(ref nodeStart, ref nodeEnd, newOffset))
-                    //   {
-                 //   Debug.LogFormat("ACCEPTED from {0} to {1} in a {2}:{3} offset rect FOR STREETS", nodeStart, nodeEnd, newOffset.offset.x, newOffset.offset.z);
-                    mySplineNodes.Add(nodeStart);
+                // if (TwoVectorsToTileSpaceBothIsTruncated(ref nodeStart, ref nodeEnd, newOffset))
+                //   {
+                //   Debug.LogFormat("ACCEPTED from {0} to {1} in a {2}:{3} offset rect FOR STREETS", nodeStart, nodeEnd, newOffset.offset.x, newOffset.offset.z);
+                mySplineNodes.Add(nodeStart);
                 mySplineNodes.Add(nodeEnd);
-                }
-                     
+            }
 
-           // }
+            // }
 
 
 
@@ -1441,28 +1467,23 @@ exit:
 
             for (int i = 0; i < nodesMade.Length - 1; i++)
             {
-                Den.Tools.Splines.Line current = new Den.Tools.Splines.Line(nodesMade[i], nodesMade[i + 1]);
+                Den.Tools.Splines.Line current = new Den.Tools.Splines.Line(
+                    nodesMade[i],
+                    nodesMade[i + 1]
+                );
 
                 RoadsplineList.Add(current);
-
-
             }
-
-
-
         }
-
-
 
         //   Debug.Log("Begin make array from SplineList");
         Roadsplines = RoadsplineList.ToArray<Line>();
 
         if (Roadsplines.Length < 1)
         {
-          //s  Debug.Log("Zero Roadsplines Splines");
+            //s  Debug.Log("Zero Roadsplines Splines");
 
             RoadSpline = new Line(new Vector3(509f, .2f, 505f), new Vector3(505f, .2f, 509f));
-
 
             Roadsplines = new Line[] { RoadSpline };
         }
@@ -1477,10 +1498,7 @@ exit:
         foreach (var spli in Roadsplines)
         {
             StreetsplineSys.AddLine(spli);
-
         }
-
-
 
         //      [Val("Streets", "Spline")]
         //public readonly   Outlet<SplineSys> streetsplineOut = new Outlet<SplineSys>();
@@ -1498,35 +1516,44 @@ exit:
         {
             int locationInList = SplineSysBundle.FindIndex(x => x.outletName == "streetsplineOut");
 
-            Debug.LogFormat("is {0} in a list of {1} for {2} with {3}", locationInList, SplineSysBundle.Count, town.name, bundle.name);
+            Debug.LogFormat(
+                "is {0} in a list of {1} for {2} with {3}",
+                locationInList,
+                SplineSysBundle.Count,
+                town.name,
+                bundle.name
+            );
 
             SplineSysWrapper currentwrapper = SplineSysBundle[locationInList];
 
             currentwrapper.splineSys.AddLines(Roadsplines);
 
             SplineSysBundle[locationInList] = currentwrapper;
-
         }
         else
         {
-
-            SplineSysBundle.Add(new SplineSysWrapper(
-           nameof(StreetsplineSys), StreetsplineSys, "streetsplineOut"
-           ));
-
+            SplineSysBundle.Add(
+                new SplineSysWrapper(nameof(StreetsplineSys), StreetsplineSys, "streetsplineOut")
+            );
         }
-
         // ADDED TO THE BUNDLE #############
     }
 
-    private void Wrapper_Spline_Roads(Town.Town town, Town.Geom.Vector2 WorldOffset, CoordRect newOffset, out List<Line> splineList, out Line mySpline, out Line[] splines, bool AppendToExistingBundle)
+    private void Wrapper_Spline_Roads(
+        Town.Town town,
+        Town.Geom.Vector2 WorldOffset,
+        CoordRect newOffset,
+        out List<Line> splineList,
+        out Line mySpline,
+        out Line[] splines,
+        bool AppendToExistingBundle
+    )
     {
         SplineSys RoadsplineSys = new SplineSys();
 
         TransitionsList RoadEnd = new TransitionsList();
 
         TransitionsList Terminus = new TransitionsList();
-
 
         //   Debug.LogFormat("{0} is {1}", nameof(town.Roads), town.Roads.Count);
         //   Debug.LogFormat("{0} is {1}", nameof(town.Streets), town.Streets.Count);
@@ -1543,7 +1570,7 @@ exit:
         splineList = new List<Line>();
         // Spline mySpline = new Spline();
 
-       //    CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
+        //    CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
 
         mySpline = new Line();
         if (town.Roads.Count < 1)
@@ -1560,16 +1587,15 @@ exit:
             Town.Geom.Vector2 takelast = listOfRoadNodes.Last();
 
             Vector3 terminal = new Vector3(
-                (takelast.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,                                                                      
+                (takelast.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
                 499f,
                 (takelast.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
-          );
+            );
 
             if (newOffset.Contains(terminal))
             {
-                Terminus.Add( new Transition(terminal.x, terminal.y, terminal.z));
+                Terminus.Add(new Transition(terminal.x, terminal.y, terminal.z));
             }
-
 
             //   Debug.Log(++timeThru);
 
@@ -1577,37 +1603,32 @@ exit:
 
             List<Vector3> mySplineNodes = new List<Vector3>();
 
-
             // float FUDGE_TO_FIT_MAP = 500f;
 
 
             if (listOfRoadNodes.Count < 1)
             {
                 Debug.LogWarning("No nodes in itemslist");
-
                 continue;
             }
 
             //    Debug.Log("Begin nodes in street");
 
-            //  We need to know which items connect to which so we will do every other item. 
+            //  We need to know which items connect to which so we will do every other item.
             // The list should always be divisible by two anyway
 
             // Skip the first and wind backwards effectively.
 
             for (int i = 1; i < listOfRoadNodes.Count; i += 1)
             {
-
-                Vector3 nodeStart =
-              new Vector3(
-          (listOfRoadNodes[i-1].x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
-     // Make it almost on the ceiling                                                                           
-     499,
-          (listOfRoadNodes[i-1].y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
-
-          );
-
-
+                Vector3 nodeStart = new Vector3(
+                    (listOfRoadNodes[i - 1].x * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.x,
+                    // Make it almost on the ceiling
+                    499,
+                    (listOfRoadNodes[i - 1].y * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.y
+                );
 
                 //if (i + 1 > listOfRoadNodes.Count - 1)
                 //{
@@ -1616,12 +1637,13 @@ exit:
                 //    continue;
                 //}
 
-                Vector3 nodeEnd =
-            new Vector3(
-        (listOfRoadNodes[i ].x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
-   // Make it almost on the ceiling                                                                           
-   499,
-        (listOfRoadNodes[i ].y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y);
+                Vector3 nodeEnd = new Vector3(
+                    (listOfRoadNodes[i].x * TownGlobalObjectService.WorldMultiplier)
+                        + WorldOffset.x,
+                    // Make it almost on the ceiling
+                    499,
+                    (listOfRoadNodes[i].y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
+                );
 
                 //    Debug.LogFormat("ORIG: {0},{1} to {2}{3} ", listOfRoadNodes[i].x, listOfRoadNodes[i].y, listOfRoadNodes[i + 1].x, listOfRoadNodes[i + 1].y);
 
@@ -1632,24 +1654,20 @@ exit:
 
 
 
-                         // if (TwoVectorsToTileSpaceBothIsTruncated(ref nodeStart, ref nodeEnd, newOffset))
-                       //   {
-                    //  Debug.LogFormat("ACCEPTED from {0} to {1} in a {2}:{3} offset rect", nodeStart, nodeEnd, newOffset.offset.x, newOffset.offset.z);
-               //if (!mySplineNodes.Contains(nodeStart))
-                        if (i==1)                        
+                // if (TwoVectorsToTileSpaceBothIsTruncated(ref nodeStart, ref nodeEnd, newOffset))
+                //   {
+                //  Debug.LogFormat("ACCEPTED from {0} to {1} in a {2}:{3} offset rect", nodeStart, nodeEnd, newOffset.offset.x, newOffset.offset.z);
+                //if (!mySplineNodes.Contains(nodeStart))
+                if (i == 1)
                     mySplineNodes.Add(nodeStart);
                 //if(!mySplineNodes.Contains(nodeEnd))
-                     mySplineNodes.Add(nodeEnd);
-                    //  }
+                mySplineNodes.Add(nodeEnd);
+                //  }
 
 
 
 
             }
-
-
-
-
 
             Vector3[] nodesMade = mySplineNodes.ToArray<Vector3>();
 
@@ -1661,20 +1679,20 @@ exit:
 
 
 
-            for (int i = 1; i < nodesMade.Length ; i++)
+            for (int i = 1; i < nodesMade.Length; i++)
             {
-             //   if (TwoVectorsToTileSpaceBothIsTruncated(ref nodesMade[i - 1], ref nodesMade[i], newOffset))
-             //   {
-                    Den.Tools.Splines.Line current = new Den.Tools.Splines.Line(nodesMade[i - 1], nodesMade[i]);
-                    //  if (current.segments[0].StartEndLength > 0)
-                    //   {
-                    splineList.Add(current);
-                    //  }
-              //  }
+                //   if (TwoVectorsToTileSpaceBothIsTruncated(ref nodesMade[i - 1], ref nodesMade[i], newOffset))
+                //   {
+                Den.Tools.Splines.Line current = new Den.Tools.Splines.Line(
+                    nodesMade[i - 1],
+                    nodesMade[i]
+                );
+                //  if (current.segments[0].StartEndLength > 0)
+                //   {
+                splineList.Add(current);
+                //  }
+                //  }
             }
-
-
-
         }
 
         bool skipRoadEnd = false;
@@ -1688,7 +1706,6 @@ exit:
             //  Debug.Log("Zero road Splines");
 
             mySpline = new Line(new Vector3(509f, .2f, 505f), new Vector3(509f, .2f, 505f));
-
 
             splines = new Line[] { mySpline };
         }
@@ -1704,20 +1721,16 @@ exit:
 
 
         if (!skipRoadEnd)
-        foreach (var spli in splines)
-        {
+            foreach (var spli in splines)
+            {
+                Transition end = new Transition(
+                    spli.GetNodePos(spli.NodesCount - 1).x,
+                    spli.GetNodePos(spli.NodesCount - 1).z
+                );
+                RoadEnd.Add(end);
 
-            Transition end = new Transition(spli.GetNodePos(spli.NodesCount - 1).x, spli.GetNodePos(spli.NodesCount - 1).z);
-            RoadEnd.Add(end);
-
-
-            RoadsplineSys.AddLine(spli);
-
-        }
-
-
-
-
+                RoadsplineSys.AddLine(spli);
+            }
 
         //  ExtractRoadwayToRefSplineSys(town.Roads, data_area_coords, ref RoadsplineSys);  // Outlet<SplineSys> roadsplineOut
 
@@ -1733,21 +1746,19 @@ exit:
         {
             int locationInList = SplineSysBundle.FindIndex(x => x.outletName == "roadsplineOut");
 
-          //  Debug.LogFormat("is {0} in a list of {1} for {2} with {3}", locationInList, SplineSysBundle.Count, town.name, bundle.name);
+            //  Debug.LogFormat("is {0} in a list of {1} for {2} with {3}", locationInList, SplineSysBundle.Count, town.name, bundle.name);
 
             SplineSysWrapper currentwrapper = SplineSysBundle[locationInList];
 
             currentwrapper.splineSys.AddLines(splines);
 
             SplineSysBundle[locationInList] = currentwrapper;
-
         }
         else
         {
-
-            SplineSysBundle.Add(new SplineSysWrapper(
-           nameof(RoadsplineSys), RoadsplineSys, "roadsplineOut"
-           ));
+            SplineSysBundle.Add(
+                new SplineSysWrapper(nameof(RoadsplineSys), RoadsplineSys, "roadsplineOut")
+            );
 
             TransitionsList roadTrunk = new TransitionsList();
             if (!skipRoadEnd)
@@ -1763,20 +1774,16 @@ exit:
 
             }
 
-
-
-            TransitionsListBundle.Add(new TransitionsListWrapper(
-            nameof(RoadEnd), RoadEnd, "roadEndOut"
-            ));
+            TransitionsListBundle.Add(
+                new TransitionsListWrapper(nameof(RoadEnd), RoadEnd, "roadEndOut")
+            );
 
             Terminus.RemoveAnyBlanksInTransitionListArray();
 
-            TransitionsListBundle.Add(new TransitionsListWrapper(
-           nameof(Terminus), Terminus, "terminusOut"
-           ));
-
+            TransitionsListBundle.Add(
+                new TransitionsListWrapper(nameof(Terminus), Terminus, "terminusOut")
+            );
         }
-
         //if(!town.Terminus.Contains(Terminus) )
         //town.Terminus.Add(Terminus);
 
@@ -1787,7 +1794,10 @@ exit:
     /// </summary>
     /// <param name="town"></param>
     /// <param name="WorldOffset"></param>
-    private void Wrapper_Spline_TownWallsCircumference(Town.Town town, Town.Geom.Vector2 WorldOffset)
+    private void Wrapper_Spline_TownWallsCircumference(
+        Town.Town town,
+        Town.Geom.Vector2 WorldOffset
+    )
     {
         SplineSys townWallSplinesSys = new SplineSys();
         //    Debug.Log("Begin dstObjs");
@@ -1796,30 +1806,29 @@ exit:
         //   if (!isDraft)
         if (true)
         {
-
             for (int i = 0; i < town.CityWall.Circumference.Count - 1; i = i + 2)
             {
+                List<Town.Geom.Vector2> tempwalls = new List<Town.Geom.Vector2>(
+                    town.CityWall.Circumference
+                );
 
-                List<Town.Geom.Vector2> tempwalls = new List<Town.Geom.Vector2>(town.CityWall.Circumference);
-
-                townWallSplines.Add(new Line(
-                    new Vector2(
-                        (tempwalls[i].x * TownGlobalObjectService.WorldMultiplier)
-                        + WorldOffset.x,
-                        (tempwalls[i].y * TownGlobalObjectService.WorldMultiplier)
-                        + WorldOffset.y),
-
-                    new Vector2(
-                        (tempwalls[i + 1].x * TownGlobalObjectService.WorldMultiplier)
-                        + WorldOffset.x,
-                        (tempwalls[i + 1].y * TownGlobalObjectService.WorldMultiplier)
-                        + WorldOffset.y)
-                    ));
-
-
+                townWallSplines.Add(
+                    new Line(
+                        new Vector2(
+                            (tempwalls[i].x * TownGlobalObjectService.WorldMultiplier)
+                                + WorldOffset.x,
+                            (tempwalls[i].y * TownGlobalObjectService.WorldMultiplier)
+                                + WorldOffset.y
+                        ),
+                        new Vector2(
+                            (tempwalls[i + 1].x * TownGlobalObjectService.WorldMultiplier)
+                                + WorldOffset.x,
+                            (tempwalls[i + 1].y * TownGlobalObjectService.WorldMultiplier)
+                                + WorldOffset.y
+                        )
+                    )
+                );
             }
-
-
             //foreach (var item in town.CityWall.Circumference)
             //{
 
@@ -1829,7 +1838,6 @@ exit:
 
         townWallSplinesSys.lines = townWallSplines.ToArray<Line>();
 
-
         // ADD TO THE BUNDLE #############
 
         //        [Val("TownWall", "Spline")]
@@ -1837,9 +1845,13 @@ exit:
 
         townWallSplinesSys.Clamp(tileLocation, tileSize);
 
-        SplineSysBundle.Add(new SplineSysWrapper(
-               nameof(townWallSplinesSys), townWallSplinesSys, "townWallSplineOut"
-               ));
+        SplineSysBundle.Add(
+            new SplineSysWrapper(
+                nameof(townWallSplinesSys),
+                townWallSplinesSys,
+                "townWallSplineOut"
+            )
+        );
     }
 
     /// <summary>
@@ -1848,47 +1860,38 @@ exit:
     /// <param name="town"></param>
     /// <param name="WorldOffset"></param>
     /// <param name="newOffset"></param>
-    private void Wrapper_Spline_CastleWallCicumference(Town.Town town, Town.Geom.Vector2 WorldOffset, CoordRect newOffset)
+    private void Wrapper_Spline_CastleWallCicumference(
+        Town.Town town,
+        Town.Geom.Vector2 WorldOffset,
+        CoordRect newOffset
+    )
     {
         SplineSys castleWallSplinesSys = new SplineSys();
         //    Debug.Log("Begin dstObjs");
         List<Line> castleWallSplines = new List<Line>(town.Castle.Patch.Edges.Count);
 
-
-
         for (int i = 0; i < town.Castle.Patch.Edges.Count - 1; i++)
         {
-
-            List<Town.Geom.Edge> tempcastlewalls = new List<Town.Geom.Edge>(town.Castle.Patch.Edges);
+            List<Town.Geom.Edge> tempcastlewalls = new List<Town.Geom.Edge>(
+                town.Castle.Patch.Edges
+            );
 
             Vector3 A = new Vector3(
-                    (tempcastlewalls[i].A.x * TownGlobalObjectService.WorldMultiplier)
-                    + WorldOffset.x,
-                    TownGlobalObjectService.WorldHeight,
-                    (tempcastlewalls[i].A.y * TownGlobalObjectService.WorldMultiplier)
-                    + WorldOffset.y);
+                (tempcastlewalls[i].A.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
+                TownGlobalObjectService.WorldHeight,
+                (tempcastlewalls[i].A.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
+            );
 
             Vector3 B = new Vector3(
-                    (tempcastlewalls[i].B.x * TownGlobalObjectService.WorldMultiplier)
-                    + WorldOffset.x,
-                    TownGlobalObjectService.WorldHeight,
-                    (tempcastlewalls[i].B.y * TownGlobalObjectService.WorldMultiplier)
-                    + WorldOffset.y);
+                (tempcastlewalls[i].B.x * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x,
+                TownGlobalObjectService.WorldHeight,
+                (tempcastlewalls[i].B.y * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y
+            );
 
             //    CoordRect newOffset = MakeCollisionRectWithOffset(WorldOffset);
 
             if (TwoVectorsToTileSpaceBothIsTruncated(ref A, ref B, newOffset))
-                castleWallSplines.Add(new Line(
-                    new Vector2(
-                        A.x,
-                         A.z),
-
-                    new Vector2(
-                       B.x,
-                        B.z
-                    )));
-
-
+                castleWallSplines.Add(new Line(new Vector2(A.x, A.z), new Vector2(B.x, B.z)));
         }
 
         castleWallSplinesSys.lines = castleWallSplines.ToArray<Line>();
@@ -1899,20 +1902,27 @@ exit:
         //public readonly Outlet<SplineSys> castleWallSplineOut = new Outlet<SplineSys>();
 
 
-        SplineSysBundle.Add(new SplineSysWrapper(
-               nameof(castleWallSplinesSys), castleWallSplinesSys, "castleWallSplineOut"
-               ));
+        SplineSysBundle.Add(
+            new SplineSysWrapper(
+                nameof(castleWallSplinesSys),
+                castleWallSplinesSys,
+                "castleWallSplineOut"
+            )
+        );
     }
-    
+
     /// <summary>
     /// Not Used
     /// </summary>
     /// <param name="WorldOffset"></param>
     /// <param name="wall"></param>
     /// <param name="newOffset"></param>
-    private void Wrapper_Spline_TownWalls(Town.Geom.Vector2 WorldOffset, Wall wall, CoordRect newOffset)
+    private void Wrapper_Spline_TownWalls(
+        Town.Geom.Vector2 WorldOffset,
+        Wall wall,
+        CoordRect newOffset
+    )
     {
-
         SplineSys TownWallEdges = new SplineSys();
 
         List<Line> temp = new List<Line>();
@@ -1930,30 +1940,41 @@ exit:
 
         foreach (var edge in wall.GetEdges())
         {
-
-
-
             var start = edge.A;
             var end = edge.B;
 
-
             // add a line here
 
-            temp.Add(new Line(
-            new Vector3(
+            temp.Add(
+                new Line(
+                    new Vector3(
                         ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, start, WorldOffset),
-                       TownGlobalObjectService.WorldHeight,
+                            TownGlobalObjectService.WorldMultiplier,
+                            start,
+                            WorldOffset
+                        ),
+                        TownGlobalObjectService.WorldHeight,
                         ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, start, WorldOffset)),
-
-             new Vector3(
-             ScaleAndShiftToWorldX(
-                            TownGlobalObjectService.WorldMultiplier, end, WorldOffset),
-                       TownGlobalObjectService.WorldHeight,
+                            TownGlobalObjectService.WorldMultiplier,
+                            start,
+                            WorldOffset
+                        )
+                    ),
+                    new Vector3(
+                        ScaleAndShiftToWorldX(
+                            TownGlobalObjectService.WorldMultiplier,
+                            end,
+                            WorldOffset
+                        ),
+                        TownGlobalObjectService.WorldHeight,
                         ScaleAndShiftToWorldZ(
-                            TownGlobalObjectService.WorldMultiplier, end, WorldOffset))));
-
+                            TownGlobalObjectService.WorldMultiplier,
+                            end,
+                            WorldOffset
+                        )
+                    )
+                )
+            );
 
             //    place an object - in the middle -of here
 
@@ -1965,18 +1986,20 @@ exit:
             Vector3 testVecEnd = new Vector3(end.x, 250f, end.y);
 
             if (TwoVectorsToTileSpaceBothIsTruncated(ref testVecStart, ref testVecEnd, newOffset))
-
             //  if (TwoVectorsToTileSpaceBothIsTruncated(new Vector3(start.x,250f,start.y), new Vector3(end.x, 250f, end.y), newOffset))
             {
                 towerLocOut.Add(
-                         new Transition(
-                             ((testVecStart.x + ((testVecEnd.x - testVecStart.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier)
-                              + WorldOffset.x,
-
-                              ((testVecStart.z + ((testVecEnd.z - testVecStart.z) * 0.5f)) * TownGlobalObjectService.WorldMultiplier)
-                               + WorldOffset.y)
-
-                               );
+                    new Transition(
+                        (
+                            (testVecStart.x + ((testVecEnd.x - testVecStart.x) * 0.5f))
+                            * TownGlobalObjectService.WorldMultiplier
+                        ) + WorldOffset.x,
+                        (
+                            (testVecStart.z + ((testVecEnd.z - testVecStart.z) * 0.5f))
+                            * TownGlobalObjectService.WorldMultiplier
+                        ) + WorldOffset.y
+                    )
+                );
             }
         }
 
@@ -1991,12 +2014,11 @@ exit:
 
         TownWallEdges.Clamp(tileLocation, tileSize);
 
-        SplineSysBundle.Add(new SplineSysWrapper(
-       nameof(TownWallEdges), TownWallEdges, "townWallSplineOut"));
-
-
+        SplineSysBundle.Add(
+            new SplineSysWrapper(nameof(TownWallEdges), TownWallEdges, "townWallSplineOut")
+        );
     }
-    
+
     private static CoordRect MakeCollisionRectWithOffset(Town.Geom.Vector2 currentOffset)
     {
         return new CoordRect(currentOffset.ToCoord(), new Coord(1000, 1000));
@@ -2009,7 +2031,8 @@ exit:
 
     private static bool IsCoordLocality(Coord data_area_coords)
     {
-        return data_area_coords == TownGlobalObject.GetIndexAtCoord(data_area_coords); ;
+        return data_area_coords == TownGlobalObject.GetIndexAtCoord(data_area_coords);
+        ;
     }
 
     private static void RelaxOptimiseClampLineArray(SplineSys DistrictEdges)
@@ -2017,7 +2040,6 @@ exit:
         var newlines = new ArraySegment<Line>(DistrictEdges.lines, 0, (DistrictEdges.lines.Length));
 
         DistrictEdges.lines = RelaxOptimiseClampLinesInArraySegmentToArray(newlines);
-     
     }
 
     private static Line[] RelaxOptimiseClampLinesInArraySegmentToArray(ArraySegment<Line> newlines)
@@ -2026,9 +2048,8 @@ exit:
         {
             spline.Relax(0.5f, (int)1);
             spline.Optimize(1 * 0.5f);
-
             // World Tile Size / World Height.
-        //    spline.Clamped(Vector3.zero, new Vector3(1000, 500, 1000));
+            //    spline.Clamped(Vector3.zero, new Vector3(1000, 500, 1000));
         }
         return newlines.ToArray<Line>();
     }
@@ -2045,7 +2066,13 @@ exit:
     //    }
     //}
 
-    private static Vector3[] GetLineVertices(float startX, float endX, float startY, float endY, float thickness = 1f)
+    private static Vector3[] GetLineVertices(
+        float startX,
+        float endX,
+        float startY,
+        float endY,
+        float thickness = 1f
+    )
     {
         var p1 = new Vector3(startX, 0, startY);
         var p2 = new Vector3(endX, 0, endY);
@@ -2056,34 +2083,34 @@ exit:
         var p4 = p1 + halfThickness + dir / 2;
         p1 = p1 - halfThickness + dir / 2;
         p2 = p2 - halfThickness;
-        return new Vector3[]
-        {
-                p1,
-                p2,
-                p3,
-                p4
-        };
+        return new Vector3[] { p1, p2, p3, p4 };
     }
 
     private static Vector3[] GetVertices(int width, int length, float offsetX, float offsetZ)
     {
         return new Vector3[]
         {
-                new Vector3 (offsetX, 0, offsetZ),
-                    new Vector3 (offsetX, 0, offsetZ + length),
-                    new Vector3 (offsetX + width, 0, offsetZ + length),
-                    new Vector3 (offsetX + width, 0, offsetZ)
+            new Vector3(offsetX, 0, offsetZ),
+            new Vector3(offsetX, 0, offsetZ + length),
+            new Vector3(offsetX + width, 0, offsetZ + length),
+            new Vector3(offsetX + width, 0, offsetZ)
         };
     }
 
-
-    private static float ScaleAndShiftToWorldZ(float worldMultiplier, Town.Geom.Vector2 edgeA, Town.Geom.Vector2 currentOffset)
+    private static float ScaleAndShiftToWorldZ(
+        float worldMultiplier,
+        Town.Geom.Vector2 edgeA,
+        Town.Geom.Vector2 currentOffset
+    )
     {
-
         return (edgeA.y * worldMultiplier) + currentOffset.y;
     }
 
-    private static float ScaleAndShiftToWorldX(float worldMultiplier, Town.Geom.Vector2 edgeA, Town.Geom.Vector2 currentOffset)
+    private static float ScaleAndShiftToWorldX(
+        float worldMultiplier,
+        Town.Geom.Vector2 edgeA,
+        Town.Geom.Vector2 currentOffset
+    )
     {
         return (edgeA.x * worldMultiplier) + currentOffset.x;
     }
@@ -2096,43 +2123,43 @@ exit:
     /// <param name="end">the other edge</param>
     /// <param name="coordTestRect">must be a 0,0 -> 1000,1000 in size rect offset as you wish</param>
     /// <returns></returns>
-    private static bool TwoVectorsToTileSpaceBothIsTruncated( ref   Vector3 start,
-                                                              ref   Vector3 end,
-                                                                Den.Tools.CoordRect coordTestRect) {
-
+    private static bool TwoVectorsToTileSpaceBothIsTruncated(
+        ref Vector3 start,
+        ref Vector3 end,
+        Den.Tools.CoordRect coordTestRect
+    )
+    {
         //  if (!data.area.active.Contains(trn.pos)) continue; //skipping out-of-active area
 
         //// TODO: FIX THIS.  We cant tile merge until we do.
-          return true;
+        return true;
 
-       // Den.Tools.CoordRect coordTestRectTemp = new CoordRect(coordTestRect.offset, coordTestRect.size);
+        // Den.Tools.CoordRect coordTestRectTemp = new CoordRect(coordTestRect.offset, coordTestRect.size);
 
 
         bool processBothRecords = true;
 
-        if (coordTestRect == null) {
+        if (coordTestRect == null)
+        {
             Debug.Log("default coordTestRect");
             coordTestRect = new CoordRect(Coord.zero, new Coord(1000));
         }
         Coord started = start.ToCoord(); // new Coord((int)start.x, (int)start.z);
         Coord ended = end.ToCoord(); // new Coord((int)end.x, (int)end.z);
 
-
         /// Fake holder for the tests.
-        //  Den.Tools.CoordRect coordTestRect = new CoordRect(Coord.zero, new Coord(1000));  
+        //  Den.Tools.CoordRect coordTestRect = new CoordRect(Coord.zero, new Coord(1000));
         // should be 0,0 -> 1000,1000
 
 
         if (!coordTestRect.Contains(started) && !coordTestRect.Contains(ended))
         {
             //  Debug.LogFormat("{0}<- and {1}<- rejected from {2} and {3} with a {4} container", started, ended, start, end , coordTestRect.offset);
-           /// processBothRecords = false;
+            /// processBothRecords = false;
             return false;
         }
-        else
-        if (!coordTestRect.Contains(started))
+        else if (!coordTestRect.Contains(started))
         {
-
             // started.ClampByRect(coordTestRect);
 
 
@@ -2143,15 +2170,12 @@ exit:
             started = TrimToRect(coordTestRect, started);
             start = started.ToCeilVector3();
         }
-        else
-        if (!coordTestRect.Contains(ended))
+        else if (!coordTestRect.Contains(ended))
         {
-        //    Debug.LogFormat("{0}<- and {1} rejected from {2}<- and {3}", started, ended, start, end);
+            //    Debug.LogFormat("{0}<- and {1} rejected from {2}<- and {3}", started, ended, start, end);
 
             ended = TrimToRect(coordTestRect, ended);
             end = ended.ToCeilVector3();
-            
-
             //  ended.ClampByRect(coordTestRect);
             //    rebuild the Vector3
             //    end = ended.ToCeilVector3(); // new Vector3(ended.x, 499, ended.z);
@@ -2161,21 +2185,17 @@ exit:
             // This should be a FULLY matching record
         }
 
-
         // started.ClampByRect(coordTestRect);
-       // new Vector3(started.x, 499, started.z);
+        // new Vector3(started.x, 499, started.z);
 
-       // ended.ClampByRect(coordTestRect);
+        // ended.ClampByRect(coordTestRect);
         // rebuild the Vector3
         // new Vector3(ended.x, 499, ended.z);
 
         //  by here we can ignore anything that doesn't match
-      //  Debug.LogFormat("{0}<- and {1}<- {6} both {2}<- and {3}<- with a {4} container of size {5}", started, ended, start, end, coordTestRect.offset, coordTestRect.size, (processBothRecords) ? "accepted": "rejected");
+        //  Debug.LogFormat("{0}<- and {1}<- {6} both {2}<- and {3}<- with a {4} container of size {5}", started, ended, start, end, coordTestRect.offset, coordTestRect.size, (processBothRecords) ? "accepted": "rejected");
 
         return processBothRecords;
-     
-
-
     }
 
     // because for some reason mapMagic does some ugly end thing... lets try spreading it over....
@@ -2204,98 +2224,92 @@ exit:
     }
 
     private static void ExtractRoadwayToRefSplineSys(
-        List<List<Town.Geom.Vector2>> ListOfRoadways, 
-        Coord PassedWorldOffest, 
-        ref SplineSys splineSys)
+        List<List<Town.Geom.Vector2>> ListOfRoadways,
+        Coord PassedWorldOffest,
+        ref SplineSys splineSys
+    )
     {
         //Spline[] splines = SplineMatrixOps.Isoline(matrixHeightIn, curLevel);
 
         List<Den.Tools.Splines.Line> splineList = new List<Line>();
         // Spline mySpline = new Spline();
 
-     //   CoordRect newOffset = MakeCollisionRectWithOffset(PassedWorldOffest);
+        //   CoordRect newOffset = MakeCollisionRectWithOffset(PassedWorldOffest);
 
         Line mySpline = new Line();
 
         if (ListOfRoadways.Count < 1)
             Debug.LogWarning("No road in roads");
 
-       // int timeThru = 0;
+        // int timeThru = 0;
 
         foreach (var listOfRoadNodes in ListOfRoadways)
         {
-
-         //   Debug.Log(++timeThru);
+            //   Debug.Log(++timeThru);
 
             //   Debug.Log("Begin street in streets");
 
             List<Vector3> mySplineNodes = new List<Vector3>();
 
-
-           // float FUDGE_TO_FIT_MAP = 500f;
+            // float FUDGE_TO_FIT_MAP = 500f;
 
 
             if (listOfRoadNodes.Count < 1)
             {
                 Debug.LogWarning("No nodes in itemslist");
-
                 continue;
             }
 
             //    Debug.Log("Begin nodes in street");
 
-            //  We need to know which items connect to which so we will do every other item. 
+            //  We need to know which items connect to which so we will do every other item.
             // The list should always be divisible by two anyway
 
-            for (int i = 0; i < listOfRoadNodes.Count -1; i = i + 2)
+            for (int i = 0; i < listOfRoadNodes.Count - 1; i = i + 2)
             {
-              
-                Vector3 nodeStart =
-              new Vector3(
-          (listOfRoadNodes[i].x * TownGlobalObjectService.WorldMultiplier) + PassedWorldOffest.x, 
-        // Make it almost on the ceiling                                                                           
-     499,
-          (listOfRoadNodes[i].y * TownGlobalObjectService.WorldMultiplier) + PassedWorldOffest.z
-          
-          );
-              
+                Vector3 nodeStart = new Vector3(
+                    (listOfRoadNodes[i].x * TownGlobalObjectService.WorldMultiplier)
+                        + PassedWorldOffest.x,
+                    // Make it almost on the ceiling
+                    499,
+                    (listOfRoadNodes[i].y * TownGlobalObjectService.WorldMultiplier)
+                        + PassedWorldOffest.z
+                );
 
-
-                if (i + 1 > listOfRoadNodes.Count -1)
+                if (i + 1 > listOfRoadNodes.Count - 1)
                 {
                     // ODD NUMBER!
                     Debug.Log("odd number of road nodes.");
                     continue;
                 }
 
-                Vector3 nodeEnd =
-            new Vector3(
-        (listOfRoadNodes[i+1].x * TownGlobalObjectService.WorldMultiplier) + PassedWorldOffest.x,
-   // Make it almost on the ceiling                                                                           
-   499,
-        (listOfRoadNodes[i+1].y * TownGlobalObjectService.WorldMultiplier) + PassedWorldOffest.z);
+                Vector3 nodeEnd = new Vector3(
+                    (listOfRoadNodes[i + 1].x * TownGlobalObjectService.WorldMultiplier)
+                        + PassedWorldOffest.x,
+                    // Make it almost on the ceiling
+                    499,
+                    (listOfRoadNodes[i + 1].y * TownGlobalObjectService.WorldMultiplier)
+                        + PassedWorldOffest.z
+                );
 
                 //    Debug.LogFormat("ORIG: {0},{1} to {2}{3} ", listOfRoadNodes[i].x, listOfRoadNodes[i].y, listOfRoadNodes[i + 1].x, listOfRoadNodes[i + 1].y);
 
 
                 //     Debug.LogFormat("ORIG: {0},{1} to {2}{3} PROCESSING FROM from {4} to {5}",listOfRoadNodes[i].x, listOfRoadNodes[i].y, listOfRoadNodes[i + 1].x, listOfRoadNodes[i + 1].y, nodeStart, nodeEnd);
 
-           
 
 
 
-            //   if (TwoVectorsToTileSpaceBothIsTruncated(nodeStart, nodeEnd, newOffset))
-            //   {
-                   Debug.LogFormat("ACCEPTED from {0} to {1}", nodeStart, nodeEnd);
-                    mySplineNodes.Add(nodeStart);
-                    mySplineNodes.Add(nodeEnd);
-            //   }
+
+                //   if (TwoVectorsToTileSpaceBothIsTruncated(nodeStart, nodeEnd, newOffset))
+                //   {
+                Debug.LogFormat("ACCEPTED from {0} to {1}", nodeStart, nodeEnd);
+                mySplineNodes.Add(nodeStart);
+                mySplineNodes.Add(nodeEnd);
+                //   }
 
 
             }
-
-
-   
 
             Vector3[] nodesMade = mySplineNodes.ToArray<Vector3>();
 
@@ -2303,23 +2317,20 @@ exit:
             //{
             //    Debug.Log("Begin make Road Spline with node [0]: " + nodesMade[0]);
             //}
-                 
-          
+
+
 
 
             for (int i = 0; i < nodesMade.Length - 2; i++)
             {
-                Den.Tools.Splines.Line current = new Den.Tools.Splines.Line(nodesMade[i], nodesMade[i + 1]);
+                Den.Tools.Splines.Line current = new Den.Tools.Splines.Line(
+                    nodesMade[i],
+                    nodesMade[i + 1]
+                );
 
                 splineList.Add(current);
-
             }
-
-
-
         }
-
-
 
         //   Debug.Log("Begin make array from SplineList");
         Line[] splines = splineList.ToArray<Line>();
@@ -2329,7 +2340,6 @@ exit:
             Debug.Log("Zero road Splines");
 
             mySpline = new Line(new Vector3(509f, .2f, 505f), new Vector3(509f, .2f, 505f));
-
 
             splines = new Line[] { mySpline };
         }
@@ -2344,9 +2354,7 @@ exit:
         foreach (var spli in splines)
         {
             splineSys.AddLine(spli);
-
         }
-
         //foreach (Line spline in splineSys.lines)
         //{
         //    spline.Relax(0.5f, (int)1);
@@ -2357,10 +2365,10 @@ exit:
         //}
 
 
-        
+
 
         //  Debug.Log("Begin splineSys with itemslist: " + (splineSys.lines.Length - 1));
-    //   data.StoreProduct(outlet, splineSys);
+        //   data.StoreProduct(outlet, splineSys);
 
 
     }
@@ -2375,23 +2383,20 @@ public static class ConverterExtensions
     /// <returns></returns>
     public static Coord ToCoord(this Vector3 input)
     {
-        return new Coord((int)input.x, (int)input.z);  
+        return new Coord((int)input.x, (int)input.z);
     }
 
     public static Vector3 ToCeilVector3(this Coord input)
     {
-        return new Vector3(input.x, 499.9f, input.z); 
+        return new Vector3(input.x, 499.9f, input.z);
     }
 
     public static void RemoveAnyBlanksInTransitionListArray(this TransitionsList list)
     {
-        list.arr = list.arr.Truncated(list.count);    
+        list.arr = list.arr.Truncated(list.count);
+        //  list.arr = list.arr.Where(x => x.pos != Vector3.zero).Select(x => x).ToArray();
 
-      //  list.arr = list.arr.Where(x => x.pos != Vector3.zero).Select(x => x).ToArray();
-       
     }
-
-
 
     /// <summary>
     /// For easy tile to world conversions
@@ -2428,25 +2433,19 @@ public static class ConverterExtensions
         return new Coord((int)input.x * 1000, (int)input.y * 1000);
     }
 
- 
     public static Vector2 ToCeilVector3(this Town.Geom.Vector2 input)
     {
         return new Vector3(input.x, 499.9f, input.y);
     }
-
 
     public static Vector2 ToZeroVector3(this Town.Geom.Vector2 input)
     {
         return new Vector3(input.x, 0, input.y);
     }
 
-
     public static Town.Geom.Vector2 ToTileSizeTownGeomVector2(this Town.Geom.Vector2 input)
     {
         return new Town.Geom.Vector2((int)input.x * 1000, (int)input.y * 1000);
     }
-
-
-
 }
 

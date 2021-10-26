@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SplineMesh {
+namespace SplineMesh
+{
     /// <summary>
     /// Example of component to bend a mesh along a spline with some interpolation of scales and rolls. This component can be used as-is but will most likely be a base for your own component.
     /// 
@@ -16,16 +17,24 @@ namespace SplineMesh {
     /// You can easily imagine a list of scales to apply to each node independantly to create your own variation.
     /// </summary>
     [DisallowMultipleComponent]
-    public class ExampleTentacle : MonoBehaviour {
-        private Spline spline { get => GetComponent<Spline>(); }
+    public class ExampleTentacle : MonoBehaviour
+    {
+        private Spline spline
+        {
+            get => GetComponent<Spline>();
+        }
 
-        public float startScale = 1, endScale = 1;
-        public float startRoll = 0, endRoll = 0;
+        public float startScale = 1,
+            endScale = 1;
+        public float startRoll = 0,
+            endRoll = 0;
 
-        private void OnValidate() {
+        private void OnValidate()
+        {
             // apply scale and roll at each node
             float currentLength = 0;
-            foreach (CubicBezierCurve curve in spline.GetCurves()) {
+            foreach (CubicBezierCurve curve in spline.GetCurves())
+            {
                 float startRate = currentLength / spline.Length;
                 currentLength += curve.Length;
                 float endRate = currentLength / spline.Length;

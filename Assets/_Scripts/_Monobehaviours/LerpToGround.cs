@@ -7,28 +7,19 @@ public class LerpToGround : MonoBehaviour
     private Vector3 positionToMoveTo;
     public float time = 2f;
 
-
     void OnEnable()
     {
-
-
-      Vector3 positionToMoveTo =  GetTerrainPos(transform.position.x, transform.position.z) + new Vector3(0, -1f, 0);
-
+        Vector3 positionToMoveTo =
+            GetTerrainPos(transform.position.x, transform.position.z) + new Vector3(0, -1f, 0);
 
         if (positionToMoveTo.y > 0)
         {
             StartCoroutine(LerpPosition(positionToMoveTo, time));
         }
-
-       
-
-
     }
 
-
-    static Vector3 GetTerrainPos(float x, float y)  // The actual terrain. Ignoring Objects.
+    static Vector3 GetTerrainPos(float x, float y) // The actual terrain. Ignoring Objects.
     {
-
         //Create object to store raycast data
 
         //Create origin for raycast that is above the terrain. I chose 500.
@@ -43,13 +34,10 @@ public class LerpToGround : MonoBehaviour
 
         Ray ray = new Ray(origin, Vector3.down);
 
-
         Physics.Raycast(ray, out RaycastHit hit, 501f, mask);
-
 
         //  Debug.Log("Terrain location found at " + hit.point);
         return hit.point;
-
     }
 
     IEnumerator LerpPosition(Vector3 targetPosition, float duration)

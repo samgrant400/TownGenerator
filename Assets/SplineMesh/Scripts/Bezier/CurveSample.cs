@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace SplineMesh {
+namespace SplineMesh
+{
     /// <summary>
     /// Imutable class containing all data about a point on a cubic bezier curve.
     /// </summary>
@@ -24,17 +25,36 @@ namespace SplineMesh {
         /// <summary>
         /// Rotation is a look-at quaternion calculated from the tangent, roll and up vector. Mixing non zero roll and custom up vector is not advised.
         /// </summary>
-        public Quaternion Rotation {
-            get {
-                if (rotation == Quaternion.identity) {
-                    var upVector = Vector3.Cross(tangent, Vector3.Cross(Quaternion.AngleAxis(roll, Vector3.forward) * up, tangent).normalized);
+        public Quaternion Rotation
+        {
+            get
+            {
+                if (rotation == Quaternion.identity)
+                {
+                    var upVector = Vector3.Cross(
+                        tangent,
+                        Vector3.Cross(
+                            Quaternion.AngleAxis(roll, Vector3.forward) * up,
+                            tangent
+                        ).normalized
+                    );
                     rotation = Quaternion.LookRotation(tangent, upVector);
                 }
                 return rotation;
             }
         }
 
-        public CurveSample(Vector3 location, Vector3 tangent, Vector3 up, Vector2 scale, float roll, float distanceInCurve, float timeInCurve, CubicBezierCurve curve) {
+        public CurveSample(
+            Vector3 location,
+            Vector3 tangent,
+            Vector3 up,
+            Vector2 scale,
+            float roll,
+            float distanceInCurve,
+            float timeInCurve,
+            CubicBezierCurve curve
+        )
+        {
             this.location = location;
             this.tangent = tangent;
             this.up = up;
@@ -46,30 +66,34 @@ namespace SplineMesh {
             rotation = Quaternion.identity;
         }
 
-        public override bool Equals(object obj) {
-            if (obj == null || GetType() != obj.GetType()) {
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
                 return false;
             }
             CurveSample other = (CurveSample)obj;
-            return location == other.location &&
-                tangent == other.tangent &&
-                up == other.up &&
-                scale == other.scale &&
-                roll == other.roll &&
-                distanceInCurve == other.distanceInCurve &&
-                timeInCurve == other.timeInCurve;
-
+            return location == other.location
+                && tangent == other.tangent
+                && up == other.up
+                && scale == other.scale
+                && roll == other.roll
+                && distanceInCurve == other.distanceInCurve
+                && timeInCurve == other.timeInCurve;
         }
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return base.GetHashCode();
         }
 
-        public static bool operator ==(CurveSample cs1, CurveSample cs2) {
+        public static bool operator ==(CurveSample cs1, CurveSample cs2)
+        {
             return cs1.Equals(cs2);
         }
 
-        public static bool operator !=(CurveSample cs1, CurveSample cs2) {
+        public static bool operator !=(CurveSample cs1, CurveSample cs2)
+        {
             return !cs1.Equals(cs2);
         }
 
@@ -80,7 +104,8 @@ namespace SplineMesh {
         /// <param name="b"></param>
         /// <param name="t"></param>
         /// <returns></returns>
-        public static CurveSample Lerp(CurveSample a, CurveSample b, float t) {
+        public static CurveSample Lerp(CurveSample a, CurveSample b, float t)
+        {
             return new CurveSample(
                 Vector3.Lerp(a.location, b.location, t),
                 Vector3.Lerp(a.tangent, b.tangent, t).normalized,
@@ -89,10 +114,12 @@ namespace SplineMesh {
                 Mathf.Lerp(a.roll, b.roll, t),
                 Mathf.Lerp(a.distanceInCurve, b.distanceInCurve, t),
                 Mathf.Lerp(a.timeInCurve, b.timeInCurve, t),
-                a.curve);
+                a.curve
+            );
         }
 
-        public MeshVertex GetBent(MeshVertex vert) {
+        public MeshVertex GetBent(MeshVertex vert)
+        {
             var res = new MeshVertex(vert.position, vert.normal, vert.uv);
 
             // application of scale

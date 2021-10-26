@@ -9,14 +9,18 @@ using System.Threading.Tasks;
 using Town;
 using UnityEngine;
 
-public static class TownInitValues {
+public static class TownInitValues
+{
     public static int XzSpread;
     public static int totalCities;
 
-    public static Coord WorldZeroCoord = new Coord((int)(TownInitValues.XzSpread * 0.5), (int)(TownInitValues.XzSpread * 0.5));
+    public static Coord WorldZeroCoord = new Coord(
+        (int)(TownInitValues.XzSpread * 0.5),
+        (int)(TownInitValues.XzSpread * 0.5)
+    );
 }
 
-[DefaultExecutionOrder (1)]
+[DefaultExecutionOrder(1)]
 public class TownInitService : MonoBehaviour
 {
     private const float CityRatioGrowthApproximationmultiplier = 5f;
@@ -45,7 +49,6 @@ public class TownInitService : MonoBehaviour
     public const int MaxTileRender = 4;
     public const int MinTileRender = 2;
 
-
     //async Task MyProcess() //the Task is returned implicitly
     //{
     //   // busyIndicator.Visibility = Visibility.Visible;
@@ -66,12 +69,8 @@ public class TownInitService : MonoBehaviour
 
 
 
-    void CreateCities
-        (   int XzSpread, 
-            int extraCities,
-            string HomeTownName = "Hometon")
-        {
-
+    void CreateCities(int XzSpread, int extraCities, string HomeTownName = "Hometon")
+    {
         int timesThru = 0;
 
         int layerMask = 1 << LayerMask.NameToLayer("MAPGEN");
@@ -82,11 +81,7 @@ public class TownInitService : MonoBehaviour
         for (int i = 0; i < (extraCities + TownGlobalObjectService.TownRequests.Count); i++)
         {
             MakeCity(ref XzSpread, HomeTownName, ref timesThru, i);
-
         }
-
-
-
 
         //var myList = TownGlobalObject.townsData.ToList();
 
@@ -96,27 +91,20 @@ public class TownInitService : MonoBehaviour
 
         if (true)
         {
-
-
-
-
-            var sortedDict = from entry in TownGlobalObject.townsData orderby entry.Value.Patches.Count descending select entry;
-
-
-
-
-
-
+            var sortedDict =
+                from entry in TownGlobalObject.townsData
+                orderby entry.Value.Patches.Count descending
+                select entry;
 
             foreach (var item in sortedDict)
             {
-
                 float size = CityRatioGrowthApproximationmultiplier * item.Value.Patches.Count;
 
-
                 // rendering 36 tiles by default at max per city
-                int roughTileGuess = (int)Mathf.Max(MinTileRender, Mathf.Min(MaxTileRender, Mathf.Ceil(size * 0.003f)));
-
+                int roughTileGuess = (int)Mathf.Max(
+                    MinTileRender,
+                    Mathf.Min(MaxTileRender, Mathf.Ceil(size * 0.003f))
+                );
 
                 //Coord
                 //    item.Key
@@ -134,9 +122,10 @@ public class TownInitService : MonoBehaviour
 
                     for (int column = 0; column < roughTileGuess; column++)
                     {
-
-                        Coord nextlocality = new Coord(item.Key.x + (column - halfcolumn), item.Key.z + (row - halfrow));
-
+                        Coord nextlocality = new Coord(
+                            item.Key.x + (column - halfcolumn),
+                            item.Key.z + (row - halfrow)
+                        );
 
                         //List<Coord> ExclusionList = new List<Coord>();
 
@@ -195,21 +184,23 @@ public class TownInitService : MonoBehaviour
 
                         TownTileRenderer nextlocalityMaker = new TownTileRenderer();
 
-
                         // We already have a processed tile for this and it's not the town center
                         if (TownGlobalObject.bundles.ContainsKey(nextlocality) && AllowTileMerging)
                         {
-
                             // We need to create a method that can just "append" to an existing bundles lists  - maybe via reference
 
 
                             //  AOTABundle nextlocalityBundle = TownGlobalObject.bundles[nextlocality];
 
-                            AOTABundle nextlocalityBundleReplaced = nextlocalityMaker.MakeATileBundleWithThisTown(nextlocality, false, true, item.Key);
-
+                            AOTABundle nextlocalityBundleReplaced =
+                                nextlocalityMaker.MakeATileBundleWithThisTown(
+                                    nextlocality,
+                                    false,
+                                    true,
+                                    item.Key
+                                );
 
                             TownGlobalObject.bundles[nextlocality] = nextlocalityBundleReplaced;
-
                             // it's already bundled, and rolled and marked it a B, so no need to put it in the oven ...
                             //nextlocalityBundle.MarkisBundledTrue();
                             //nextlocalityBundle.MarkIsTileDataInBundleTrue();
@@ -226,7 +217,12 @@ public class TownInitService : MonoBehaviour
 
                             //  if (TownGlobalObject.bundles.ContainsKey(nextlocality))
                             //  {
-                            nextlocalityBundle = nextlocalityMaker.MakeATileBundleWithThisTown(nextlocality, false, false, item.Key); //, data.area.active);
+                            nextlocalityBundle = nextlocalityMaker.MakeATileBundleWithThisTown(
+                                nextlocality,
+                                false,
+                                false,
+                                item.Key
+                            ); //, data.area.active);
                             //  }
                             //  else
                             //  {
@@ -236,15 +232,11 @@ public class TownInitService : MonoBehaviour
 
                             nextlocalityBundle.MarkisBundledTrue();
 
-
                             nextlocalityBundle.MarkIsTileDataInBundleTrue();
 
                             TownGlobalObject.bundles[nextlocality] = nextlocalityBundle;
 
-
-
                             AOTABundle nextReffedBundle = TownGlobalObject.bundles[nextlocality];
-
                             //Debug.LogFormat(
                             //            "INIT TEST: bundle found for tile {5} town {0}: {7} : {3} with {1} SplineSysBundles and {2} TransitionsListBundles and {4} and {6}",
                             //           string.Format("{0}:{1}", nextlocality.x, nextlocality.z),
@@ -269,12 +261,11 @@ public class TownInitService : MonoBehaviour
 
         TownGlobalObject.InitialTownsGenerated = true;
 
-   //   if(InitTradeScripts)  InitTrade.GeneratePrefabsForTradersInCitiesStatic();
+        //   if(InitTradeScripts)  InitTrade.GeneratePrefabsForTradersInCitiesStatic();
 
         // Here was could disable all the MAPGEN colliders if we are going for a fixed city count...
 
         TownGlobalObject.renderedBoxColliders.ForEach(col => col.enabled = false);
-
     }
 
     private void MakeCity(ref int XzSpread, string HomeTownName, ref int timesThru, int timeThru)
@@ -286,10 +277,10 @@ public class TownInitService : MonoBehaviour
         int newXmaybe = 0;
         int newZmaybe = 0;
 
-
-        int NextValidRandomPatchAmountFromTGOSRange =
-        RandomGen.Next(TownGlobalObjectService.PatchCap, TownGlobalObjectService.PatchFloor);
-
+        int NextValidRandomPatchAmountFromTGOSRange = RandomGen.Next(
+            TownGlobalObjectService.PatchCap,
+            TownGlobalObjectService.PatchFloor
+        );
 
         // Get A valid amount for the patch choice
         int randomPatches = NextValidRandomPatchAmountFromTGOSRange;
@@ -299,9 +290,12 @@ public class TownInitService : MonoBehaviour
 
         if (timeThru >= TownGlobalObjectService.TownRequests.Count)
         {
-            newXmaybe = (int)(GetRandomXZrangedInt() * 1) + (RandomGen.FlipACoin() ? (int)MinimumDistance : -(int)MinimumDistance);
-            newZmaybe = (int)(GetRandomXZrangedInt() * 1) + (RandomGen.FlipACoin() ? (int)MinimumDistance : -(int)MinimumDistance);
-
+            newXmaybe =
+                (int)(GetRandomXZrangedInt() * 1)
+                + (RandomGen.FlipACoin() ? (int)MinimumDistance : -(int)MinimumDistance);
+            newZmaybe =
+                (int)(GetRandomXZrangedInt() * 1)
+                + (RandomGen.FlipACoin() ? (int)MinimumDistance : -(int)MinimumDistance);
 
             // Test if the hit is closer than we would like, if it is then we need to try again
 
@@ -309,22 +303,18 @@ public class TownInitService : MonoBehaviour
 
             while (closest < MinimumDistance + ((RandomGen.FlipACoin()) ? 0 : 1))
             {
-
                 if (timesThru >= ExpandXZsAfterTries)
                 {
                     timesThru = 0;
                     Debug.Log("**********BAILED ON COUNT OUT**************");
                     XzSpread++;
                     // closest = MinimumDistance +1;
-                    // continue;    
+                    // continue;
                 }
-
-
 
                 // ADDED +1!
                 newXmaybe += (RandomGen.FlipACoin() ? (int)MinimumDistance : -(int)MinimumDistance);
                 newZmaybe += (RandomGen.FlipACoin() ? (int)MinimumDistance : -(int)MinimumDistance);
-
 
                 // wraps the modulo regardless of sign
                 //newXmaybe = (newXmaybe < 0) ? newXmaybe = -(Mathf.Abs(newXmaybe) % XzSpread) : newXmaybe % XzSpread;
@@ -344,24 +334,33 @@ public class TownInitService : MonoBehaviour
                 ///  Collider[] hitColliders = Physics.OverlapSphere(p1, (MinimumDistance) * 500f, layerMask);//, LayerMask.NameToLayer("MAPGEN"));
 
 
-                Coord closetTownFound = TownGlobalObject.GetClosest(newlocality, TownGlobalObject.townsData.Keys.ToList());
-
+                Coord closetTownFound = TownGlobalObject.GetClosest(
+                    newlocality,
+                    TownGlobalObject.townsData.Keys.ToList()
+                );
 
                 //Scale the result based on city size.  allow for 1.41  within reason
 
                 var tinyCityApproxPatchCount = 100;
 
-                var scalar = (0.002f * CityRatioGrowthApproximationmultiplier * Mathf.Min(TownGlobalObject.townsData[closetTownFound].Patches.Count - tinyCityApproxPatchCount, 10));
+                var scalar = (
+                    0.002f
+                    * CityRatioGrowthApproximationmultiplier
+                    * Mathf.Min(
+                        TownGlobalObject.townsData[closetTownFound].Patches.Count
+                            - tinyCityApproxPatchCount,
+                        10
+                    )
+                );
 
-
-                closest = Coord.Distance(
-                    newlocality,
+                closest =
+                    Coord.Distance(
+                        newlocality,
                         TownGlobalObject.GetClosest(
                             newlocality,
                             TownGlobalObject.townsData.Keys.ToList()
-                            )
                         )
-                    - scalar;                 //// if we didn't hit at all just place it otherwise check the lengths
+                    ) - scalar; //// if we didn't hit at all just place it otherwise check the lengths
 
                 //if (hitColliders.Length == 0)
                 //{
@@ -369,7 +368,7 @@ public class TownInitService : MonoBehaviour
                 //    closest = MinimumDistance + 1;
                 //    //     Debug.LogFormat("{0} is okay as a placement", newlocality);
                 //    break;
-                //} 
+                //}
 
                 //foreach (var hitCollider in hitColliders)
                 //{
@@ -386,31 +385,25 @@ public class TownInitService : MonoBehaviour
                 ////   closest = TownGlobalObject.GetClosestMagnitude (newlocality , placesWePlaced);
 
                 timesThru++;
-
             }
-
         }
-        else  // i < TownGlobalObjectService.TownRequests.Count
+        else // i < TownGlobalObjectService.TownRequests.Count
         {
             //home North etc...
 
             newlocality = new Coord(
-                                     (int)TownGlobalObjectService.TownRequests[timeThru].Coord.x,
-                                     (int)TownGlobalObjectService.TownRequests[timeThru].Coord.y); // Hometon
-
+                (int)TownGlobalObjectService.TownRequests[timeThru].Coord.x,
+                (int)TownGlobalObjectService.TownRequests[timeThru].Coord.y
+            ); // Hometon
         }
 
-
         TownTileRenderer mrnewlocalityMaker = new TownTileRenderer();
-
 
         // 0 triggers a random
         int amount = 0;
 
-
         if (timeThru < TownGlobalObjectService.TownRequests.Count)
         {
-
             if (timeThru == 0)
             {
                 amount += TownHolder.Instance.MinCitySpreadreq;
@@ -421,9 +414,12 @@ public class TownInitService : MonoBehaviour
             }
         }
         // Fill it with Joy
-        AOTABundle newlocalityBundle = mrnewlocalityMaker.MakeATileBundle(newlocality, true, false, amount);
-
-
+        AOTABundle newlocalityBundle = mrnewlocalityMaker.MakeATileBundle(
+            newlocality,
+            true,
+            false,
+            amount
+        );
 
         //  Debug.Log(TownGlobalObjectService.WorldMultiplier);
 
@@ -447,14 +443,14 @@ public class TownInitService : MonoBehaviour
         // THIS CONTAINS THE TOWN DATA
         TownGlobalObject.townsData[newlocality] = newlocalityBundle.town;
 
-
-
         if (timeThru < TownGlobalObjectService.TownRequests.Count)
         {
-            TownGlobalObject.townsData[newlocality].name = TownGlobalObjectService.TownRequests[timeThru].Name;
+            TownGlobalObject.townsData[newlocality].name =
+                TownGlobalObjectService.TownRequests[timeThru].Name;
             newlocalityBundle.town.coord = new Coord(
                 (int)TownGlobalObjectService.TownRequests[timeThru].Coord.x,
-                (int)TownGlobalObjectService.TownRequests[timeThru].Coord.y);
+                (int)TownGlobalObjectService.TownRequests[timeThru].Coord.y
+            );
         }
 
         //handle the home case.
@@ -462,12 +458,7 @@ public class TownInitService : MonoBehaviour
         {
             TownGlobalObject.townsData[newlocality].name = HomeTownName;
             TownGlobalObject.homeTown = TownGlobalObject.townsData[newlocality];
-
-
         }
-
-
-
 
         //  Debug.Log(TownGlobalObject.townsData[newlocality].name);
 
@@ -482,8 +473,6 @@ public class TownInitService : MonoBehaviour
         newlocalityBundle.MarkIsTileDataInBundleTrue();
 
         TownGlobalObject.bundles[newlocality] = newlocalityBundle;
-
-
 
         AOTABundle reffedBundle = TownGlobalObject.bundles[newlocality];
 
@@ -504,15 +493,14 @@ public class TownInitService : MonoBehaviour
 
         float size = CityRatioGrowthApproximationmultiplier * reffedBundle.town.Patches.Count;
 
-
         // rendering 36 tiles by default at max per city
-        int roughTileGuess = (int)Mathf.Max(MinTileRender, Mathf.Min(MaxTileRender, Mathf.Ceil(size * 0.004f)));
-
-
+        int roughTileGuess = (int)Mathf.Max(
+            MinTileRender,
+            Mathf.Min(MaxTileRender, Mathf.Ceil(size * 0.004f))
+        );
 
         //return the even above, we will split this in half and use that as out "theoretical middle";
         roughTileGuess = (roughTileGuess % 2 == 1) ? roughTileGuess + 1 : roughTileGuess;
-
 
         //    Debug.LogFormat("approximate city size is {0} for {2} so roughly a {1} tile square", size , roughTileGuess, reffedBundle.name);
 
@@ -525,9 +513,10 @@ public class TownInitService : MonoBehaviour
         if (timeThru >= TownGlobalObjectService.TownRequests.Count)
             reffedBundle.town.coord = reffedBundle.coord;
 
-
         if (TownGlobalObject.townsData[reffedBundle.town.coord].TownGameObject == null)
-            TownGlobalObject.townsData[reffedBundle.town.coord].TownGameObject = new GameObject(reffedBundle.town.name);
+            TownGlobalObject.townsData[reffedBundle.town.coord].TownGameObject = new GameObject(
+                reffedBundle.town.name
+            );
 
         //create or use the holder now it has the right name.
         var go = TownGlobalObject.townsData[reffedBundle.town.coord].TownGameObject;
@@ -537,8 +526,11 @@ public class TownInitService : MonoBehaviour
         CityHolder.transform.parent = go.transform;
         CityHolder.transform.localPosition = Vector3.zero;
 
-        CityHolder.transform.position = new Vector3(newlocality.x * 1000, 400, newlocality.z * 1000);
-
+        CityHolder.transform.position = new Vector3(
+            newlocality.x * 1000,
+            400,
+            newlocality.z * 1000
+        );
 
         //GameObject CityHolder = Instantiate<GameObject>(Temp, Temp.transform.position, Quaternion.identity);
 
@@ -559,12 +551,15 @@ public class TownInitService : MonoBehaviour
         //  HUD.transform.localPosition = Vector3.zero;
 
 
-        var collisionCube = new Cube(reffedBundle.name,
-         TownMeshRendererUtils.GetVertices((int)size, (int)size, -halfsize, -halfsize), halfsize,
-         null,
-         CityHolder.transform, false, false);
-
-
+        var collisionCube = new Cube(
+            reffedBundle.name,
+            TownMeshRendererUtils.GetVertices((int)size, (int)size, -halfsize, -halfsize),
+            halfsize,
+            null,
+            CityHolder.transform,
+            false,
+            false
+        );
 
         collisionCube.Transform.localPosition = Vector3.zero;
         //  collisionCube.GameObject.layer = LayerMask.NameToLayer("MAPGEN");
@@ -586,16 +581,13 @@ public class TownInitService : MonoBehaviour
         skeletonOptions.Walls = false;
         skeletonOptions.CityDetail = false;
 
-
-
         //TownGlobalObject.MeshRenderer = new TownMeshRenderer (
-        //        reffedBundle.town, 
-        //        skeletonOptions, 
+        //        reffedBundle.town,
+        //        skeletonOptions,
         //        rendererOptions);
 
         //// This does the fancy  world map colored sections
         TownGlobalObject.MeshRenderer.GenerateOverlay();
-
 
         //  Debug.LogFormat("{0} {1} ", reffedBundle.name, reffedBundle.town.name);
 
@@ -606,9 +598,6 @@ public class TownInitService : MonoBehaviour
         // This does the fancy city overlay over the world map colored sections
         RenderTownMeshes(ref reffedBundle);
 
-
-
-
         //   TownGlobalObject.bundles[newlocality].isTileDataInBundle = true;
 
         //  Destroy(CityHolder);
@@ -616,7 +605,6 @@ public class TownInitService : MonoBehaviour
 
         // Assign it back?
         TownGlobalObject.SetBundle(newlocality, reffedBundle);
-
         //   TownGlobalObject.bundles[newlocality] = reffedBundle;
 
 
@@ -632,18 +620,25 @@ public class TownInitService : MonoBehaviour
     {
         bundle.isTileDataInBundle = true;
 
-        TownGlobalObject.TownsWaitingToRender.Enqueue(new TownMeshRenderer(bundle.town, bundle.town.Options, TownGlobalObjectService.rendererOptions));
-
+        TownGlobalObject.TownsWaitingToRender.Enqueue(
+            new TownMeshRenderer(
+                bundle.town,
+                bundle.town.Options,
+                TownGlobalObjectService.rendererOptions
+            )
+        );
     }
 
     private int GetRandomXZrangedInt()
     {
-        return (RandomGen.FlipACoin()) ? -RandomGen.Next(MapSpread - MapMargin) : RandomGen.Next(MapSpread - MapMargin + 1);
+        return (RandomGen.FlipACoin())
+          ? -RandomGen.Next(MapSpread - MapMargin)
+          : RandomGen.Next(MapSpread - MapMargin + 1);
     }
 
-    void DoTownInitValuesChecks() {
-
-      //  Debug.Log(TownGlobalObjectService.NamesQueue.Count);
+    void DoTownInitValuesChecks()
+    {
+        //  Debug.Log(TownGlobalObjectService.NamesQueue.Count);
 
         ExpandXZsAfterTries = Mathf.Max(10, ExtraCities * 2);
         TownInitValues.totalCities = ExtraCities;
@@ -653,22 +648,25 @@ public class TownInitService : MonoBehaviour
         TownGlobalObject.bundles = new Dictionary<Coord, AOTABundle>();
         TownGlobalObject.townsData = new Dictionary<Coord, Town.Town>();
 
-        TownGlobalObject.splinesNodesDataForTile = new ConcurrentDictionary<Coord, List<TypedSpline>>(TownGlobalObject.concurrencyLevel, TownGlobalObject.initialCapacity);
-        TownGlobalObject.splinesNodesDataForTileConcrete = new Dictionary<Coord, List<TypedSpline>>();
+        TownGlobalObject.splinesNodesDataForTile = new ConcurrentDictionary<
+            Coord,
+            List<TypedSpline>
+        >(TownGlobalObject.concurrencyLevel, TownGlobalObject.initialCapacity);
+        TownGlobalObject.splinesNodesDataForTileConcrete = new Dictionary<
+            Coord,
+            List<TypedSpline>
+        >();
         TownGlobalObject.isSplinesMeshRenderedOnTile = new Dictionary<Coord, bool>();
     }
 
-    public void Init() {
-
-
+    public void Init()
+    {
         DoTownInitValuesChecks();
         CreateCities(TownInitValues.XzSpread, TownInitValues.totalCities);
 
         TownHolder.Instance.MapMagicObjectReference.gameObject.SetActive(true);
-
     }
 
-   
     void Awake()
     {
         //  if (FindObjectOfType<MapMagic.Core.MapMagicObject>() == null)
@@ -677,8 +675,5 @@ public class TownInitService : MonoBehaviour
         //  }
 
         Init();
-
-
     }
-
 }

@@ -6,38 +6,38 @@ using UnityEngine.Profiling;
 
 public class TownBuilder : MonoBehaviour
 {
-	public TownOptions townOptions = new TownOptions ();
-	public TownMeshRendererOptions rendererOptions = new TownMeshRendererOptions ();
+    public TownOptions townOptions = new TownOptions();
+    public TownMeshRendererOptions rendererOptions = new TownMeshRendererOptions();
 
-	public void Clear ()
-	{
-		if (rendererOptions.Root == null)
-		{
-			rendererOptions.Root = new GameObject ("TownRoot").transform;
-		}
-		for (int i = rendererOptions.Root.childCount - 1; i > -1; i--)
-		{
-			DestroyImmediate (rendererOptions.Root.GetChild (i).gameObject);
-		}
-	}
+    public void Clear()
+    {
+        if (rendererOptions.Root == null)
+        {
+            rendererOptions.Root = new GameObject("TownRoot").transform;
+        }
+        for (int i = rendererOptions.Root.childCount - 1; i > -1; i--)
+        {
+            DestroyImmediate(rendererOptions.Root.GetChild(i).gameObject);
+        }
+    }
 
-	public void GenerateRandom ()
-	{
-		townOptions.Seed = Random.Range (1, 999999);
-		Generate ();
-	}
+    public void GenerateRandom()
+    {
+        townOptions.Seed = Random.Range(1, 999999);
+        Generate();
+    }
 
-	public void Generate ()
-	{
-		Clear ();
-		Profiler.BeginSample ("TownGenerator");
+    public void Generate()
+    {
+        Clear();
+        Profiler.BeginSample("TownGenerator");
 
-		var town = new Town.Town (townOptions);
+        var town = new Town.Town(townOptions);
 
-		var renderer = new TownMeshRenderer (town, townOptions, rendererOptions);
+        var renderer = new TownMeshRenderer(town, townOptions, rendererOptions);
 
-		renderer.Generate ();
+        renderer.Generate();
 
-		Profiler.EndSample ();
-	}
+        Profiler.EndSample();
+    }
 }

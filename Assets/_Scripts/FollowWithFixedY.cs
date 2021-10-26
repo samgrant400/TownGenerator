@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FollowWithFixedY : MonoBehaviour
 {
-
     public Transform thing;
 
     public float fixedY = 800f;
@@ -18,7 +17,6 @@ public class FollowWithFixedY : MonoBehaviour
     private void OnEnable()
     {
         place = thing.position;
-
     }
 
     void LateUpdate()
@@ -33,6 +31,6 @@ public class FollowWithFixedY : MonoBehaviour
         if (!rotateWithPlayer)
             return;
 
-        transform.eulerAngles = new Vector3( 90, thing.rotation.eulerAngles.y, 0);
+        transform.eulerAngles = new Vector3(90, thing.rotation.eulerAngles.y, 0);
     }
 }

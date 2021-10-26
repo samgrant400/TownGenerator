@@ -5,7 +5,6 @@ namespace Town
     [System.Serializable]
     public class TownOptions
     {
-
         [HideInInspector]
         public bool Overlay = false;
         public bool Walls = true;
@@ -27,7 +26,7 @@ namespace Town
 
         public Geom.Vector2 mapOffset;
         public Geom.Vector2 townOffset; // { get { return mapOffset.ToTileSizeTownGeomVector2(); }
-            //private set {; } }
+        //private set {; } }
 
         public static TownOptions Default => new TownOptions { Patches = 50 };
 

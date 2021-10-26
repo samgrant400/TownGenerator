@@ -2,27 +2,23 @@ using UnityEngine;
 using System.Security.Cryptography;
 using System;
 
+public static class RandomGen
+{
+    private static RNGCryptoServiceProvider _global = new RNGCryptoServiceProvider();
+    [ThreadStatic]
+    private static System.Random _local;
 
-    public static class RandomGen
+    public static bool FlipACoin()
     {
-        private static RNGCryptoServiceProvider _global =
-            new RNGCryptoServiceProvider();
-        [ThreadStatic]
-        private static System.Random _local;
-
-
-        public static bool FlipACoin()
+        System.Random inst = _local;
+        if (inst == null)
         {
-            System.Random inst = _local;
-            if (inst == null)
-            {
-                byte[] buffer = new byte[4];
-                _global.GetBytes(buffer);
-                _local = inst = new System.Random(
-                    BitConverter.ToInt32(buffer, 0));
-            }
-            return inst.Next() % 2 == 0;
+            byte[] buffer = new byte[4];
+            _global.GetBytes(buffer);
+            _local = inst = new System.Random(BitConverter.ToInt32(buffer, 0));
         }
+        return inst.Next() % 2 == 0;
+    }
 
     public static float Range01()
     {
@@ -31,32 +27,28 @@ using System;
         {
             byte[] buffer = new byte[4];
             _global.GetBytes(buffer);
-            _local = inst = new System.Random(
-                BitConverter.ToInt32(buffer, 0));
+            _local = inst = new System.Random(BitConverter.ToInt32(buffer, 0));
         }
         return inst.Next(0, 1000000) * 0.000001f;
     }
 
-
     public static int NextValidRandomPatchAmountFromTGOSRange()
     {
-        return
-RandomGen.Next(TownGlobalObjectService.PatchCap, TownGlobalObjectService.PatchFloor);
+        return RandomGen.Next(TownGlobalObjectService.PatchCap, TownGlobalObjectService.PatchFloor);
     }
 
-        public static int Next(int Ceil = int.MaxValue, int Floor = int.MinValue)
+    public static int Next(int Ceil = int.MaxValue, int Floor = int.MinValue)
+    {
+        System.Random inst = _local;
+        if (inst == null)
         {
-            System.Random inst = _local;
-            if (inst == null)
-            {
-                byte[] buffer = new byte[4];
-                _global.GetBytes(buffer);
-                _local = inst = new System.Random(
-                    BitConverter.ToInt32(buffer, 0));
-            }
-            return Mathf.Max(Floor, inst.Next() % Mathf.Max(1, Ceil));
+            byte[] buffer = new byte[4];
+            _global.GetBytes(buffer);
+            _local = inst = new System.Random(BitConverter.ToInt32(buffer, 0));
         }
+        return Mathf.Max(Floor, inst.Next() % Mathf.Max(1, Ceil));
     }
+}
 
 
 

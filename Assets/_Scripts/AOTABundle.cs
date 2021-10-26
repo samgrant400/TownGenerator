@@ -4,10 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class AOTABundle
 {
-    
     public SplineSysWrapper[] SplineSysBundle;
     public TransitionsListWrapper[] TransitionsListBundle;
     public Coord coord;
@@ -15,26 +13,27 @@ public class AOTABundle
     public bool isTileDataInBundle = false;
     public bool isBundled = false;
 
-    public Town.Town town {
+    public Town.Town town
+    {
         get
         {
             if (TownGlobalObject.townsData.ContainsKey(TownGlobalObject.GetIndexAtCoord(coord)))
             {
-
                 return TownGlobalObject.townsData[TownGlobalObject.GetIndexAtCoord(coord)];
             }
             else
             {
                 Coord locality = TownGlobalObject.GetIndexAtCoord(coord);
-                var SUPERlazyTown = TownGlobalObject.towns.GetOrAdd(locality, k => TownGlobalObject.MakeTown(k, k.x, k.z));
+                var SUPERlazyTown = TownGlobalObject.towns.GetOrAdd(
+                    locality,
+                    k => TownGlobalObject.MakeTown(k, k.x, k.z)
+                );
                 Town.Town concrete = SUPERlazyTown;
                 TownGlobalObject.townsData.TryAdd(locality, concrete);
 
                 return TownGlobalObject.townsData[TownGlobalObject.GetIndexAtCoord(coord)];
             }
         }
-
-
         private set { }
     }
 
@@ -46,7 +45,7 @@ public class AOTABundle
 
 
 
-    // There is no 
+    // There is no
     // AotaBundle() empty constructor version but we had to add one for Denis's thing so lets use it.
 
     public AOTABundle()
@@ -54,10 +53,8 @@ public class AOTABundle
         this.isBundled = false;
         this.isTileDataInBundle = false;
         this.name = "BLANK";
-
     }
 
-    
     // Populate the arrays. Then populate this with them.
 
     // AotaBundle(coord) gives the empty holder.
@@ -68,18 +65,13 @@ public class AOTABundle
         this.isBundled = false;
     }
 
-
     public static void MarkisBundledTrueStatic(ref AOTABundle bundle)
     {
-
-      
         bundle.isBundled = true;
-
-
         // make .isBundled true. add coord
-       // return bundle;
+        // return bundle;
     }
-     
+
     public static AOTABundle MarkIsTileDataInBundleTrueStatic(ref AOTABundle bundle)
     {
         // make .isBundled true. add coord
@@ -92,16 +84,11 @@ public class AOTABundle
     {
         // make .isBundled true. add coord
         isTileDataInBundle = true;
-
-     
     }
 
     public void MarkisBundledTrue()
     {
-
-
         isBundled = true;
-
         // make .isBundled true. add coord
         // return bundle;
     }
@@ -112,7 +99,12 @@ public class AOTABundle
     /// <param name="coord">the tile coord</param>
     /// <param name="SplineSysBundlepass">the arrayed list of SplineSysWrapper</param>
     /// <param name="TransitionsListBundlepass">the arrayed list of  TransitionsListWrapper</param>
-    public AOTABundle(Coord coord, SplineSysWrapper[] SplineSysBundlepass, TransitionsListWrapper[] TransitionsListBundlepass, string name)
+    public AOTABundle(
+        Coord coord,
+        SplineSysWrapper[] SplineSysBundlepass,
+        TransitionsListWrapper[] TransitionsListBundlepass,
+        string name
+    )
     {
         //public Coord coord;
         //public string name;
@@ -122,19 +114,26 @@ public class AOTABundle
         this.isBundled = true;
         this.coord = coord;
         this.SplineSysBundle = Den.Tools.ArrayTools.Copy<SplineSysWrapper>(SplineSysBundlepass);
-        this.TransitionsListBundle = Den.Tools.ArrayTools.Copy<TransitionsListWrapper>(TransitionsListBundlepass);
+        this.TransitionsListBundle = Den.Tools.ArrayTools.Copy<TransitionsListWrapper>(
+            TransitionsListBundlepass
+        );
     }
-    
+
     /// <summary>
     /// Lightweight holder for the Town data after it's been processed. 
     /// This should drastically reduce overheads once a town has been approached even once.
     /// </summary>
     /// <param name="splinelen">how many SpineSys are you storing</param>
     /// <param name="tranlen">how many TransList are you storing</param>
-    public  AOTABundle(SplineSysWrapper[] SplineSysBundlepass, TransitionsListWrapper[] TransitionsListBundlepass)
+    public AOTABundle(
+        SplineSysWrapper[] SplineSysBundlepass,
+        TransitionsListWrapper[] TransitionsListBundlepass
+    )
     {
         this.SplineSysBundle = Den.Tools.ArrayTools.Copy<SplineSysWrapper>(SplineSysBundlepass);
-        this.TransitionsListBundle = Den.Tools.ArrayTools.Copy<TransitionsListWrapper>(TransitionsListBundlepass);
+        this.TransitionsListBundle = Den.Tools.ArrayTools.Copy<TransitionsListWrapper>(
+            TransitionsListBundlepass
+        );
     }
 }
 
@@ -145,14 +144,12 @@ public class TransitionsListWrapper
     public string outletName;
     public TransitionsList transitionsList;
 
-
     public TransitionsListWrapper()
     {
         this.transitionsList = new TransitionsList();
         this.name = string.Empty;
         this.outletName = string.Empty;
     }
-
 
     //public TransitionsListWrapper(string name)
     //{
@@ -176,7 +173,7 @@ public class TransitionsListWrapper
     //    this.transitionsList = new TransitionsList(list);
     //    this.name = name;
     //}
-    
+
 
     //public TransitionsListWrapper(TransitionsList sys, MapMagic.Nodes.Outlet<TransitionsList> outlet)
     //{
@@ -184,7 +181,11 @@ public class TransitionsListWrapper
     //    this.outlet = outlet;
     //}
 
-    public TransitionsListWrapper(string name, TransitionsList sys, MapMagic.Nodes.Outlet<TransitionsList> outlet)
+    public TransitionsListWrapper(
+        string name,
+        TransitionsList sys,
+        MapMagic.Nodes.Outlet<TransitionsList> outlet
+    )
     {
         this.outlet = outlet;
         this.transitionsList = new TransitionsList(sys);
@@ -214,12 +215,10 @@ public class TransitionsListWrapper
         this.outletName = outletname;
         this.transitionsList = new TransitionsList(sys);
     }
-
 }
 
-public class SplineSysWrapper {
-
-
+public class SplineSysWrapper
+{
     /// <summary>
     /// turns out this is read only. so... we need a reference of some kind.
     /// ID's might change. Guids seems empty. types wont help. Use name?
@@ -229,9 +228,10 @@ public class SplineSysWrapper {
     public string name;
     public SplineSys splineSys;
 
-    public SplineSysWrapper() {
+    public SplineSysWrapper()
+    {
         this.splineSys = new SplineSys();
-       // this.name = string.Empty;
+        // this.name = string.Empty;
     }
 
     public SplineSysWrapper(string name)
@@ -245,13 +245,13 @@ public class SplineSysWrapper {
         this.splineSys = new SplineSys(sys);
     }
 
-    public SplineSysWrapper(SplineSys sys, MapMagic.Nodes.Outlet<SplineSys>outlet)
+    public SplineSysWrapper(SplineSys sys, MapMagic.Nodes.Outlet<SplineSys> outlet)
     {
         this.splineSys = new SplineSys(sys);
         this.outlet = outlet;
     }
 
-    public SplineSysWrapper(string name , SplineSys sys)
+    public SplineSysWrapper(string name, SplineSys sys)
     {
         this.splineSys = new SplineSys(sys);
         this.name = name;
@@ -264,17 +264,11 @@ public class SplineSysWrapper {
         this.name = name;
     }
 
-
     public SplineSysWrapper(string name, SplineSys sys, string outletname)
     {
         this.outletName = outletname;
         this.splineSys = new SplineSys(sys);
         this.name = name;
     }
-
-
-   
-
-
 }
 

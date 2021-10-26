@@ -5,23 +5,23 @@ namespace MeshUtils
 {
     public class Triangulator
     {
-        private List<Vector3> points = new List<Vector3> ();
+        private List<Vector3> points = new List<Vector3>();
 
-        public Triangulator (List<Vector3> points)
+        public Triangulator(List<Vector3> points)
         {
             this.points = points;
         }
 
-        public int[] Triangulate ()
+        public int[] Triangulate()
         {
-            List<int> indices = new List<int> ();
+            List<int> indices = new List<int>();
 
             int pointsCount = points.Count;
             if (pointsCount < 3)
-                return indices.ToArray ();
+                return indices.ToArray();
 
             int[] V = new int[pointsCount];
-            if (Area () > 0)
+            if (Area() > 0)
             {
                 for (int v = 0; v < pointsCount; v++)
                     V[v] = v;
@@ -37,7 +37,7 @@ namespace MeshUtils
             for (int m = 0, v = nv - 1; nv > 2;)
             {
                 if ((count--) <= 0)
-                    return indices.ToArray ();
+                    return indices.ToArray();
 
                 int u = v;
                 if (nv <= u)
@@ -49,15 +49,19 @@ namespace MeshUtils
                 if (nv <= w)
                     w = 0;
 
-                if (Snip (u, v, w, nv, V))
+                if (Snip(u, v, w, nv, V))
                 {
-                    int a, b, c, s, t;
+                    int a,
+                        b,
+                        c,
+                        s,
+                        t;
                     a = V[u];
                     b = V[v];
                     c = V[w];
-                    indices.Add (a);
-                    indices.Add (b);
-                    indices.Add (c);
+                    indices.Add(a);
+                    indices.Add(b);
+                    indices.Add(c);
                     m++;
                     for (s = v, t = v + 1; t < nv; s++, t++)
                         V[s] = V[t];
@@ -66,11 +70,11 @@ namespace MeshUtils
                 }
             }
 
-            indices.Reverse ();
-            return indices.ToArray ();
+            indices.Reverse();
+            return indices.ToArray();
         }
 
-        private float Area ()
+        private float Area()
         {
             int n = points.Count;
             float A = 0.0f;
@@ -83,7 +87,7 @@ namespace MeshUtils
             return (A * 0.5f);
         }
 
-        private bool Snip (int u, int v, int w, int n, int[] V)
+        private bool Snip(int u, int v, int w, int n, int[] V)
         {
             int p;
             Vector3 A = points[V[u]];
@@ -96,16 +100,29 @@ namespace MeshUtils
                 if ((p == u) || (p == v) || (p == w))
                     continue;
                 Vector3 P = points[V[p]];
-                if (InsideTriangle (A, B, C, P))
+                if (InsideTriangle(A, B, C, P))
                     return false;
             }
             return true;
         }
 
-        private bool InsideTriangle (Vector3 A, Vector3 B, Vector3 C, Vector3 P)
+        private bool InsideTriangle(Vector3 A, Vector3 B, Vector3 C, Vector3 P)
         {
-            float ax, ay, bx, by, cx, cy, apx, apy, bpx, bpy, cpx, cpy;
-            float cCROSSap, bCROSScp, aCROSSbp;
+            float ax,
+                ay,
+                bx,
+                by,
+                cx,
+                cy,
+                apx,
+                apy,
+                bpx,
+                bpy,
+                cpx,
+                cpy;
+            float cCROSSap,
+                bCROSScp,
+                aCROSSbp;
 
             ax = C.x - B.x;
             ay = C.z - B.z;

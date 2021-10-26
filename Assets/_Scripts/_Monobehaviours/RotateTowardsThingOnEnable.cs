@@ -16,11 +16,14 @@ public class RotateTowardsThingOnEnable : MonoBehaviour
     int attempts = 0;
     private readonly int maxAttempts = 10;
 
-    public int Attempts { get => attempts; set => attempts = value; }
+    public int Attempts
+    {
+        get => attempts;
+        set => attempts = value;
+    }
 
     private void FindFocus()
     {
-
         GameObject center = GameObject.Find("TownCenter(Clone)");
         //  GameObject center = GameObject.FindGameObjectWithTag("RotationFocus");
 
@@ -41,14 +44,11 @@ public class RotateTowardsThingOnEnable : MonoBehaviour
         {
             center = GameObject.Find("TownCenter(Clone)");
             target ??= center.transform;
-
         }
         if (!target.gameObject.activeInHierarchy)
         {
             return;
-
         }
-
 
         // Determine which direction to rotate towards
         Vector3 targetDirection = target.position - transform.position;
@@ -60,26 +60,23 @@ public class RotateTowardsThingOnEnable : MonoBehaviour
         {
             // random value
             targetDirection = new Vector3(0.2f, 0.0f, 0.3f); //Vector3.right;
-
             //Debug.Log("placing by rotation forced focus " + transform.name);
 
 
             //Invoke("FindFocus", 2f);
             //return;
         }
-        else
-
-        if (targetDirection != Vector3.zero && random)
+        else if (targetDirection != Vector3.zero && random)
         {
-
-
             // Rotate the forward vector towards the target direction by one step
             // Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
-            newDirection = Vector3.RotateTowards(transform.forward, targetDirection, (float)RandomGen.Next(360, 0), 1.0f).normalized;
-
-
-
-
+            newDirection =
+                Vector3.RotateTowards(
+                    transform.forward,
+                    targetDirection,
+                    (float)RandomGen.Next(360, 0),
+                    1.0f
+                ).normalized;
             // Draw a ray pointing at our target in
             // Debug.DrawRay(transform.position, newDirection, Color.red);
 
@@ -88,14 +85,14 @@ public class RotateTowardsThingOnEnable : MonoBehaviour
         }
         else if (random)
         {
-            newDirection = new Vector3(0,
-               Mathf.Clamp01((1f / ((float)RandomGen.Next(0, 100) + 0.01f)))
-               , 0);
+            newDirection = new Vector3(
+                0,
+                Mathf.Clamp01((1f / ((float)RandomGen.Next(0, 100) + 0.01f))),
+                0
+            );
         }
 
-
         transform.rotation = Quaternion.LookRotation(newDirection);
-
 
         // Only rotate Y
 
@@ -104,10 +101,7 @@ public class RotateTowardsThingOnEnable : MonoBehaviour
 
     void OnEnable()
     {
-
         Invoke("FindFocus", .5f);
-
-
     }
 }
 

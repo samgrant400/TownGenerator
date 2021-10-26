@@ -8,7 +8,6 @@ namespace Twobob
 {
     public class RandomName : MonoBehaviour
     {
-
         //List will contain the contents of the name files.
         private readonly List<String> fileContent = new List<String>();
 
@@ -99,8 +98,7 @@ namespace Twobob
                     {
                         curLine = newReader.ReadLine();
                         fileContent.Add(curLine);
-                    }
-                    while (curLine != null);
+                    } while (curLine != null);
                     newReader.Close();
                 }
             }
@@ -118,6 +116,5 @@ namespace Twobob
                 Debug.Log(item);
             }
         }
-
     }
 }

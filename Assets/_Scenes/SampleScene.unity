@@ -183,12 +183,12 @@ MonoBehaviour:
   guiLocks: 0
   locks: []
   guiInfiniteTerrains: 1
-  hideFarTerrains: 1
+  hideFarTerrains: 0
   mainRange: 1
   terrainSettings:
     allowAutoConnect: 1
     groupingID: 0
-    baseMapDist: 1000
+    baseMapDist: 500
     showBaseMap: 1
     baseMapResolution: 1024
     drawInstanced: 1
@@ -255,7 +255,7 @@ MonoBehaviour:
   shiftThreshold: 4000
   shiftExcludeLayers: 0
   serializedMultithreading: 1
-  serializedMaxThreads: 3
+  serializedMaxThreads: 0
   serializedAutoMaxThreads: 1
   serializedMaxApplyTime: 3
 --- !u!4 &114446486
@@ -522,7 +522,7 @@ MonoBehaviour:
 
     Check MainCamera for Keys'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1041,7 +1041,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 262149
+    m_Bits: 262788
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 6f896cc8f448d35478c10707e4163295, type: 2}
   m_TargetDisplay: 0

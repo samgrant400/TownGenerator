@@ -11,19 +11,16 @@ using System;
 
 public class RunOnTileActionEvent : MonoBehaviour
 {
-
     public Transform thingToTrack;
     private static Transform thingToTrackReference;
 
-
-    static Queue<GameObject> activationList;//= new Queue<Transform>();
-    static Queue<GameObject> deactivationList;//= new Queue<Transform>();
+    static Queue<GameObject> activationList; //= new Queue<Transform>();
+    static Queue<GameObject> deactivationList; //= new Queue<Transform>();
 
     public Transform RenderingMessage;
     public Transform DistrictMessage;
 
     private static GameObject DistrictMessageRefGameObject;
-
 
     public static TownGlobalObjectService tgos;
 
@@ -42,9 +39,9 @@ public class RunOnTileActionEvent : MonoBehaviour
 
         RunOnAnyTilePrepActivityRef = this;
 
-        //Queue<GameObject> 
+        //Queue<GameObject>
         activationList = new Queue<GameObject>();
-        //Queue<GameObject> 
+        //Queue<GameObject>
         deactivationList = new Queue<GameObject>();
 
         RenderingMessageRef = RenderingMessage;
@@ -72,7 +69,6 @@ public class RunOnTileActionEvent : MonoBehaviour
 
         TerrainTile.OnTileMoved -= OnTileMoved;
         TerrainTile.OnTileMoved += OnTileMoved;
-
     }
 
     //List<Transform> RotationTransformLists;
@@ -140,7 +136,6 @@ public class RunOnTileActionEvent : MonoBehaviour
 
     private void OnTileMoved(TerrainTile tile)
     {
-
         //for (int i = tile.transform.childCount-1; i > 0 ; i--)
         //{
 
@@ -151,24 +146,20 @@ public class RunOnTileActionEvent : MonoBehaviour
 
         for (int i = tile.transform.childCount - 1; i > 0; i--)
         {
-
             if ( //tile.transform.GetChild(i).name.StartsWith("__SPLINE__") ||
-             tile.transform.GetChild(i).name.StartsWith("SPLINE"))
+                tile.transform.GetChild(i).name.StartsWith("SPLINE"))
                 DestroyImmediate(tile.transform.GetChild(i).gameObject);
-
         }
 
         if (TownGlobalObject.splinesNodesDataForTile.ContainsKey(tile.coord))
         {
-
             if (!TownGlobalObject.splinesNodesDataForTile.TryRemove(tile.coord, out var ret))
-            { Debug.LogError("remove spline failed"); };
-
+            {
+                Debug.LogError("remove spline failed");
+            }
+            ;
         }
-
     }
-
-
 
     void Update()
     {
@@ -192,40 +183,37 @@ public class RunOnTileActionEvent : MonoBehaviour
                 // here we should set the timeout.
 
                 Invoke("deactivateTimeout", 60f);
-
             }
         }
     }
 
-    private void deactivateTimeout() {
-
-
+    private void deactivateTimeout()
+    {
         doDeactivate = false;
         RenderingMessage.gameObject.SetActive(false);
-
     }
 
     public static bool doActivate = false;
     public static bool doDeactivate = false;
 
-
     public static void OnAllTilesGenerated(MapMagicObject mapMagic)
     {
         doDeactivate = true;
 
+        Coord newPositionAsCoord = new Coord(
+            (int)(thingToTrackReference.position.x * 0.001),
+            (int)(thingToTrackReference.position.z * 0.001)
+        );
 
-        Coord newPositionAsCoord = new Coord((int)(thingToTrackReference.position.x * 0.001), (int)(thingToTrackReference.position.z * 0.001));
-   
-         SetPlaceName(newPositionAsCoord);
-
+        SetPlaceName(newPositionAsCoord);
 
         if (TownGlobalObject.TownWaitingToRender)
         {
-            TownGlobalObject.TownWaitingToRender = (TownGlobalObject.TownsWaitingToRender.Count == 0) ? false : true;
+            TownGlobalObject.TownWaitingToRender =
+                (TownGlobalObject.TownsWaitingToRender.Count == 0) ? false : true;
 
             foreach (var item in TownGlobalObject.TownsWaitingToRender.ToArray())
             {
-
                 //Debug.LogFormat(
                 //    "{1} chosen for position {0} against {2} and {3}",
                 //    tgos.ObjectToTrackPositionInTileCoords,
@@ -234,20 +222,13 @@ public class RunOnTileActionEvent : MonoBehaviour
                 //    TownGlobalObject.bundles[tgos.LocalTownCoords].name);
 
                 ///   if (item.name == TownGlobalObject.bundles[tgos.LocalTownCoords].name  &&
-                ///   
+                ///
                 if (!TownGlobalObject.renderedTowns.Contains<Coord>(item.options.coord)) //  tgos.LocalTownCoords))
                 {
-
-
-
                     GameObject hold = item.Generate();
                     TownGlobalObject.renderedTowns.Add(item.options.coord);
-
-
                 }
             }
-
-
             //for (int i = 0; i < TownGlobalObject.TownsWaitingToRender.Count; i++)
             //{
             //    TownGlobalObject.TownsWaitingToRender.Dequeue().Generate();
@@ -257,15 +238,11 @@ public class RunOnTileActionEvent : MonoBehaviour
 
             //  Debug.Log("Generate");
         }
-
-
-
     }
 
     public static void OnBeforeTileGenerated(TerrainTile tile, TileData data, StopToken stop)
     {
         doActivate = true;
-
         //for (int i = tile.transform.childCount - 1; i > 0; i--)
         //{
 
@@ -276,26 +253,27 @@ public class RunOnTileActionEvent : MonoBehaviour
 
     }
 
-
-    public static void SetPlaceName(Coord coord) {
-
-
+    public static void SetPlaceName(Coord coord)
+    {
         DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().enabled = true;
-             DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = ReturnTownName(coord);
-       
- 
-     }
-
-    public static string ReturnTownName(Coord coord) {
-
-        Coord locality = TownGlobalObject.GetIndexAtCoord(coord);
-
-      return  TownGlobalObject.townsData[locality].name;
+        DistrictMessageRefGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = ReturnTownName(
+            coord
+        );
     }
 
-    public static void OnTileAppliedRenderMeshSplines(TerrainTile tile, TileData data, StopToken stop)
+    public static string ReturnTownName(Coord coord)
     {
+        Coord locality = TownGlobalObject.GetIndexAtCoord(coord);
 
+        return TownGlobalObject.townsData[locality].name;
+    }
+
+    public static void OnTileAppliedRenderMeshSplines(
+        TerrainTile tile,
+        TileData data,
+        StopToken stop
+    )
+    {
         /*    
          
          IN THE NEXT SECTION WE HANDLE THE SPLINE MESH RENDERING
@@ -315,7 +293,7 @@ public class RunOnTileActionEvent : MonoBehaviour
         //}
 
         // we only do this on Main pass and when we actually have made something to process.
-        if (data.isDraft)// || !TownGlobalObject.splinesNodesDataForTile.ContainsKey(data.area.Coord))
+        if (data.isDraft) // || !TownGlobalObject.splinesNodesDataForTile.ContainsKey(data.area.Coord))
             return;
 
         //  int numberOfSplineNodes = 0;
@@ -328,14 +306,14 @@ public class RunOnTileActionEvent : MonoBehaviour
         }
 
         // By this point this should absolutely exist - unless there is no spline data!
-        int    totalNumberOfListsOfSplineMeshSplines = TownGlobalObject.splinesNodesDataForTile[data.area.Coord].Count;
+        int totalNumberOfListsOfSplineMeshSplines =
+            TownGlobalObject.splinesNodesDataForTile[data.area.Coord].Count;
 
         // There is nothing in the list
         if (totalNumberOfListsOfSplineMeshSplines == 0)
         {
             return;
         }
-
 
         //public void Test(ConcurrentDictionary<string, int> dictionary)
         //{
@@ -348,11 +326,7 @@ public class RunOnTileActionEvent : MonoBehaviour
 
         List<GameObject> thingsToActivate = new List<GameObject>();
 
-      
-
         Coord locality = TownGlobalObject.GetIndexAtCoord(data.area.Coord);
-
-     
 
         // Coord offset = locality - data.area.Coord;
 
@@ -360,31 +334,30 @@ public class RunOnTileActionEvent : MonoBehaviour
 
         // SplinePowerExtended
 
-        var DynamicHolder = TownHolder.Instance.MapMagicObjectReference.transform.Find(string.Format("Tile {0},{1}", offset.x, offset.z));
-
+        var DynamicHolder = TownHolder.Instance.MapMagicObjectReference.transform.Find(
+            string.Format("Tile {0},{1}", offset.x, offset.z)
+        );
 
         // For like the 4th time we check this  TODO: Make it part of the Town Instancing
-        TownGlobalObject.townsData[locality].TownGameObject ??= new GameObject(TownGlobalObject.townsData[locality].name);
-
+        TownGlobalObject.townsData[locality].TownGameObject ??= new GameObject(
+            TownGlobalObject.townsData[locality].name
+        );
 
         //create or use the holder now it has the right name.
         var go = TownGlobalObject.townsData[locality].TownGameObject;
-    
-        
 
         // We walk over the nodes assuming pairs?
 
-            for (int i = 0; i < totalNumberOfListsOfSplineMeshSplines; i++)
-            {
+        for (int i = 0; i < totalNumberOfListsOfSplineMeshSplines; i++)
+        {
             //SplineMesh.Spline();
-            TypedSpline   newValue = TownGlobalObject.GetSplineList(data.area.Coord)[i];
+            TypedSpline newValue = TownGlobalObject.GetSplineList(data.area.Coord)[i];
 
             // No splines for us...
-            if (newValue.nodes.Count ==0)
+            if (newValue.nodes.Count == 0)
             {
                 continue;
             }
-
 
             if ((newValue.nodes[1].Position - newValue.nodes[0].Position).sqrMagnitude == 0)
             {
@@ -397,8 +370,15 @@ public class RunOnTileActionEvent : MonoBehaviour
             // TODO make this an actual hash and shove it in a table
             // string hash = string.Format("{0}_{1}_{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
             //  string fullhash = string.Format("{0}_{1}|{4}_{5}|{2}_{3}", startvec.x, startvec.y, startvec.z, endvec.x, endvec.y, endvec.z);
-            string hash = string.Format("__SPLINE__{0}__{2}|{3}__{5}", newValue.nodes[0].Position.x, newValue.nodes[0].Position.y, newValue.nodes[0].Position.z, newValue.nodes[newValue.nodes.Count-1].Position.x, newValue.nodes[newValue.nodes.Count - 1].Position.y, newValue.nodes[newValue.nodes.Count - 1].Position.z);
-
+            string hash = string.Format(
+                "__SPLINE__{0}__{2}|{3}__{5}",
+                newValue.nodes[0].Position.x,
+                newValue.nodes[0].Position.y,
+                newValue.nodes[0].Position.z,
+                newValue.nodes[newValue.nodes.Count - 1].Position.x,
+                newValue.nodes[newValue.nodes.Count - 1].Position.y,
+                newValue.nodes[newValue.nodes.Count - 1].Position.z
+            );
 
             // TODO replace this with a lookup  SOOOOON
 
@@ -431,7 +411,7 @@ public class RunOnTileActionEvent : MonoBehaviour
             //        else
             //        {
             //            continue;
-            //        } 
+            //        }
 
             //    }
 
@@ -439,40 +419,55 @@ public class RunOnTileActionEvent : MonoBehaviour
 
             var newSpline = ((objectRendered)newValue.chosenType) switch
             {
-                objectRendered.wall => GameObject.Instantiate(TownHolder.Instance.SplineMeshWallMasterSpawner, DynamicHolder, true),
-                objectRendered.fence => GameObject.Instantiate(TownHolder.Instance.SplineMeshFenceMasterSpawner, DynamicHolder, true),
-                objectRendered.gatehouse => GameObject.Instantiate(TownHolder.Instance.SplineMeshGatehouseMasterSpawner, DynamicHolder, true),
-                _ => GameObject.Instantiate(TownHolder.Instance.SplineMeshWallMasterSpawner, DynamicHolder, true),
+                objectRendered.wall
+                  => GameObject.Instantiate(
+                      TownHolder.Instance.SplineMeshWallMasterSpawner,
+                      DynamicHolder,
+                      true
+                  ),
+                objectRendered.fence
+                  => GameObject.Instantiate(
+                      TownHolder.Instance.SplineMeshFenceMasterSpawner,
+                      DynamicHolder,
+                      true
+                  ),
+                objectRendered.gatehouse
+                  => GameObject.Instantiate(
+                      TownHolder.Instance.SplineMeshGatehouseMasterSpawner,
+                      DynamicHolder,
+                      true
+                  ),
+                _
+                  => GameObject.Instantiate(
+                      TownHolder.Instance.SplineMeshWallMasterSpawner,
+                      DynamicHolder,
+                      true
+                  ),
             };
 
-            newSpline.name = hash+ ((objectRendered)newValue.chosenType).ToString() ;
+            newSpline.name = hash + ((objectRendered)newValue.chosenType).ToString();
 
             newSpline.GetComponent<SplineMesh.Spline>().nodes = newValue.nodes;
-
 
             if (newValue.tryToFloor)
             {
                 var scrp = newSpline.AddComponent<AlignNodesToTerrainOnEnable>();
-
-              //  scrp.checkVal = 0.07f;
+                //  scrp.checkVal = 0.07f;
             }
 
             thingsToActivate.Add(newSpline);
-
-
             // mark it as finally processed. but only if we havent already.
 
-        //  if (!TownGlobalObject.isSplinesMeshRenderedOnTile.ContainsKey(data.area.Coord))
-         //       TownGlobalObject.isSplinesMeshRenderedOnTile.Add(data.area.Coord, true);
+            //  if (!TownGlobalObject.isSplinesMeshRenderedOnTile.ContainsKey(data.area.Coord))
+            //       TownGlobalObject.isSplinesMeshRenderedOnTile.Add(data.area.Coord, true);
 
 
         }
 
-            // Activate them as a group.
+        // Activate them as a group.
         for (int i = 0; i < thingsToActivate.Count; i++)
         {
             thingsToActivate[i].SetActive(true);
         }
-     
     }
 }

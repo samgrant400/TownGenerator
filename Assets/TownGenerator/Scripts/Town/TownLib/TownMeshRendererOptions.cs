@@ -28,6 +28,5 @@ namespace Town
 
         public Material HiddenCity;
         public Material TownModelsOverlay;
-
     }
 }

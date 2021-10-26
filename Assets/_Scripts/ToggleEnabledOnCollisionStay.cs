@@ -4,67 +4,59 @@ using UnityEngine;
 
 public class ToggleEnabledOnCollisionStay : MonoBehaviour
 {
-   // public Transform TMpro;
+    // public Transform TMpro;
 
-   // private GameObject tmProgo;
+    // private GameObject tmProgo;
 
     private BillboardText refScript;
-
 
     void Start()
     {
         GetBillboardRefAndInvokePeriodicDisable();
-
     }
 
     private void GetBillboardRefAndInvokePeriodicDisable()
     {
         refScript = GetComponent<BillboardText>();
-        Invoke("periodicDisable", 1f + (RandomGen.Next(0,199) * 0.01f));
+        Invoke("periodicDisable", 1f + (RandomGen.Next(0, 199) * 0.01f));
     }
 
     void OnEnable()
     {
         GetBillboardRefAndInvokePeriodicDisable();
-
     }
 
-    private void periodicDisable() {
-
-
+    private void periodicDisable()
+    {
         //tmProgo =
-            transform.GetChild(0).GetChild(0).gameObject.SetActive(false); 
+        transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
         refScript.enabled = false;
-       // tmProgo.SetActive(false);
-      
+        // tmProgo.SetActive(false);
+
     }
 
-       void Awake()
+    void Awake()
     {
         GetBillboardRefAndInvokePeriodicDisable();
         refScript.enabled = false;
-      
     }
-    
 
     // Start is called before the first frame update
     void OnTriggerStay()
     {
-      //  tmProgo.SetActive(true);
+        //  tmProgo.SetActive(true);
     }
 
     void OnTriggerEnter()
     {
         refScript.enabled = true;
-        transform.GetChild(0).GetChild(0).gameObject.SetActive(true);  
+        transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
     }
 
-    void OnTriggerExit() {
+    void OnTriggerExit()
+    {
         GetBillboardRefAndInvokePeriodicDisable();
     }
-
-
-
     //void OnTriggerEnter()
     //{
     //    //foreach (ContactPoint contact in collision.contacts)

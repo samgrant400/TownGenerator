@@ -12,7 +12,7 @@ namespace Twobob
 {
     public class MeshFromImage : MonoBehaviour
     {
-        // For saving the mesh------------------------ 
+        // For saving the mesh------------------------
         public KeyCode saveKey = KeyCode.F12;
         public string saveName = "SavedMesh";
 
@@ -37,7 +37,7 @@ namespace Twobob
         public Color[] pixels;
 
         public Texture2D newTexture;
-        public Texture2D oldTexture;  //require
+        public Texture2D oldTexture; //require
 
         private Sprite mySprite;
         private SpriteRenderer spriteRenderer;
@@ -51,13 +51,8 @@ namespace Twobob
         private Vector3 oldPosition = new Vector3(float.MinValue, float.MinValue, float.MinValue);
         private System.Diagnostics.Stopwatch zeit = new System.Diagnostics.Stopwatch();
 
-
-
-
-
         public bool FindTextureByPosition(float x, float z)
         {
-
             bool stop = true;
 
             // did we already run? and did we not move in xz.
@@ -69,11 +64,10 @@ namespace Twobob
                 return stop;
             }
 
-
             // Let's find the Texture Holder and then return the texture as a reference into oldTexture
 
-            TerrainTile tileFound =  MapMagicObjectRef.tiles.FindByWorldPosition(x, z);
-     
+            TerrainTile tileFound = MapMagicObjectRef.tiles.FindByWorldPosition(x, z);
+
             // We just did that to see if the tile exists really.
 
             if (null == tileFound)
@@ -83,10 +77,9 @@ namespace Twobob
             }
             else
             {
-               
                 //    DirectTexturesHolder holder = tileFound.GetComponentInChildren<DirectTexturesHolder>();
 
-                Debug.Log("Finding for "+ x + " " + z );
+                Debug.Log("Finding for " + x + " " + z);
 
                 oldTexture = DirectTexturesHolder.FindTexture(MapMagicObjectRef, "Road", x, z);
 
@@ -115,34 +108,25 @@ namespace Twobob
 
             if (Input.GetKeyDown(saveKey) && !WeAreProcessing)
             {
-
                 Go();
 
                 SaveAsset();
-
             }
         }
 
-        void Start() {
-
+        void Start()
+        {
             player = GameObject.FindWithTag("Player").transform;
+        }
 
-         
-
-
-                }
-
-
-       private  bool WeAreProcessing = false;
-      
+        private bool WeAreProcessing = false;
 
         void Go()
         {
-
             WeAreProcessing = true;
             zeit.Start();
-         //   if (FindTextureByPosition(player.position.x, transform.position.z))
-         //       return;
+            //   if (FindTextureByPosition(player.position.x, transform.position.z))
+            //       return;
 
             // Mesher
             vertices = new List<Vector3>();
@@ -155,63 +139,72 @@ namespace Twobob
             // Sprite
             //      pixels = oldTexture.GetPixels();
 
-            Texture2D myTexture = DirectTexturesHolder.FindTexture(MapMagicObjectRef, "Road", player.position.x, player.position.z);
+            Texture2D myTexture = DirectTexturesHolder.FindTexture(
+                MapMagicObjectRef,
+                "Road",
+                player.position.x,
+                player.position.z
+            );
 
-
-         //   Debug.Log(myTexture.format);
-         //   Debug.Log(myTexture.width);
-         //   Debug.Log(myTexture.height);
+            //   Debug.Log(myTexture.format);
+            //   Debug.Log(myTexture.width);
+            //   Debug.Log(myTexture.height);
 
             pixels = myTexture.GetPixels();
 
-            newTexture = new Texture2D(myTexture.width, myTexture.height, TextureFormat.RGBA32, false);
+            newTexture = new Texture2D(
+                myTexture.width,
+                myTexture.height,
+                TextureFormat.RGBA32,
+                false
+            );
 
-
-            if ((TryGetComponent(out SpriteRenderer spriteRenderer)))
-            {
-              
-            }
+            if ((TryGetComponent(out SpriteRenderer spriteRenderer))) { }
             else
             {
                 gameObject.AddComponent<SpriteRenderer>();
             }
 
-           // spriteRenderer = (gameObject.GetComponentByType< SpriteRenderer >()== null) ?  : SpriteRenderer = gameObject.GetComponentByType<SpriteRenderer>();
+            // spriteRenderer = (gameObject.GetComponentByType< SpriteRenderer >()== null) ?  : SpriteRenderer = gameObject.GetComponentByType<SpriteRenderer>();
 
             ConvertSpriteAndCreateCollider(pixels);
             BrowseColliderToCreateMesh(polygonColliderAdded);
-
         }
-
-      
 
         public void ConvertSpriteAndCreateCollider(Color[] pixels)
         {
             for (int i = 0; i < pixels.Length; i++)
             {
                 // delete all black pixel (black is the circuit, white is the walls)
-                pixels[i] = ((pixels[i].r == 0 && pixels[i].g == 0 && pixels[i].b == 0 && pixels[i].a == 0)) ? Color.clear : Color.white;
-
-
-               
-              
+                pixels[i] =
+                    ((pixels[i].r == 0 && pixels[i].g == 0 && pixels[i].b == 0 && pixels[i].a == 0))
+                        ? Color.clear
+                        : Color.white;
             }
 
-          //  Debug.Log(pixels.Length +" pixels");
+            //  Debug.Log(pixels.Length +" pixels");
 
             // Set a new texture with this pixel list
             newTexture.SetPixels(pixels);
             newTexture.Apply();
 
             // Create a sprite from this texture
-            mySprite = Sprite.Create(newTexture, new Rect(0, 0, newTexture.width, newTexture.height), new Vector2(10.0f, 10.0f), 10.0f, 0, SpriteMeshType.Tight, new Vector4(0, 0, 0, 0), false);
+            mySprite = Sprite.Create(
+                newTexture,
+                new Rect(0, 0, newTexture.width, newTexture.height),
+                new Vector2(10.0f, 10.0f),
+                10.0f,
+                0,
+                SpriteMeshType.Tight,
+                new Vector4(0, 0, 0, 0),
+                false
+            );
 
             // Add it to our displayerComponent
             displayerComponent.GetComponent<SpriteRenderer>().sprite = mySprite;
 
             // Add the polygon collider to our displayer Component and get his path count
             polygonColliderAdded = displayerComponent.AddComponent<PolygonCollider2D>();
-
         }
 
         // Method to browse the collider and launch makemesh
@@ -233,9 +226,8 @@ namespace Twobob
                         point2 = new Vector3(path[j].x, path[j].y, size);
                         point3 = new Vector3(path[j].x, path[j].y, 0);
                         MakeMesh(point0, point1, point2, point3);
-
                     }
-                    else if (j == (path.Length - 1))// if we are at the last point, we need to close the loop with the first point
+                    else if (j == (path.Length - 1)) // if we are at the last point, we need to close the loop with the first point
                     {
                         point0 = new Vector3(path[j - 1].x, path[j - 1].y, 0);
                         point1 = new Vector3(path[j - 1].x, path[j - 1].y, size);
@@ -252,11 +244,9 @@ namespace Twobob
             }
         }
 
-
         //Method to generate 2 triangles mesh from the 4 points 0 1 2 3 and add it to the collider
         public void MakeMesh(Vector3 point0, Vector3 point1, Vector3 point2, Vector3 point3)
         {
-
             // Vertice add
             vertices.Add(point0);
             vertices.Add(point1);
@@ -272,7 +262,7 @@ namespace Twobob
             triangles.Add(2 + loop * 4);
             loop = loop + 1;
 
-            // create mesh 
+            // create mesh
             meshFilterMesh.vertices = vertices.ToArray();
             meshFilterMesh.triangles = triangles.ToArray();
 
@@ -283,20 +273,17 @@ namespace Twobob
         // Save if F12 press
         public void SaveAsset()
         {
-
             long offset = System.DateTimeOffset.Now.ToUnixTimeSeconds();
 
             var mf = mesher.GetComponent<MeshFilter>();
             if (mf)
             {
                 var savePath = "Assets/" + saveName + offset + ".asset";
-             
+
                 Debug.Log("Saved Mesh to:" + savePath);
                 AssetDatabase.CreateAsset(mf.mesh, savePath);
             }
             WeAreProcessing = false;
-
         }
-
     } // https://stackoverflow.com/a/54086859
 }

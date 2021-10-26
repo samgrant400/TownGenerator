@@ -6,10 +6,10 @@ public class AlignOnEnable : MonoBehaviour
 {
     public int attempts = 0;
     private int MaxAttempts = 20;
-  
+
     void OnEnable()
-    {       
-        TryToFloor();      
+    {
+        TryToFloor();
     }
 
     private void TryToFloor()
@@ -21,11 +21,14 @@ public class AlignOnEnable : MonoBehaviour
         {
             // this is what gives us an exception. How to move them more cleverly?
 
-            child.localPosition = new Vector3(child.position.x, GetTerrainPos(child.position.x, child.position.z).y, child.position.z);
+            child.localPosition = new Vector3(
+                child.position.x,
+                GetTerrainPos(child.position.x, child.position.z).y,
+                child.position.z
+            );
             testArr[testcount] = child.position.y;
             testcount += 1;
         }
-
 
         if (testArr[0] == 0 && testArr[1] == 0)
         {
@@ -37,19 +40,16 @@ public class AlignOnEnable : MonoBehaviour
             }
             else
             {
-              
                 Debug.LogFormat("Failed to floor splines {0} on countout", gameObject.name);
                 return;
             }
-        }       
+        }
     }
 
     static Vector3 GetTerrainPos(float x, float y)
     {
-        
         //Create origin for raycast that is above the terrain. I chose 500.
         Vector3 origin = new Vector3(x, 500f, y);
-      
 
         // TODO : OPTIONAL MASK SELECTION
         LayerMask mask = LayerMask.GetMask("Default");

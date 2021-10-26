@@ -5,7 +5,10 @@
         public static readonly Rectangle Zero = new Rectangle(0, 0, 0, 0);
         public static readonly Rectangle One = new Rectangle(1, 1, 1, 1);
 
-        public float X, Y, Width, Height;
+        public float X,
+            Y,
+            Width,
+            Height;
 
         public Rectangle(float x, float y, float width, float height)
         {

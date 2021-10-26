@@ -13,17 +13,18 @@ using System;
 
 namespace MapMagic.Nodes.MatrixGenerators
 {
-
     //TODO Make it honour the town.mapoffset
 
     [System.Serializable]
-    [GeneratorMenu(menu = "Map/Initial", name = "TownGen", iconName = "GeneratorIcons/Constant", disengageable = true,
-        helpLink = "https://gitlab.com/denispahunov/mapmagic/-/wikis/MatrixGenerators/Town")]
+    [GeneratorMenu(
+        menu = "Map/Initial",
+        name = "TownGen",
+        iconName = "GeneratorIcons/Constant",
+        disengageable = true,
+        helpLink = "https://gitlab.com/denispahunov/mapmagic/-/wikis/MatrixGenerators/Town"
+    )]
     public class TownGen200 : Generator, IMultiOutlet // IOutlet<MatrixWorld>
     {
-     
-
-
         #region outputs and inputs
 
         //  [Val("Height", "Inlet")]
@@ -53,22 +54,19 @@ namespace MapMagic.Nodes.MatrixGenerators
         [Val("Districts", "Spline")]
         public readonly Outlet<SplineSys> splineDistrictsOut = new Outlet<SplineSys>();
 
-
         [Val("TownWall", "Spline")]
         public readonly Outlet<SplineSys> townWallSplineOut = new Outlet<SplineSys>();
 
         [Val("Gatehouses", "Spline")]
         public readonly Outlet<SplineSys> gatehouseSplineOut = new Outlet<SplineSys>();
 
-        
+        // [Val("TwnWllEdg", "Spline")]
+        // public readonly Outlet<SplineSys> townWallEdgeSplineOut = new Outlet<SplineSys>();
 
-       // [Val("TwnWllEdg", "Spline")]
-       // public readonly Outlet<SplineSys> townWallEdgeSplineOut = new Outlet<SplineSys>();
+        //  [Val("CasWall", "Spline")]
+        //  public readonly Outlet<SplineSys> castleWallSplineOut = new Outlet<SplineSys>();
 
-       //  [Val("CasWall", "Spline")]
-       //  public readonly Outlet<SplineSys> castleWallSplineOut = new Outlet<SplineSys>();
-
-       [Val("CasWllEdg", "Spline")]
+        [Val("CasWllEdg", "Spline")]
         public readonly Outlet<SplineSys> castleWallEdgeSplineOut = new Outlet<SplineSys>();
 
         [Val("Gates", "Positions")]
@@ -76,7 +74,6 @@ namespace MapMagic.Nodes.MatrixGenerators
 
         [Val("Towers", "Positions")]
         public readonly Outlet<TransitionsList> towersOut = new Outlet<TransitionsList>();
-
 
         //[Val("Centroid Poor", "Positions")]
         //public readonly Outlet<TransitionsList> poorOut = new Outlet<TransitionsList>();
@@ -102,15 +99,11 @@ namespace MapMagic.Nodes.MatrixGenerators
         [Val("PatchCenters", "Positions")]
         public readonly Outlet<TransitionsList> patchOut = new Outlet<TransitionsList>();
 
-
-
-
         //  [Val("AreaPos", "Positions")]
         //   public readonly Outlet<TransitionsList> AreasobjsOut = new Outlet<TransitionsList>();
 
         [Val("OtherPos", "Positions")]
         public readonly Outlet<TransitionsList> otherobjsOut = new Outlet<TransitionsList>();
-
 
         [Val("RoadEnd", "Positions")]
         public readonly Outlet<TransitionsList> roadEndOut = new Outlet<TransitionsList>();
@@ -123,41 +116,39 @@ namespace MapMagic.Nodes.MatrixGenerators
             //yield return heightOut;
             //  yield return footPrintOut;
 
-           // yield return townWallEdgeSplineOut;
+            // yield return townWallEdgeSplineOut;
             yield return castleWallEdgeSplineOut;
             yield return townWallSplineOut; // yield return castleWallSplineOut;
             yield return gatehouseSplineOut;
-            yield return roadsplineOut; yield return streetsplineOut;
+            yield return roadsplineOut;
+            yield return streetsplineOut;
             yield return splineDistrictsOut;
             //  yield return poorOut;
-            //  yield return richOut; 
-            yield return towersOut; yield return gatesOut;
+            //  yield return richOut;
+            yield return towersOut;
+            yield return gatesOut;
             yield return buildingOut;
             yield return richBuildingOut;
-            yield return castleOut; yield return centerOut;
+            yield return castleOut;
+            yield return centerOut;
             yield return singlecenterOut;
             yield return patchOut;
-
-
 
             //  yield return AreasobjsOut;
             yield return otherobjsOut;
 
             yield return roadEndOut;
             yield return terminusOut;
-
         }
-
 
         #endregion
 
         #region declarations
 
-       
+
         //[HideInInspector]
         [Val("Seed")]
         public int seed = 12345;
-       
 
         public TownOptions townOptions = new TownOptions();
 
@@ -169,16 +160,16 @@ namespace MapMagic.Nodes.MatrixGenerators
         // ******************* BUNDLE *************
 
         [HideInInspector]
-      //  [Val("Intensity")]
+        //  [Val("Intensity")]
         public float footprintIntensity = 1;
         [HideInInspector]
-      //  [Val("Position")]
+        //  [Val("Position")]
         public Vector2D footprintPosition;
         [HideInInspector]
-       // [Val("Radius")]
+        // [Val("Radius")]
         public float footprintRadius = 30;
         [HideInInspector]
-       // [Val("Hardness")]
+        // [Val("Hardness")]
         public float footprintHardness = 0.5f;
 
         [Val("JustSplines")]
@@ -190,13 +181,12 @@ namespace MapMagic.Nodes.MatrixGenerators
 
 #if UNITY_EDITOR
         [UnityEditor.InitializeOnLoadMethod]
-        static void EnlistInMenu() => MapMagic.Nodes.GUI.CreateRightClick.generatorTypes.Add(typeof(TownGen200));
+        static void EnlistInMenu() =>
+            MapMagic.Nodes.GUI.CreateRightClick.generatorTypes.Add(typeof(TownGen200));
 #endif
 
         private void InitNamedOutputsDicts(out Dictionary<string, ulong> OutletFullList)
         {
-
-
             OutletFullList = new Dictionary<string, ulong>();
 
             // TODO : I HATE THIS
@@ -211,10 +201,9 @@ namespace MapMagic.Nodes.MatrixGenerators
                 { nameof(splineDistrictsOut), splineDistrictsOut.Id },
                 { nameof(townWallSplineOut), townWallSplineOut.Id },
                 { nameof(gatehouseSplineOut), gatehouseSplineOut.Id },
-               // { nameof(townWallEdgeSplineOut), townWallEdgeSplineOut.Id },
-               // { nameof(castleWallSplineOut), castleWallSplineOut.Id },
+                // { nameof(townWallEdgeSplineOut), townWallEdgeSplineOut.Id },
+                // { nameof(castleWallSplineOut), castleWallSplineOut.Id },
                 { nameof(castleWallEdgeSplineOut), castleWallEdgeSplineOut.Id },
-
                 { nameof(gatesOut), gatesOut.Id },
                 { nameof(towersOut), towersOut.Id },
                 //OutletFullList.Add(nameof(poorOut), poorOut.Id);
@@ -228,9 +217,7 @@ namespace MapMagic.Nodes.MatrixGenerators
                 { nameof(patchOut), patchOut.Id },
                 { nameof(roadEndOut), roadEndOut.Id },
                 { nameof(terminusOut), terminusOut.Id }
-
             };
-
             //      [Val("Gates", "Positions")]
             //public readonly Outlet<TransitionsList> gatesOut = new Outlet<TransitionsList>();
 
@@ -283,13 +270,8 @@ namespace MapMagic.Nodes.MatrixGenerators
 
         }
 
-
-
-
-
         public override void Generate(TileData data, StopToken stop)
         {
-
             if (stop.stop || !enabled)
             {
                 return;
@@ -299,52 +281,47 @@ namespace MapMagic.Nodes.MatrixGenerators
 
             if (!TownGlobalObject.InitialTownsGenerated)
             {
-              
                 Debug.Log("***** !TownGlobalObject.InitialTownsGenerated THIS IS BAD*****");
                 return;
             }
-
-
-
 
             Dictionary<string, ulong> OutletFullList; // = new Dictionary<string, ulong>();
 
             InitNamedOutputsDicts(out OutletFullList);
 
-            if (stop.stop ) return;
+            if (stop.stop)
+                return;
 
             //// Town stuff  /////////// ********
 
             // This will ALLLLLways return something... it SHOULD be the town.
             Coord locality = TownGlobalObject.GetIndexAtCoord(data.area.Coord);
 
-
-            if (!TownGlobalObject.bundles.ContainsKey(data.area.Coord))  // By this point  !bundle.isBundled && !bundle.isTileDataInBundle  - basically the bundle is a blank.
+            if (!TownGlobalObject.bundles.ContainsKey(data.area.Coord)) // By this point  !bundle.isBundled && !bundle.isTileDataInBundle  - basically the bundle is a blank.
             {
-                Debug.Log("***** !TownGlobalObject.bundles.ContainsKey(data.area.Coord) THIS IS BAD*****");
+                Debug.Log(
+                    "***** !TownGlobalObject.bundles.ContainsKey(data.area.Coord) THIS IS BAD*****"
+                );
                 return;
-
             }
             // WE DID HIT THE BUNDLE
 
-           
-               
+
+
 
             bundle = TownGlobalObject.bundles[data.area.Coord];
 
-
-            if (locality == data.area.Coord && !bundle.isTileDataInBundle  && !RoadOnly)
+            if (locality == data.area.Coord && !bundle.isTileDataInBundle && !RoadOnly)
             {
-                Debug.LogFormat("This is a town tile. Is the locality Town stored? {0}", TownGlobalObject.townsData.ContainsKey(locality));
-
-
+                Debug.LogFormat(
+                    "This is a town tile. Is the locality Town stored? {0}",
+                    TownGlobalObject.townsData.ContainsKey(locality)
+                );
             }
-
 
             // Handle the WE HAVE THE TILE DATA ALREADY case
             if (bundle.isBundled && bundle.isTileDataInBundle)
             {
-
                 //Debug.LogFormat(
                 //       "{0} is {1}, {2} is {3}, {4} is {5},  ",
                 //       "outlet GUID",
@@ -359,40 +336,36 @@ namespace MapMagic.Nodes.MatrixGenerators
                 RenderOutlet(data, bundle, OutletFullList);
 
                 return;
-
-           
-
             }
             // The Unrendered case. Lets double check.
             else if (bundle.isBundled && !bundle.isTileDataInBundle)
             {
-
-
                 RenderOutlet(data, bundle, OutletFullList);
                 bundle.MarkIsTileDataInBundleTrue();
-             //   bundle.isTileDataInBundle = true;
+                //   bundle.isTileDataInBundle = true;
                 return;
-         
-
-
             }
-
-       
-
         }
 
         private void RenderTownMeshes(ref AOTABundle bundle)
         {
-          //  bundle.isTileDataInBundle = true;
+            //  bundle.isTileDataInBundle = true;
 
-        TownGlobalObject.TownsWaitingToRender.Enqueue(new TownMeshRenderer(bundle.town, bundle.town.Options, TownGlobalObjectService.rendererOptions)) ;
-
+            TownGlobalObject.TownsWaitingToRender.Enqueue(
+                new TownMeshRenderer(
+                    bundle.town,
+                    bundle.town.Options,
+                    TownGlobalObjectService.rendererOptions
+                )
+            );
         }
-     
-        private void RenderOutlet(TileData data, AOTABundle bundle, Dictionary<string, ulong> OutletFullList)
-        {
 
-          
+        private void RenderOutlet(
+            TileData data,
+            AOTABundle bundle,
+            Dictionary<string, ulong> OutletFullList
+        )
+        {
             ulong matchingId;
 
             foreach (var splineSys in bundle.SplineSysBundle)
@@ -400,7 +373,12 @@ namespace MapMagic.Nodes.MatrixGenerators
                 // Check the list is properly formatted. Could be removed... if you are confident.
                 if (!OutletFullList.ContainsKey(splineSys.outletName))
                 {
-                    Debug.LogFormat("{0} {1} not found initialised in the {2}", nameof(matchingId), splineSys.outletName, nameof(OutletFullList));
+                    Debug.LogFormat(
+                        "{0} {1} not found initialised in the {2}",
+                        nameof(matchingId),
+                        splineSys.outletName,
+                        nameof(OutletFullList)
+                    );
                     continue;
                 }
                 else
@@ -408,7 +386,6 @@ namespace MapMagic.Nodes.MatrixGenerators
                     // item.outletName      // should match the entry in OutletFullList
                     matchingId = OutletFullList[splineSys.outletName];
                 }
-
 
                 if (splineSys.splineSys.lines.Length > 0)
                 {
@@ -449,11 +426,12 @@ namespace MapMagic.Nodes.MatrixGenerators
             //}
 
 
-            
+
 
             foreach (var objectList in bundle.TransitionsListBundle)
             {
-                if (RoadOnly) continue;
+                if (RoadOnly)
+                    continue;
 
                 if (OutletFullList.ContainsKey(objectList.outletName))
                 {
@@ -462,45 +440,67 @@ namespace MapMagic.Nodes.MatrixGenerators
                 }
                 else
                 {
-                    Debug.LogFormat("{0} {1} not found initialised in the {2}", nameof(matchingId), objectList.outletName, nameof(OutletFullList));
+                    Debug.LogFormat(
+                        "{0} {1} not found initialised in the {2}",
+                        nameof(matchingId),
+                        objectList.outletName,
+                        nameof(OutletFullList)
+                    );
                     continue;
                 }
 
                 if (objectList.transitionsList.count > 0)
                 {
-                   
                     // now we know the Id. go populate it.
                     foreach (var outlet in Outlets())
                     {
                         if (outlet.Id == matchingId)
                         {
                             // Bodge the city size into the object  // 0,0 is shared between the corner of 4 tiles. so expect at least 4
-                            if (objectList.outletName ==  "centerOut")
-
+                            if (objectList.outletName == "centerOut")
                             {
-                                var hinum = (double) Mathf.Max((TownGlobalObjectService.PatchCap + 10), (TownGlobalObject.bundles[data.area.Coord].town.Options.Patches));
-                                var magic = (float) (1/ (hinum / (double)TownGlobalObject.bundles[data.area.Coord].town.Options.Patches));
-                              
-                                objectList.transitionsList.arr[0].scale = new Vector3(magic, magic, magic);
+                                var hinum = (double)Mathf.Max(
+                                    (TownGlobalObjectService.PatchCap + 10),
+                                    (TownGlobalObject.bundles[data.area.Coord].town.Options.Patches)
+                                );
+                                var magic = (float)(
+                                    1
+                                    / (
+                                        hinum
+                                        / (double)TownGlobalObject.bundles[
+                                            data.area.Coord
+                                        ].town.Options.Patches
+                                    )
+                                );
 
-                                        
+                                objectList.transitionsList.arr[0].scale = new Vector3(
+                                    magic,
+                                    magic,
+                                    magic
+                                );
+
                                 // Store the single case. for the absolute town center
-                                    if (data.area.Coord == TownGlobalObject.GetIndexAtCoord(data.area.Coord))
+                                if (
+                                    data.area.Coord
+                                    == TownGlobalObject.GetIndexAtCoord(data.area.Coord)
+                                )
                                 {
+                                    var location = Outlets()
+                                        .Where(x => x.Id == singlecenterOut.Id)
+                                        .First();
 
-                                    var location = Outlets().Where(x => x.Id == singlecenterOut.Id).First();
+                                    objectList.transitionsList.arr =
+                                        objectList.transitionsList.arr.Truncated(
+                                            objectList.transitionsList.count
+                                        );
 
-                                    objectList.transitionsList.arr = objectList.transitionsList.arr.Truncated(objectList.transitionsList.count);
-
-                                    data.StoreProduct(
-                                   location,
-                                    objectList.transitionsList);
+                                    data.StoreProduct(location, objectList.transitionsList);
                                 }
-
-
                             }
 
-                            objectList.transitionsList.arr.Truncated(objectList.transitionsList.count);
+                            objectList.transitionsList.arr.Truncated(
+                                objectList.transitionsList.count
+                            );
 
                             //  foreach (var item in objectList.transitionsList.arr)
                             //  {
@@ -511,44 +511,38 @@ namespace MapMagic.Nodes.MatrixGenerators
 
                             if (objectList.outletName == "gatehouseSplineOut")
                             {
-                                Debug.Log(objectList.transitionsList.arr.Length + " gatehouseSplines on this tile");
+                                Debug.Log(
+                                    objectList.transitionsList.arr.Length
+                                        + " gatehouseSplines on this tile"
+                                );
                             }
-
 
                             //for (int i = 0; i < objectList.transitionsList.arr.Length; i++)
                             //    {
                             //        if (data.area.active.Contains(objectList.transitionsList.arr[i].pos))
                             //        {
                             //            cleaner.Add( objectList.transitionsList.arr[i]);
-                            //        }                            
+                            //        }
                             //    }
 
 
-                            
-
-                                data.StoreProduct(outlet, objectList.transitionsList);
 
 
-
-                           // data.StoreProduct(outlet, cleaner);
+                            data.StoreProduct(outlet, objectList.transitionsList);
+                            // data.StoreProduct(outlet, cleaner);
 
 
                         }
                     }
                 }
-              //  else
-              //      Debug.LogFormat("Outlet {0} has {1} objects", objectList.outletName, objectList.transitionsList.count);
+                //  else
+                //      Debug.LogFormat("Outlet {0} has {1} objects", objectList.outletName, objectList.transitionsList.count);
             }
-
-
-
             // Let's shove it all in the list.
 
-           
+
 
         }
-
-
         //public Rectangle GetBounds(IEnumerable<Patch> patches)
         //{
         //    var vertices = patches.SelectMany(p => p.Shape.Vertices);

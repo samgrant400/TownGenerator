@@ -28,7 +28,9 @@ namespace Town
                 _blocked = _blocked.Except(town.Gates).ToList();
             }
 
-            _blocked.AddRange(town.Patches.Where(p => p.Water).SelectMany(p => p.Shape.Vertices).Distinct());
+            _blocked.AddRange(
+                town.Patches.Where(p => p.Water).SelectMany(p => p.Shape.Vertices).Distinct()
+            );
 
             var border = town.CityWall.Circumference;
 

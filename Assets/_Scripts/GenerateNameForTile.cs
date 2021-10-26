@@ -5,14 +5,13 @@ using Twobob;
 
 public class GenerateNameForTile : MonoBehaviour
 {
-
     //Reference to RandomNamePlaceGen Script
     public RandomName genScript;
 
     private void Start()
     {
         //Get the RandomNamePlaceGen script component ready for use.
-      //  genScript = new RandomName();
+        //  genScript = new RandomName();
     }
 
     private void Update()
@@ -45,13 +44,33 @@ public class GenerateNameForTile : MonoBehaviour
         string randomPlace = genScript.GeneratePlace();
 
         //Print the outputs of randomly generated names and places to the console.
-        Debug.Log(string.Format("Random Male Name Gen: \n{0} {1} {2}", randomMaleFirstName, randomMaleMiddleName, randomMaleLastName));
-        Debug.Log(string.Format("Random Female Name Gen: \n{0} {1} {2}", randomFemaleFirstName, randomFemaleMiddleName, randomFemaleLastName));
-        Debug.Log(string.Format("Random Name Gen: \n{0} {1} {2}", randomFirstName, randomMiddleName, randomLastName));
+        Debug.Log(
+            string.Format(
+                "Random Male Name Gen: \n{0} {1} {2}",
+                randomMaleFirstName,
+                randomMaleMiddleName,
+                randomMaleLastName
+            )
+        );
+        Debug.Log(
+            string.Format(
+                "Random Female Name Gen: \n{0} {1} {2}",
+                randomFemaleFirstName,
+                randomFemaleMiddleName,
+                randomFemaleLastName
+            )
+        );
+        Debug.Log(
+            string.Format(
+                "Random Name Gen: \n{0} {1} {2}",
+                randomFirstName,
+                randomMiddleName,
+                randomLastName
+            )
+        );
         Debug.Log(string.Format("Random Place: \n{0}", randomPlace));
 
         Debug.ClearDeveloperConsole();
     }
-
 }
 
