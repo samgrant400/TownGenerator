@@ -14,6 +14,8 @@ namespace Twobob.Mm2
 
         public float scale = 1f, scaleRange = 0;
 
+        public bool mergeSegments;
+
         public bool spacingFromScale;
 
         public float spacing = 1f, spacingRange = 0;

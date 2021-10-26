@@ -803,11 +803,11 @@ exit:
         TransitionsList towerLocOut = new TransitionsList();
         TransitionsList gateLocOut = new TransitionsList();
 
-        
+
 
         var startingGates = new List<Town.Geom.Vector2>(geom.Gates.Count + passedwall.Gates.Count);// geom.Gates;
 
-        geom.Gates.ForEach(x => startingGates.Add( new Town.Geom.Vector2(x.x,x.y)));
+        geom.Gates.ForEach(x => startingGates.Add(new Town.Geom.Vector2(x.x, x.y)));
 
         passedwall.Gates.ForEach(x => startingGates.Add(new Town.Geom.Vector2(x.x, x.y)));
 
@@ -835,11 +835,11 @@ exit:
             if (geom.Gates.Contains(start))
             {
                 matched = State.yes;
-              
-                
 
-               replacedGates.Add(start);
-                
+
+
+                replacedGates.Add(start);
+
 
                 start = start + Town.Geom.Vector2.Scale(end - start, 0.3f);
                 wall.A = start;
@@ -851,58 +851,58 @@ exit:
                 gatehouseNodes.Add(new Vector3(tot.x, 499.9f, tot.y));
             }
 
-            if (geom.Gates.Contains(end) || matched == State.yes  )
+            if (geom.Gates.Contains(end) || matched == State.yes)
             {
-               
-                    matched = State.no;
-                    
-                    if(geom.Gates.Contains(end))
+
+                matched = State.no;
+
+                if (geom.Gates.Contains(end))
                     replacedGates.Add(end);
 
-                    end = end - Town.Geom.Vector2.Scale(end - start, 0.3f);
-                    wall.B = end;
-                    
-               if (geom.Gates.Contains(end))
+                end = end - Town.Geom.Vector2.Scale(end - start, 0.3f);
+                wall.B = end;
+
+                if (geom.Gates.Contains(end))
                     geom.Gates.Add(end);
 
 
 
-                    var tot = new Town.Geom.Vector2(
-                                                     end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
-                                                     end.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y);
+                var tot = new Town.Geom.Vector2(
+                                                 end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
+                                                 end.y * TownGlobalObjectService.WorldMultiplier + WorldOffset.y);
 
-                    var test = new Vector3(tot.x, 499.9f, tot.y);
+                var test = new Vector3(tot.x, 499.9f, tot.y);
 
-                    // if it is close enough to the last node we make a pair. if it isn't we delete the last node too. and dont fail on weird edge cases
-                    if (gatehouseNodes.Count == 0)
-                    {
-                        continue;
-                    }
-                    if (Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count - 1] - test) < 40000)
-                    {
+                // if it is close enough to the last node we make a pair. if it isn't we delete the last node too. and dont fail on weird edge cases
+                if (gatehouseNodes.Count == 0)
+                {
+                    continue;
+                }
+                if (Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count - 1] - test) < 40000)
+                {
 
-                        gatehouseLines.Add(new Line(gatehouseNodes[gatehouseNodes.Count - 1], test));
-                        gatehouseNodes.Clear();
+                    gatehouseLines.Add(new Line(gatehouseNodes[gatehouseNodes.Count - 1], test));
+                    gatehouseNodes.Clear();
 
-                    }
-                    else
-                    {
-                        // clear for a non match
-                        gatehouseNodes.Clear();
-                    }
+                }
+                else
+                {
+                    // clear for a non match
+                    gatehouseNodes.Clear();
+                }
 
-               
+
 
             }
 
 
-//            foreach (var replacedgate in replacedGates.Distinct())
-//            {
-//                passedwall.Gates.Remove(replacedgate);
+            //            foreach (var replacedgate in replacedGates.Distinct())
+            //            {
+            //                passedwall.Gates.Remove(replacedgate);
 
 
-////                geom.Gates.Remove(replacedgate);
-//            }
+            ////                geom.Gates.Remove(replacedgate);
+            //            }
 
 
 
@@ -923,15 +923,15 @@ exit:
                             TownGlobalObjectService.WorldMultiplier, end, WorldOffset));
 
 
-                lineList.Add(new Line(vecA, vecB));
-            
+            lineList.Add(new Line(vecA, vecB));
+
 
             //// NOW HANDLING TOWER TRANSITIONS
 
 
 
 
-            var towA = ((start.x + ((end.x - start.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) +WorldOffset.x;
+            var towA = ((start.x + ((end.x - start.x) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.x;
 
             var towB =
                 ((start.y + ((end.y - start.y) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y;
@@ -940,12 +940,12 @@ exit:
 
             if (newOffset.Contains(towLoc))
             {
-                if (! ( towA == 0 && towB ==0 ))
-                towerLocOut.Add(
-                     new Transition(towA, towB)
-                    );
+                if (!(towA == 0 && towB == 0))
+                    towerLocOut.Add(
+                         new Transition(towA, towB)
+                        );
             }
-       
+
         }
 
         if (lineList.Count() > 0)
@@ -961,11 +961,7 @@ exit:
         //public readonly Outlet<SplineSys> castleWallEdgeSplineOut = new Outlet<SplineSys>();
 
 
-        CastleWallEdges.Clamp(tileLocation, tileSize);
 
-        SplineSysBundle.Add(new SplineSysWrapper(
-                   nameof(CastleWallEdges), CastleWallEdges, "castleWallEdgeSplineOut"
-                   ));
 
         // ADDED TO THE BUNDLE #############
 
@@ -981,16 +977,16 @@ exit:
         // List<Line> 
         // reset temp
         lineList = new List<Line>();
-      
+
 
         IEnumerable<Town.Geom.Edge> edges = passedwall.GetEdges();
-        int loops =0;
-         matched = State.no;
+        int loops = 0;
+        matched = State.no;
 
 
         foreach (var edge in edges.Reverse())
         {
-           
+
             var start = edge.A;
             var end = edge.B;
 
@@ -1023,7 +1019,7 @@ exit:
                     edge.B = end;
                     geom.Gates.Add(end);
 
-                    
+
 
                     var tot = new Town.Geom.Vector2(
                                                      end.x * TownGlobalObjectService.WorldMultiplier + WorldOffset.x,
@@ -1036,11 +1032,11 @@ exit:
                     {
                         continue;
                     }
-                    if ( Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count-1] - test) < 990000    )
+                    if (Vector3.SqrMagnitude(gatehouseNodes[gatehouseNodes.Count - 1] - test) < 990000)
                     {
 
                         gatehouseLines.Add(new Line(gatehouseNodes[gatehouseNodes.Count - 1], test));
-                        gatehouseNodes.Clear(); 
+                        gatehouseNodes.Clear();
 
                     }
                     else
@@ -1055,7 +1051,7 @@ exit:
                 {
                     matched = State.noted;
                 }
-               
+
             }
 
 
@@ -1089,8 +1085,8 @@ exit:
                 ((start.y + ((end.y - start.y) * 0.5f)) * TownGlobalObjectService.WorldMultiplier) + WorldOffset.y;
 
             var towLoc = new Coord((int)towA, (int)towB);
-          
-            
+
+
             if (newOffset.Contains(towLoc))
                 towerLocOut.Add(
                      new Transition(towA, towB)
@@ -1109,14 +1105,55 @@ exit:
         TownWallEdges.Clamp(tileLocation, tileSize);
 
 
-        SplineSysBundle.Add(new SplineSysWrapper(
-       nameof(TownWallEdges), TownWallEdges, "townWallSplineOut"));
+        CastleWallEdges.Clamp(tileLocation, tileSize);
 
+
+        if ( CastleWallEdges.NodesCount > 0)
+        {
+
+            if (TownWallEdges.NodesCount > 0)
+            {
+                // exclude segments in the CastleWallEdges.lines based on segments in the TownWallEdges.lines.segments arrays
+
+                List<Line> rep = (
+                    CastleWallEdges.lines.Reverse().Select(item => 
+                    new Line {segments = item.segments.Except(SegmentsToList(TownWallEdges)).ToArray()})).ToList();
+                
+                SplineSys result = new SplineSys
+                {
+                    lines = rep.ToArray()
+                };
+
+                // the abridged array
+                SplineSysBundle.Add(new SplineSysWrapper(
+                           nameof(CastleWallEdges), result, "castleWallEdgeSplineOut"
+                           ));
+            }
+            else
+            {
+                // the abridged array
+                SplineSysBundle.Add(new SplineSysWrapper(
+                           nameof(CastleWallEdges), CastleWallEdges, "castleWallEdgeSplineOut"
+                           ));
+            }
+       
+           
+        }
+
+        if (TownWallEdges.NodesCount > 0) {
+
+
+            SplineSysBundle.Add(new SplineSysWrapper(
+           nameof(TownWallEdges), TownWallEdges, "townWallSplineOut"));
+
+        }
+
+      
 
         if (gatehouseLines.Count > 0)
         {
             GatehouseEdges.lines = gatehouseLines.ToArray<Line>();
-        
+
 
 
             GatehouseEdges.Clamp(tileLocation, tileSize);
@@ -1145,7 +1182,7 @@ exit:
 
             var gateLoc = new Coord((int)gateX, (int)gateY);
 
-          
+
             if (newOffset.Contains(gateLoc))
                 gateLocOut.Add(
                      new Transition(gateX, gateY)
@@ -1183,6 +1220,13 @@ exit:
         // ADDED TO THE BUNDLE #############
 
         //  data.StoreProduct(towersOut, towerLocOut);
+    }
+
+    private static List<Segment> SegmentsToList(SplineSys TownWallEdges)
+    {
+        List<Segment> exclude = new List<Segment>();
+        exclude.AddRange(TownWallEdges.lines.SelectMany(item => item.segments.Select(seg => seg)));
+        return exclude;
     }
 
     private void Wrapper_Spline_DistrictPatchEdges(Town.Town town, Town.Geom.Vector2 WorldOffset, CoordRect newOffset, bool AppendToExistingBundle)

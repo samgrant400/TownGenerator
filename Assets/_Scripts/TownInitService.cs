@@ -658,18 +658,25 @@ public class TownInitService : MonoBehaviour
         TownGlobalObject.isSplinesMeshRenderedOnTile = new Dictionary<Coord, bool>();
     }
 
+    public void Init() {
 
-    void Awake()
-    {
-      //  if (FindObjectOfType<MapMagic.Core.MapMagicObject>() == null)
-      //  {
-      //      return;
-      //  }
 
         DoTownInitValuesChecks();
         CreateCities(TownInitValues.XzSpread, TownInitValues.totalCities);
 
         TownHolder.Instance.MapMagicObjectReference.gameObject.SetActive(true);
+
+    }
+
+   
+    void Awake()
+    {
+        //  if (FindObjectOfType<MapMagic.Core.MapMagicObject>() == null)
+        //  {
+        //      return;
+        //  }
+
+        Init();
 
 
     }

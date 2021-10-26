@@ -7,7 +7,7 @@ This version requires the free Assets Mapmagic2, SplineMesh to operate and the '
 The Town Init service now creates multiple cities, spreads them based on a minimum distance and the CityLink tool provides automatic splines that link the locations.
 
 [zulfajuniadi/TownGenerator](https://github.com/zulfajuniadi/TownGenerator/) Ported the code from [runegri/Town](https://github.com/runegri/Town) to generate meshes instead of SVG.
-Then Twobob modified it to generate [MapMagic2](https://assetstore.unity.com/packages/tools/terrain/mapmagic-2-165180) objects, splines and other things like a floating mini-map area overlay from the Area Patches.   This also contains a version of [twobob/MapMagic2Scripts](https://github.com/twobob/MapMagic2Scripts/commit/e93d9ed3122215709945521cb473cc59809e7067)
+Then Twobob modified it to generate [MapMagic2](https://assetstore.unity.com/packages/tools/terrain/mapmagic-2-165180) objects, splines and other things like a floating mini-map area overlay from the Area Patches.   This also contains a version of [twobob/MapMagic2Scripts](https://github.com/twobob/MapMagic2Scripts/tree/e93d9ed3122215709945521cb473cc59809e7067)
 
 Generated Town: (This is using not-included prefabs in a feature complete project)
 
@@ -15,7 +15,7 @@ Generated Town: (This is using not-included prefabs in a feature complete projec
 
 Sample Scene Demo: Included
 
-![WhiteBox](https://user-images.githubusercontent.com/915232/135237993-95d6f3f8-a562-44f2-875d-6952f13d373c.png "WhiteBox")
+![WhiteBox](https://user-images.githubusercontent.com/915232/136688810-9419bb6e-1c60-4856-b458-2386b7f88cd2.png "WhiteBox")
 
 ![CloseUp](https://user-images.githubusercontent.com/915232/135194891-b0e9310b-6e7a-4f63-944c-b247a5faf57e.png "closeUp")
 
@@ -34,14 +34,27 @@ Usage:
 
 View the `TownTileBuilder.cs` and `TownMeshBuilder.cs` file to see how the generation is initiated.
 
+Using the demos
+
+![layers](https://user-images.githubusercontent.com/915232/136863777-d708b1cb-74a3-42cc-a524-1771d3e9c0d1.png)
+
+Add the following layers.
+
+- Layer 18: **Map**
+- Layer 19: **NotMap**
+
+The scenes are located in the \_Scenes folder 
+
 Todos:
 
 1. Migrate the scripts to use UnityEngine.Vector2.
-2. Reduce GC allocation for generation (Now its around 100MB)
-3. Make the generation multithreaded via jobs
+2. Reduce GC allocation for generation (Now its around 100MB per city)
+3. Make the generation multithreaded via jobs or MM
 4. Support water
-7. Finish a complete a whitebox prefab demo example
-8. Rewrite SplineMesh as an Output
+5. Globalise Roads
+6. Look at also implmenting Segs and generic future outputs
+7. ~~. Finish a complete a whitebox prefab demo example ~~
+8. ~~. Rewrite SplineMesh as an Output ~~
 
 ### License ###
 

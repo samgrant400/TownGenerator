@@ -12,6 +12,8 @@ public class FlyCam : MonoBehaviour
 	public bool autofly = false;
 	private bool blockloops = false;
 
+    public bool JustLook = false;
+
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Unity")]
     void Update()
     {
@@ -26,11 +28,15 @@ public class FlyCam : MonoBehaviour
             transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
             transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);
 
-            transform.position += transform.forward * moveSpeed * Input.GetAxis("Vertical");
-            transform.position += transform.right * moveSpeed * Input.GetAxis("Horizontal");
-            transform.position += transform.up * 3 * moveSpeed * Input.GetAxis("Mouse ScrollWheel");
+            if (!JustLook)
+            {
+                transform.position += transform.forward * moveSpeed * Input.GetAxis("Vertical");
+                transform.position += transform.right * moveSpeed * Input.GetAxis("Horizontal");
+                transform.position += transform.up * 3 * moveSpeed * Input.GetAxis("Mouse ScrollWheel");
+            }
+        
         }
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && !JustLook)
         {
             if (!blockloops)
 			{
@@ -40,7 +46,7 @@ public class FlyCam : MonoBehaviour
 		}
 	else
 		{blockloops = false;
-		if (autofly)
+		if (autofly && !JustLook)
 		{
 			   transform.position += transform.forward * moveSpeed ;
 		}

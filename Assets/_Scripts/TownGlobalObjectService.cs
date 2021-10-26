@@ -11,6 +11,7 @@ using System.Linq;
 // REF: https://dotnetfiddle.net/6P71ow
 
 
+
 public class TownGlobalObjectService : MonoBehaviour
 {
 
@@ -175,7 +176,11 @@ public class TownGlobalObjectService : MonoBehaviour
 
     }
 
+
+
+
     // We Always do the checks.
+
     void Awake()
     {
         StaticInstance = Instance;
@@ -362,6 +367,13 @@ public static class TownHolder
                 instance = TownGlobalObjectService.StaticInstance;
                
             }
+
+            if (instance == null)
+            {
+                instance = Component.FindObjectOfType<TownGlobalObjectService>();
+
+            }
+
             return instance;
         }
 

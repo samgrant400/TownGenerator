@@ -61,7 +61,7 @@ namespace Twobob.Mm2
 			Cell.EmptyLinePx(4);
 		}
 
-		public static void DrawPositioningSettings (PositioningSettings posSettings, bool billboardRotWaring=false, bool showRelativeHeight=true)
+		public static void DrawPositioningSettings (PositioningSettingsSpline posSettings, bool billboardRotWaring=false, bool showRelativeHeight=true)
 		{
           //  height
 
@@ -103,14 +103,14 @@ namespace Twobob.Mm2
 
             Cell.EmptyLinePx(1);
             using (Cell.LinePx(0))
-            using (new Draw.FoldoutGroup(ref posSettings.guiPosition, "Mesh Options"))
-                if (posSettings.guiPosition)
+            using (new Draw.FoldoutGroup(ref posSettings.guiPositionSettings, "Mesh Options"))
+                if (posSettings.guiPositionSettings)
                 {
                     //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.useScale, "Use Scale");
                     //	using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.scaleYonly, "Scale Y Only");
                     //using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.regardPrefabScale, "Use Prefab Scale");
 
-
+                    using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.mergeSegments, "Segment Merge?");
                     using (Cell.LineStd) Draw.ToggleLeft(ref posSettings.spacingFromScale, "Spacing from Scale");
 
                         using (Cell.LineStd)
