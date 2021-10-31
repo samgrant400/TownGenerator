@@ -4,6 +4,8 @@
 [Bb]uild/
 [Bb]uilds/
 Assets/AssetStoreTools*
+Assets/MapMagic*
+Assets/TextMesh*
 
 .DS_Store
 

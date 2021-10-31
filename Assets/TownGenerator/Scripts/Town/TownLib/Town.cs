@@ -640,21 +640,21 @@ namespace Town
                 geometry.Towers.AddRange(CityWall.Towers.Union(Castle.Wall.Towers));
                 geometry.Gates.AddRange(CityWall.Gates.Union(Castle.Wall.Gates));
             }
-            else
-            {
-                var castleWall = CityWall
-                    .GetEdges()
-                    .Union(Castle.Wall.GetEdges())
-                    .Distinct()
-                    .SelectMany(e => new[] { e.A, e.B })
-                    .Where(w => Castle.Patch.Shape.Vertices.Contains(w))
-                    .ToList();
-                var towers = CityWall.Towers.Union(Castle.Wall.Towers).Intersect(castleWall);
-                var gates = CityWall.Gates.Union(Castle.Wall.Gates).Intersect(castleWall);
-                geometry.Walls.AddRange(Edge.FromPointList(castleWall));
-                geometry.Towers.AddRange(towers);
-                geometry.Gates.AddRange(gates);
-            }
+            // else
+            // {
+            //     var castleWall = CityWall
+            //         .GetEdges()
+            //         .Union(Castle.Wall.GetEdges())
+            //         .Distinct()
+            //         .SelectMany(e => new[] { e.A, e.B })
+            //         .Where(w => Castle.Patch.Shape.Vertices.Contains(w))
+            //         .ToList();
+            //     var towers = CityWall.Towers.Union(Castle.Wall.Towers).Intersect(castleWall);
+            //     var gates = CityWall.Gates.Union(Castle.Wall.Gates).Intersect(castleWall);
+            //     geometry.Walls.AddRange(Edge.FromPointList(castleWall));
+            //     geometry.Towers.AddRange(towers);
+            //     geometry.Gates.AddRange(gates);
+            // }
             geometry.Roads.AddRange(Roads);
             geometry.Roads.AddRange(Streets);
 
