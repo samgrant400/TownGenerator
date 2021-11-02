@@ -575,11 +575,11 @@ public class TownInitService : MonoBehaviour
 
         TownOptions skeletonOptions = TownGlobalObject.bundles[newlocality].town.Options;
 
-        skeletonOptions.IOC = false;
-        skeletonOptions.Farm = false;
-        skeletonOptions.Roads = false;
-        skeletonOptions.Walls = false;
-        skeletonOptions.CityDetail = false;
+        //skeletonOptions.IOC = false;
+        //skeletonOptions.Farm = false;
+        //skeletonOptions.Roads = false;
+        //skeletonOptions.Walls = false;
+        //skeletonOptions.CityDetail = false;
 
         //TownGlobalObject.MeshRenderer = new TownMeshRenderer (
         //        reffedBundle.town,

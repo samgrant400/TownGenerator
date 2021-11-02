@@ -632,7 +632,7 @@ namespace Town
             var buildings = buildingPlacer.PopulateBuildings();
 
             geometry.Buildings.AddRange(buildings);
-            if (options.Walls)
+            //if (options.Walls)
             {
                 geometry.Walls.AddRange(
                     CityWall.GetEdges().Union(Castle.Wall.GetEdges()).Distinct()

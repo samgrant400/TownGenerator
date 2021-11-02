@@ -20,7 +20,7 @@ namespace Town
         public GameObject Waters;
         public GameObject BuildingsOverlay;
         public GameObject BuildingsMesh;
-        public GameObject Walls;
+        public GameObject WallsOverlay;
         public GameObject WallsMesh;
         public GameObject Roads;
         public string name;
@@ -58,11 +58,11 @@ namespace Town
 
             TownOptions skeletonOptions = options;
 
-            skeletonOptions.IOC = false;
-            skeletonOptions.Farm = false;
-            skeletonOptions.Roads = true;
-            skeletonOptions.Walls = true;
-            skeletonOptions.CityDetail = false;
+            //skeletonOptions.IOC = false;
+            //skeletonOptions.Farm = true;
+            //skeletonOptions.Roads = true;
+            //skeletonOptions.Walls = true;
+            //skeletonOptions.CityDetail = true;
 
             var geometry = town.GetTownGeometry(skeletonOptions);
 
@@ -243,7 +243,7 @@ namespace Town
                 DrawRoads(geometry, null);
             }
 
-            //if (options.Walls)
+            if (options.Walls)
             {
                 DrawWalls(geometry, null);
             }
@@ -590,12 +590,15 @@ namespace Town
         private void DrawWalls(TownGeometry geometry, StringBuilder sb)
         {
             Cube cube;
-            WallsMesh = new GameObject("WallsMesh");
+            WallsMesh = new GameObject("Walls Mesh");
             WallsMesh.transform.parent = child;
-            WallsMesh.transform.localPosition = Vector3.zero;
-            Walls = new GameObject("Walls");
-            Walls.transform.parent = child;
-            Walls.transform.localPosition = Vector3.zero;
+            //WallsMesh.transform.localPosition = Vector3.zero;
+            WallsMesh.transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+            WallsOverlay = new GameObject("Walls Overlay");
+            WallsOverlay.transform.parent = child;
+            WallsOverlay.gameObject.layer = LayerMask.NameToLayer(CamMapLayer);
+            //Walls.transform.localPosition = Vector3.zero;
+            WallsOverlay.transform.localPosition = new Vector3(town.townOffset.x, 970, town.townOffset.y);
             var replacedGates = new List<Geom.Vector2>();
             foreach (var wall in geometry.Walls)
             {
@@ -623,89 +626,139 @@ namespace Town
                 cube = new Cube(
                     "Wall",
                     GetLineVertices(
-                        // start.x,
-                        // end.x,
-                        // start.y,
-                        // end.y
-                        ScaleToWorldWithOffset(start.x, town.townOffset.x),
-                        ScaleToWorldWithOffset(end.x, town.townOffset.x),
-                        ScaleToWorldWithOffset(start.y, town.townOffset.y),
-                        ScaleToWorldWithOffset(end.y, town.townOffset.y)
+                        TownGlobalObjectService.WorldMultiplier * start.x,
+                        TownGlobalObjectService.WorldMultiplier * end.x,
+                        TownGlobalObjectService.WorldMultiplier * start.y,
+                        TownGlobalObjectService.WorldMultiplier * end.y,
+                        // ScaleToWorldWithOffset(start.x, town.townOffset.x),
+                        // ScaleToWorldWithOffset(end.x, town.townOffset.x),
+                        // ScaleToWorldWithOffset(start.y, town.townOffset.y),
+                        // ScaleToWorldWithOffset(end.y, town.townOffset.y),
+                        TownGlobalObjectService.WorldMultiplier * 1
                     ),
                     0.1f,
                     rendererOptions.WallMaterial,
-                    Walls.transform
+                    WallsOverlay.transform
                 );
+                //cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
                 cube.Transform.localPosition = Vector3.zero;
+                cube.GameObject.layer = WallsOverlay.gameObject.layer;
                 //cube.GameObject.AddComponent<LerpToGround>();
 
                 cube = new Cube(
                     "WallMesh",
                     GetLineVertices(
-                        // start.x,
-                        // end.x,
-                        // start.y,
-                        // end.y
-                        ScaleToWorldWithOffset(start.x, town.townOffset.x),
-                        ScaleToWorldWithOffset(end.x, town.townOffset.x),
-                        ScaleToWorldWithOffset(start.y, town.townOffset.y),
-                        ScaleToWorldWithOffset(end.y, town.townOffset.y)
+                        TownGlobalObjectService.WorldMultiplier * start.x,
+                        TownGlobalObjectService.WorldMultiplier * end.x,
+                        TownGlobalObjectService.WorldMultiplier * start.y,
+                        TownGlobalObjectService.WorldMultiplier * end.y,
+                        //ScaleToWorldWithOffset(start.x, town.townOffset.x),
+                        //ScaleToWorldWithOffset(end.x, town.townOffset.x),
+                        //ScaleToWorldWithOffset(start.y, town.townOffset.y),
+                        //ScaleToWorldWithOffset(end.y, town.townOffset.y),
+                        TownGlobalObjectService.WorldMultiplier * 1
                     ),
-                    10,
+                    TownGlobalObjectService.WorldMultiplier * 5,
                     rendererOptions.WallMaterial,
                     WallsMesh.transform,
                     false
                 );
+                //cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
                 cube.Transform.localPosition = Vector3.zero;
+                cube.GameObject.AddComponent<LerpToGround>().time = 0f;
                 // cube.GameObject.AddComponent<LerpToGround>();
             }
 
-            // foreach (var replacedGate in replacedGates.Distinct())
-            // {
-            //     geometry.Gates.Remove(replacedGate);
-            // }
+            foreach (var replacedGate in replacedGates.Distinct())
+            {
+                geometry.Gates.Remove(replacedGate);
+            }
 
-            // foreach (var tower in geometry.Towers)
-            // {
-            //     cube = new Cube(
-            //         "Tower",
-            //         GetVertices(4, 4, tower.x - 2, tower.y - 2),
-            //         0.1f,
-            //         rendererOptions.TowerMaterial,
-            //         Walls.transform
-            //     );
-            //     cube.Transform.localPosition = Vector3.zero;
-            //     cube = new Cube(
-            //         "TowerMesh",
-            //         GetVertices(4, 4, tower.x - 2, tower.y - 2),
-            //         8,
-            //         rendererOptions.TowerMaterial,
-            //         WallsMesh.transform,
-            //         false
-            //     );
-            //     cube.Transform.localPosition = Vector3.zero;
-            // }
+            foreach (var tower in geometry.Towers)
+            {
+                cube = new Cube(
+                    "Tower",
+                    GetVertices(
+                        (int) TownGlobalObjectService.WorldMultiplier * 4, 
+                        (int) TownGlobalObjectService.WorldMultiplier * 4, 
+                        TownGlobalObjectService.WorldMultiplier * tower.x - TownGlobalObjectService.WorldMultiplier * 2, 
+                        TownGlobalObjectService.WorldMultiplier * tower.y - TownGlobalObjectService.WorldMultiplier * 2
+                        //(int) ScaleToWorldWithOffset(4, town.townOffset.x),
+                        //(int) ScaleToWorldWithOffset(4, town.townOffset.y),
+                        //ScaleToWorldWithOffset(tower.x - 2, town.townOffset.x),
+                        //ScaleToWorldWithOffset(tower.y - 2, town.townOffset.y)
+                    ),
+                    0.1f,
+                    rendererOptions.TowerMaterial,
+                    WallsOverlay.transform
+                );
+                cube.GameObject.layer = WallsOverlay.gameObject.layer;
+                //cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+                cube.Transform.localPosition = Vector3.zero;
+                cube = new Cube(
+                    "TowerMesh",
+                    GetVertices(
+                        (int) TownGlobalObjectService.WorldMultiplier * 3, 
+                        (int) TownGlobalObjectService.WorldMultiplier * 3, 
+                        TownGlobalObjectService.WorldMultiplier * tower.x - TownGlobalObjectService.WorldMultiplier * 2, 
+                        TownGlobalObjectService.WorldMultiplier * tower.y - TownGlobalObjectService.WorldMultiplier * 2
+                        //(int) ScaleToWorldWithOffset(4, town.townOffset.x),
+                        //(int) ScaleToWorldWithOffset(4, town.townOffset.y),
+                        //ScaleToWorldWithOffset(tower.x - 2, town.townOffset.x),
+                        //ScaleToWorldWithOffset(tower.y - 2, town.townOffset.y)
+                    ),
+                    TownGlobalObjectService.WorldMultiplier * 6,
+                    rendererOptions.TowerMaterial,
+                    WallsMesh.transform,
+                    false
+                );
+                cube.Transform.localPosition = Vector3.zero;
+                cube.GameObject.AddComponent<LerpToGround>().time = 0f;
+                //cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+            }
 
-            // foreach (var gate in geometry.Gates)
-            // {
-            //     cube = new Cube(
-            //         "Gate",
-            //         GetVertices(4, 4, gate.x - 2, gate.y - 2),
-            //         0.1f,
-            //         rendererOptions.GateMaterial,
-            //         Walls.transform
-            //     );
-            //     cube.Transform.localPosition = Vector3.zero;
-            //     cube = new Cube(
-            //         "GateMesh",
-            //         GetVertices(4, 4, gate.x - 2, gate.y - 2),
-            //         6,
-            //         rendererOptions.GateMaterial,
-            //         WallsMesh.transform,
-            //         false
-            //     );
-            //     cube.Transform.localPosition = Vector3.zero;
-            // }
+            foreach (var gate in geometry.Gates)
+            {
+                cube = new Cube(
+                    "Gate",
+                    GetVertices(
+                        (int) TownGlobalObjectService.WorldMultiplier * 3, 
+                        (int) TownGlobalObjectService.WorldMultiplier * 3, 
+                        TownGlobalObjectService.WorldMultiplier * gate.x - TownGlobalObjectService.WorldMultiplier * 2, 
+                        TownGlobalObjectService.WorldMultiplier * gate.y - TownGlobalObjectService.WorldMultiplier * 2
+                        //(int) ScaleToWorldWithOffset(4, town.townOffset.x),
+                        //(int) ScaleToWorldWithOffset(4, town.townOffset.y),
+                        //ScaleToWorldWithOffset(gate.x - 2, town.townOffset.x),
+                        //ScaleToWorldWithOffset(gate.y - 2, town.townOffset.y)
+                    ),
+                    0.1f,
+                    rendererOptions.GateMaterial,
+                    WallsOverlay.transform
+                );
+                cube.GameObject.layer = WallsOverlay.gameObject.layer;
+                cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+                //cube.Transform.localPosition = Vector3.zero;
+                cube = new Cube(
+                    "GateMesh",
+                    GetVertices(
+                        (int) TownGlobalObjectService.WorldMultiplier * 3, 
+                        (int) TownGlobalObjectService.WorldMultiplier * 3, 
+                        TownGlobalObjectService.WorldMultiplier * gate.x - TownGlobalObjectService.WorldMultiplier * 2, 
+                        TownGlobalObjectService.WorldMultiplier * gate.y - TownGlobalObjectService.WorldMultiplier * 2
+                        // (int) ScaleToWorldWithOffset(4, town.townOffset.x),
+                        // (int) ScaleToWorldWithOffset(4, town.townOffset.y),
+                        // ScaleToWorldWithOffset(gate.x - 2, town.townOffset.x),
+                        // ScaleToWorldWithOffset(gate.y - 2, town.townOffset.y)
+                    ),
+                    TownGlobalObjectService.WorldMultiplier * 3,
+                    rendererOptions.GateMaterial,
+                    WallsMesh.transform,
+                    false
+                );
+                //cube.Transform.localPosition = Vector3.zero;
+                cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+                cube.GameObject.AddComponent<LerpToGround>().time = 0f;
+            }
         }
 
         private Vector3[] GetVertices(int width, int length, float offsetX, float offsetZ)
