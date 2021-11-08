@@ -21,12 +21,18 @@ namespace Town
     public class BuildingPlacer
     {
         private readonly List<Geom.Polygon> _buildings;
+        private Geom.Polygon _castle;
         private readonly float _avgPopulationPrBuilding;
 
         public BuildingPlacer(List<Geom.Polygon> buildings, float avgPopulationPrBuilding = 10)
         {
             _buildings = buildings;
             _avgPopulationPrBuilding = avgPopulationPrBuilding;
+        }
+
+        public void AddCastle(Geom.Polygon castle) 
+        {
+            _castle = castle;
         }
 
         public List<Building> PopulateBuildings()
@@ -68,6 +74,16 @@ namespace Town
                         _buildings.RemoveAt(0);
                     }
                 }
+            }
+
+            if (_castle != null) 
+            {
+                var buildingType = typeof(BuildingType)
+                    .GetField(BuildingType.Castle.ToString())
+                    .GetCustomAttribute<BuildingStatsAttribute>();
+                var building = new Building(buildingType.Description, _castle);
+                populated.Add(building);
+                _castle = null;
             }
 
             return populated;
@@ -192,6 +208,8 @@ namespace Town
         Booksellers,
         [BuildingStats(MinSize = 4, Population = 10000, Description = "University")]
         University,
+        [BuildingStats(MinSize = 4, Population = -1, Description = "Castle")]
+        Castle,
     }
 
     public class BuildingStatsAttribute : Attribute

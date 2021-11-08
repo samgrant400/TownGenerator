@@ -320,7 +320,7 @@ namespace Town
                 }
             }
 
-            CityWall = new Wall(allowedTowerPositions, this, 4, 14, castleVertices);
+            CityWall = new Wall(allowedTowerPositions, this, 2, 10, castleVertices);
 
             var allowedCastleWallPositions = castleVertices.Except(allowedTowerPositions).ToList();
             var firstIndex = castleVertices.IndexOf(allowedCastleWallPositions.First()) - 1;
@@ -376,29 +376,6 @@ namespace Town
                             roads.Add(road);
                         }
                     }
-                    // Mangle in more roads
-
-                    //foreach (var tower in CityWall.Towers)
-                    //{
-
-                    //    var direction = Vector2.Scale(tower - Center, 200000);
-
-                    //    var start = topology.Node2V.Values.OrderBy(v => (v - direction).Length).First();
-
-                    //    var road = topology.BuildPath(start, tower, topology.Outer);
-                    //    if (road != null)
-                    //    {
-                    //        roads.Add(road);
-                    //    }
-
-                    //}
-
-
-
-
-
-
-
                 }
             }
 
@@ -616,6 +593,7 @@ namespace Town
                 yield return edge.A;
                 previous = edge;
             }
+            yield return previous.B;
         }
 
         public TownGeometry GetTownGeometry(TownOptions options)
@@ -623,16 +601,20 @@ namespace Town
             var geometry = new TownGeometry();
 
             var buildingShapes = new List<Polygon>();
-            foreach (var patch in Patches.Where(p => p.Area != null))
+            foreach (var patch in Patches.Where(p => p.Area != null && p.HasCastle == false))
             {
                 buildingShapes.AddRange(patch.Area.GetGeometry());
             }
-
             var buildingPlacer = new BuildingPlacer(buildingShapes);
+            if (Castle != null) {
+                //var castle = Castle.Patch.Area.GetGeometry().FirstOrDefault();
+                var castle = Patches.Where(p => p.Area != null && p.HasCastle).LastOrDefault();
+                buildingPlacer.AddCastle(castle.Area.GetGeometry().LastOrDefault());
+            }
             var buildings = buildingPlacer.PopulateBuildings();
 
             geometry.Buildings.AddRange(buildings);
-            //if (options.Walls)
+            if (options.Walls)
             {
                 geometry.Walls.AddRange(
                     CityWall.GetEdges().Union(Castle.Wall.GetEdges()).Distinct()
@@ -640,21 +622,21 @@ namespace Town
                 geometry.Towers.AddRange(CityWall.Towers.Union(Castle.Wall.Towers));
                 geometry.Gates.AddRange(CityWall.Gates.Union(Castle.Wall.Gates));
             }
-            // else
-            // {
-            //     var castleWall = CityWall
-            //         .GetEdges()
-            //         .Union(Castle.Wall.GetEdges())
-            //         .Distinct()
-            //         .SelectMany(e => new[] { e.A, e.B })
-            //         .Where(w => Castle.Patch.Shape.Vertices.Contains(w))
-            //         .ToList();
-            //     var towers = CityWall.Towers.Union(Castle.Wall.Towers).Intersect(castleWall);
-            //     var gates = CityWall.Gates.Union(Castle.Wall.Gates).Intersect(castleWall);
-            //     geometry.Walls.AddRange(Edge.FromPointList(castleWall));
-            //     geometry.Towers.AddRange(towers);
-            //     geometry.Gates.AddRange(gates);
-            // }
+            else
+            {
+                var castleWall = CityWall
+                    .GetEdges()
+                    .Union(Castle.Wall.GetEdges())
+                    .Distinct()
+                    .SelectMany(e => new[] { e.A, e.B })
+                    .Where(w => Castle.Patch.Shape.Vertices.Contains(w))
+                    .ToList();
+                var towers = CityWall.Towers.Union(Castle.Wall.Towers).Intersect(castleWall);
+                var gates = CityWall.Gates.Union(Castle.Wall.Gates).Intersect(castleWall);
+                geometry.Walls.AddRange(Edge.FromPointList(castleWall));
+                geometry.Towers.AddRange(towers);
+                geometry.Gates.AddRange(gates);
+            }
             geometry.Roads.AddRange(Roads);
             geometry.Roads.AddRange(Streets);
 

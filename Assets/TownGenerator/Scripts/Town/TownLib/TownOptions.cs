@@ -9,15 +9,13 @@ namespace Town
         public bool Overlay = false;
         public bool Walls = true;
         public bool Towers = true;
-        [HideInInspector]
-        public bool Farm = false;
+        public bool Farm = true;
         [HideInInspector]
         public bool Water = false;
         [HideInInspector]
         public bool Roads = false;
 
         // [Range (2, 200)]
-        [HideInInspector]
         public int Patches = 50;
         public int Seed = 4074;
 

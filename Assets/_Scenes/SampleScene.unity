@@ -845,10 +845,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1622769426}
     m_Modifications:
+    - target: {fileID: 3417226530292836782, guid: 62f8b8042058d044783aceb9bce09836,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3417226530897164749, guid: 62f8b8042058d044783aceb9bce09836,
         type: 3}
       propertyPath: m_Name
       value: WorldMessage
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417226530897164749, guid: 62f8b8042058d044783aceb9bce09836,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3417226530897164750, guid: 62f8b8042058d044783aceb9bce09836,
         type: 3}
@@ -955,7 +965,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3417226530292836776, guid: 62f8b8042058d044783aceb9bce09836, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 62f8b8042058d044783aceb9bce09836, type: 3}
 --- !u!224 &724191436 stripped
 RectTransform:
@@ -1242,10 +1253,10 @@ MonoBehaviour:
     Overlay: 0
     Walls: 1
     Towers: 1
-    Farm: 0
+    Farm: 1
     Water: 0
     Roads: 0
-    Patches: 50
+    Patches: 25
     Seed: 4074
     coord:
       x: 0

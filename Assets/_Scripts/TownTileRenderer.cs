@@ -1801,7 +1801,7 @@ public class TownTileRenderer
     {
         SplineSys townWallSplinesSys = new SplineSys();
         //    Debug.Log("Begin dstObjs");
-        List<Line> townWallSplines = new List<Line>(town.CityWall.Circumference.Count);
+        var townWallSplines = new List<Line>(town.CityWall.Circumference.Count);
 
         //   if (!isDraft)
         if (true)

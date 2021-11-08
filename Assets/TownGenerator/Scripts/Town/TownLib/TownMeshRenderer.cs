@@ -90,7 +90,7 @@ namespace Town
             var geometry = town.GetTownGeometry(options);
             MeshUtils.Polygon poly;
 
-            List<Vector3> vertices = new List<Vector3>();
+            var vertices = new List<Vector3>();
             UnityEngine.Random.InitState(options.Seed.GetHashCode());
 
             if (options.Water)
@@ -127,7 +127,7 @@ namespace Town
 
             BuildingsOverlay = new GameObject("Buildings Overlay");
             BuildingsOverlay.transform.parent = child;
-            BuildingsOverlay.transform.localPosition = Vector3.zero + new Vector3(0, 950, 0);
+            BuildingsOverlay.transform.localPosition = new Vector3(0, 950, 0);
 
             List<Building> onsite = town.GetTownGeometry(town.Options).Buildings;
 
@@ -144,12 +144,18 @@ namespace Town
                     );
                 }
 
+                var buildingHeight = UnityEngine.Random.Range(20f, 45f);
+                if (building.Description == "Castle")
+                {
+                    buildingHeight = UnityEngine.Random.Range(50f, 65f);
+                }
+
                 poly = new MeshUtils.Polygon(
                     town.name + "_" + building.Description,
                     vertices,
                     //vertices.Select(x => new Vector3(x.x, 0, x.z)).ToList(),
                     //0.1f,
-                    UnityEngine.Random.Range(20f, 35f),
+                    buildingHeight,
                     //rendererOptions.TownModelsOverlay,
                     rendererOptions.BuildingMaterial,
                     BuildingsMesh.transform,
@@ -453,93 +459,6 @@ namespace Town
             return hit.point;
         }
 
-        //private void DrawWallSplines(TownGeometry geometry, StringBuilder sb)
-        //{
-
-        //    var FenceSpline = new GameObject("FenceSpline");
-        //    FenceSpline.transform.parent = child;
-        //    FenceSpline.transform.localPosition = Vector3.zero;
-
-        //    // we now - annoyingly - have a start and an end node to deal with from the outset...
-
-        //    // so if first    Former.StartNode.transform.position = new Vector3();
-
-        //    // if second  Former.EndNode.transform.position = new Vector3();
-
-        //    // if subsequent SplineNode node = Former.AddNodeImmediately();    node.transform.position = new Vector3();
-
-        //    var replacedGates = new List<Geom.Vector2>();
-
-        //    for (int i = 0; i < geometry.Walls.Count; i++)
-        //    {
-
-        //        // for some reason the first line is the circumference we don't want that?
-
-        //        if (i == 0)
-        //        {
-        //            continue;
-        //        }
-
-        //        Edge wall = (Edge)geometry.Walls[i];
-        //        var splineFormer = GameObject.Instantiate(TownHolder.Instance.FenceSplineFormer, FenceSpline.transform);
-
-        //        splineFormer.name = String.Format("{0}_Wall{1}", town.name, i);
-
-        //        splineFormer.transform.localPosition = Vector3.zero;
-
-        //        var Former = splineFormer.GetComponent<SplineFormer>();
-
-
-        //        var start = wall.A;
-        //        var end = wall.B;
-
-        //        if (wall.A == wall.B)
-        //            continue;
-
-        //        Former.SegmentsNumber = Math.Max(1, (int)Mathf.Sqrt(Geom.Vector2.DistanceSquare(wall.A, wall.B)));
-
-
-        //        // optionally offset the ends to fit the Gates
-        //        if (geometry.Gates.Contains(start))
-        //        {
-        //            replacedGates.Add(start);
-        //            start = start + Geom.Vector2.Scale(end - start, 0.3f);
-        //            wall.A = start;
-        //            geometry.Gates.Add(start);
-        //        }
-
-        //        if (geometry.Gates.Contains(end))
-        //        {
-        //            replacedGates.Add(end);
-        //            end = end - Geom.Vector2.Scale(end - start, 0.3f);
-        //            wall.B = end;
-        //            geometry.Gates.Add(end);
-        //        }
-
-
-        //        float MovedstartX = ScaleToWorldWithOffset(start.x, town.townOffset.x);
-        //        float MovedstartY = ScaleToWorldWithOffset(start.y, town.townOffset.y);
-
-        //        float MovedendX = ScaleToWorldWithOffset(end.x, town.townOffset.x);
-        //        float MovedendY = ScaleToWorldWithOffset(end.y, town.townOffset.y);
-        //        float startPlace, endPlace;
-
-
-        //        startPlace = GetTerrainPos(MovedstartX, MovedstartY).y;
-
-        //        endPlace = GetTerrainPos(MovedendX, MovedendY).y;
-
-
-        //        Former.StartNode.transform.position = new Vector3(MovedstartX, startPlace, MovedstartY);
-
-        //        Former.EndNode.transform.position = new Vector3(MovedendX, endPlace, MovedendY);
-
-        //    }
-
-        //    MakeFenceFromEdges(geometry, FenceSpline, replacedGates, town.CityWall.GetEdges(), "CityWall");
-        //    MakeFenceFromEdges(geometry, FenceSpline, replacedGates, town.Market.Edges, "Market");
-        //}
-
         //private void MakeFenceFromEdges(TownGeometry geometry, GameObject FenceSpline, List<Geom.Vector2> replacedGates, IEnumerable<Edge> EdgeIEnumerable, string prettyName)
         //{
         //    int i = 0;
@@ -724,8 +643,8 @@ namespace Town
                     GetVertices(
                         (int) TownGlobalObjectService.WorldMultiplier * 3, 
                         (int) TownGlobalObjectService.WorldMultiplier * 3, 
-                        TownGlobalObjectService.WorldMultiplier * gate.x - TownGlobalObjectService.WorldMultiplier * 2, 
-                        TownGlobalObjectService.WorldMultiplier * gate.y - TownGlobalObjectService.WorldMultiplier * 2
+                        TownGlobalObjectService.WorldMultiplier * gate.x - (TownGlobalObjectService.WorldMultiplier * 2), 
+                        TownGlobalObjectService.WorldMultiplier * gate.y - (TownGlobalObjectService.WorldMultiplier * 2)
                         //(int) ScaleToWorldWithOffset(4, town.townOffset.x),
                         //(int) ScaleToWorldWithOffset(4, town.townOffset.y),
                         //ScaleToWorldWithOffset(gate.x - 2, town.townOffset.x),
@@ -736,27 +655,27 @@ namespace Town
                     WallsOverlay.transform
                 );
                 cube.GameObject.layer = WallsOverlay.gameObject.layer;
-                cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
-                //cube.Transform.localPosition = Vector3.zero;
+                //cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+                cube.Transform.localPosition = Vector3.zero;
                 cube = new Cube(
                     "GateMesh",
                     GetVertices(
                         (int) TownGlobalObjectService.WorldMultiplier * 3, 
                         (int) TownGlobalObjectService.WorldMultiplier * 3, 
-                        TownGlobalObjectService.WorldMultiplier * gate.x - TownGlobalObjectService.WorldMultiplier * 2, 
-                        TownGlobalObjectService.WorldMultiplier * gate.y - TownGlobalObjectService.WorldMultiplier * 2
+                        TownGlobalObjectService.WorldMultiplier * gate.x - (TownGlobalObjectService.WorldMultiplier * 2), 
+                        TownGlobalObjectService.WorldMultiplier * gate.y - (TownGlobalObjectService.WorldMultiplier * 2)
                         // (int) ScaleToWorldWithOffset(4, town.townOffset.x),
                         // (int) ScaleToWorldWithOffset(4, town.townOffset.y),
                         // ScaleToWorldWithOffset(gate.x - 2, town.townOffset.x),
                         // ScaleToWorldWithOffset(gate.y - 2, town.townOffset.y)
                     ),
-                    TownGlobalObjectService.WorldMultiplier * 3,
+                    TownGlobalObjectService.WorldMultiplier * 6,
                     rendererOptions.GateMaterial,
                     WallsMesh.transform,
                     false
                 );
-                //cube.Transform.localPosition = Vector3.zero;
-                cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
+                cube.Transform.localPosition = Vector3.zero;
+                //cube.Transform.localPosition = new Vector3(town.townOffset.x, 0, town.townOffset.y);
                 cube.GameObject.AddComponent<LerpToGround>().time = 0f;
             }
         }
